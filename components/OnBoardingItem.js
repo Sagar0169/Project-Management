@@ -25,7 +25,7 @@ export default function OnBoardingItem({ item }) {
 
 const styles = StyleSheet.create({
   container: {
-    height:700,
+    flex:1,
     justifyContent: "center",
     alignItems: "center",
   },
