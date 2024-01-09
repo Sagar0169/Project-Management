@@ -4,27 +4,27 @@ export default [
     title: "Assigned Projects",
     color: "#8e8cf3",
     count: "13",
-    image:require('../assets/images/dashBlue.png')
+    image:require('../assets/Images/dashBlue.png')
   },
   {
     id: "1",
     title: "Add New Projects",
     color: "#d68eeb",
     count: "22",
-    image:require('../assets/images/dashPurplee.png')
+    image:require('../assets/Images/dashPurplee.png')
   },
   {
     id: "2",
     title: "Priority Projects",
     color: "#e5af54",
     count: "31",
-    image:require('../assets/images/dashYellow.png')
+    image:require('../assets/Images/dashYellow.png')
   },
   {
     id: "3",
     title: "Task List",
     color: "#4ec05a",
     count: "50",
-    image:require('../assets/images/dashGreen.png')
+    image:require('../assets/Images/dashGreen.png')
   },
 ];

@@ -83,7 +83,7 @@ function Login() {
                 padding: 10,
               }}
             >
-              <Text style={{ fontSize: 16 }}>forget Password?</Text>
+              <Text style={{ fontSize: 16 }}>Forget Password?</Text>
             </View>
           </Pressable>
         </View>

@@ -15,9 +15,9 @@ import DashboardData from "../components/DashboardData";
 export default function DashBoard({navigation}) {
   const CurvedGridItem = ({ navigation, item }) => {
     function navigationHandler(){
-      // if (item.title === "Assigned Projects") {
-      //   navigation.navigate("AssignedProject");
-      // }
+      if (item.title === "Add New Projects") {
+        navigation.navigate("AddNewProjects");
+      }
     }
     return (
       <Pressable onPress={navigationHandler} style={styles.itemContainer}>
