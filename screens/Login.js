@@ -1,6 +1,8 @@
-import { View,Image,Text,StyleSheet, Dimensions } from "react-native";
+import { View,Image,Text,StyleSheet, Dimensions,Pressable } from "react-native";
 
 import LoginForm from "../components/LoginForm";
+import Button from "../components/ui/Button";
+import SvgSelector from "../components/SvgSelector";
 
 function Login(){
     const { width, height } = Dimensions.get("window");
@@ -25,20 +27,40 @@ function Login(){
     return(
 
       
-        <View style={{flex:1, marginTop:40}}>
+        <View style={{flex:1, marginTop:50,alignItems:'center'}}>
             <View >
-            <Text style={{  textAlign:'center',color:'#F09D49', marginTop:25 ,fontSize:dynamicFontSize*1.7 ,fontWeight:700}} >
+            <Text style={{  textAlign:'center',color:'#171716', marginTop:25 ,fontSize:dynamicFontSize*1.7 ,fontWeight:700}} >
              PROJECT MANAGEMENT SYSTEM
             </Text>
             </View>
             
-
+         
        
-        <View  style={{ marginTop:40,backgroundColor:'blue', height:h(30 ),width:w(98),borderRadius:20,borderColor:'black', borderWidth:2 }}>
-        <View style={{marginTop:20,marginHorizontal:10}}>
+        <View  style={{ marginTop:40,backgroundColor:'white', padding:10,width:w(98),borderRadius:20,borderColor:'black', borderWidth:3,  }}>
+        
+       
+        <View >
+            <Text style={{  textAlign:'center',color:'#171716', marginTop:20 ,fontSize:dynamicFontSize*1.7 ,fontWeight:700}} >
+             LOGIN
+            </Text>
+            </View>
+        <View style={{marginTop:20,marginHorizontal:5}}>
         <LoginForm/>
         </View>
+        <View>
+        <Pressable >
+      <View style={{flexDirection:'row', justifyContent:'flex-end', padding:10}}>
+        <Text  style={{fontSize:16}} >forget Password?</Text>
+      </View>
+    </Pressable>
         </View>
+        <View style={{  marginTop:20,alignItems:'center'}}>
+        <Button>SUBMIT</Button>
+        </View>
+
+        
+        </View>
+        
         </View>
         )
 }

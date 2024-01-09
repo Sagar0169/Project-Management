@@ -47,6 +47,8 @@ export default Input;
 
 const styles = StyleSheet.create({
   inputContainer: {
+    borderWidth:2,
+    borderColor:'black',
     borderRadius:10,
     marginVertical: 8,
     backgroundColor:'white',
@@ -61,6 +63,7 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   input: {
+    
     borderRadius:10,
     paddingVertical: 10,
     paddingHorizontal: 8,
