@@ -1,4 +1,4 @@
-import { View,Image,Text,StyleSheet, Dimensions,Pressable } from "react-native";
+import { View,Image,Text,StyleSheet, Dimensions,Pressable, ImageBackground } from "react-native";
 
 import LoginForm from "../components/LoginForm";
 import Button from "../components/ui/Button";
@@ -35,9 +35,11 @@ function Login(){
             </View>
             
          
-       
-        <View  style={{ marginTop:40,backgroundColor:'white', padding:10,width:w(98),borderRadius:20,borderColor:'black', borderWidth:3,  }}>
         
+        <View  style={{ marginTop:40,backgroundColor:'white',padding:10,width:w(98),borderRadius:15,borderColor:'black', borderWidth:3,  }}>
+        
+
+      
        
         <View >
             <Text style={{  textAlign:'center',color:'#171716', marginTop:20 ,fontSize:dynamicFontSize*1.7 ,fontWeight:700}} >

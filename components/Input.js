@@ -24,7 +24,7 @@ function Input({
         editable={editable}
         style={[styles.input, isInvalid && styles.inputInvalid]}
         keyboardType={keyboardType}
-        secureTextEntry={isPasswordVisible}
+        secureTextEntry={secure ? isPasswordVisible :!isPasswordVisible}
         placeholder={label}
         onChangeText={onUpdateValue}
         value={value}

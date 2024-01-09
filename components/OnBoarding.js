@@ -10,9 +10,9 @@ export default function OnBoarding() {
   const navigation = useNavigation();
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const scrollX = useRef(new Animated.Value(0)).current;
+  const scrollX = useRef(new Animated.Value(0)).current;//calculate the position or index of current page
   const onViewableItemsChanged = useRef(({ viewableItems }) => {
-    setCurrentIndex(viewableItems[0].index);
+    setCurrentIndex(viewableItems[0].index)
   }).current;
 
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
@@ -41,7 +41,7 @@ export default function OnBoarding() {
           }
         )}
         scrollEventThrottle={32}
-        onViewableItemsChanged={onViewableItemsChanged}
+        onViewableItemsChanged={onViewableItemsChanged}//this is triggered when the view is changed i.e rendered a new view or swiped
         viewabilityConfig={viewConfig}
         ref={sildesRef}
       />

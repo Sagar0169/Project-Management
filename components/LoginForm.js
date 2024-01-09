@@ -5,7 +5,7 @@ import Input from './Input'
 
 
 function LoginForm() {
-    
+
     const [enteredEmail, setEnteredEmail] = useState('');
     const [enteredPassword, setEnteredPassword] = useState('');
 
@@ -27,7 +27,7 @@ function LoginForm() {
     // };
     return (<View>
         <View >
-            <Input label='Email Id' onUpdateValue={onChangeText.bind(this, 'email')} value={enteredEmail} />
+            <Input label='Email Id' secure={false} onUpdateValue={onChangeText.bind(this, 'email')} value={enteredEmail} />
         </View>
         <View >
             <Input label='Password' secure={true} onUpdateValue={onChangeText.bind(this, 'password')} value={enteredPassword} />
