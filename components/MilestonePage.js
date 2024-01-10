@@ -2,11 +2,18 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { LineChart, BarChart, PieChart } from "react-native-chart-kit";
 
+
 const lineChartData = {
   labels: ["January", "February", "March", "April", "May"],
   datasets: [
     {
-      data: [20, 45, 28, 80, 99],
+      data: [
+        { value: 20, year: 2020 },
+        { value: 45, year: 2021 },
+        { value: 28, year: 2022 },
+        { value: 80, year: 2023 },
+        { value: 99, year: 2024 },
+      ],
     },
   ],
 };
@@ -53,8 +60,10 @@ export default MilestonePage = () => {
         data={lineChartData}
         width={300}
         height={200}
-        yAxisLabel="Progress"
+        yAxisSuffix="%" // This adds a "%" suffix to y-axis values
         chartConfig={chartConfig}
+        bezier // Use bezier interpolation
+        style={{ marginVertical: 8, borderRadius: 16 }}
       />
 
       {/* <BarChart
@@ -79,7 +88,6 @@ export default MilestonePage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    
   },
 });

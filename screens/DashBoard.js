@@ -15,8 +15,11 @@ import DashboardData from "../components/DashboardData";
 export default function DashBoard({ navigation }) {
   const CurvedGridItem = ({ navigation, item }) => {
     function navigationHandler(){
-      if (item.title === "Add New Projects") {
-        navigation.navigate("AddNewProjects");
+      // if (item.title === "Add New Projects") {
+      //   navigation.navigate("AddNewProjects");
+      // }
+      if (item.title === "Assigned Projects") {
+        navigation.navigate("AssignedProject");
       }
     }
     return (
