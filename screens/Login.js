@@ -54,25 +54,32 @@ function Login() {
         </Text>
       </View>
 
-        
-         
-            
-         
-        
-        <View  style={{ marginTop:40,backgroundColor:'white',padding:10,width:w(98),borderRadius:15,borderColor:'black', borderWidth:3,  }}>
-        
-
-      
-       
-        <View >
-            <Text style={{  textAlign:'center',color:'#171716', marginTop:20 ,fontSize:dynamicFontSize*1.7 ,fontWeight:700}} >
-             LOGIN
-            </Text>
-            </View>
-        <View style={{marginTop:20,marginHorizontal:5}}>
-        <LoginForm/>
-
-   
+      <View
+        style={{
+          marginTop: 40,
+          backgroundColor: "white",
+          padding: 10,
+          width: w(98),
+          borderRadius: 20,
+          borderColor: "black",
+          borderWidth: 3,
+        }}
+      >
+        <View>
+          <Text
+            style={{
+              textAlign: "center",
+              color: "#171716",
+              marginTop: 20,
+              fontSize: dynamicFontSize * 1.7,
+              fontWeight: 700,
+            }}
+          >
+            LOGIN
+          </Text>
+        </View>
+        <View style={{ marginTop: 20, marginHorizontal: 5 }}>
+          <LoginForm />
         </View>
         <View>
           <Pressable>

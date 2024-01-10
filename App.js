@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Header } from 'react-native/Libraries/NewAppScreen';
 import DashBoard from './screens/DashBoard';
 import AddNewProjects from './screens/AddNewProjects';
+import AssignedProject from './screens/AssignedProject';
 
 
 const Stack=createNativeStackNavigator();
@@ -18,7 +19,7 @@ export default function App() {
       <Stack.Screen name="Onboarding" component={OnBoarding}/>
       <Stack.Screen name='Login' component={Login}/>
       <Stack.Screen name='Dashboard' component={DashBoard}/>
-      <Stack.Screen name='AddNewProjects' component={AddNewProjects}/>
+      <Stack.Screen name='AssignedProject' component={AssignedProject}/>
     </Stack.Navigator>
    </NavigationContainer>
   
