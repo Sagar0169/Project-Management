@@ -12,11 +12,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import DashboardData from "../components/DashboardData";
 
-export default function DashBoard({navigation}) {
+export default function DashBoard({ navigation }) {
   const CurvedGridItem = ({ navigation, item }) => {
     function navigationHandler(){
-      if (item.title === "Assigned Projects") {
-        navigation.navigate("AssignedProject");
+      if (item.title === "Add New Projects") {
+        navigation.navigate("AddNewProjects");
       }
     }
     return (
@@ -30,7 +30,10 @@ export default function DashBoard({navigation}) {
             <Ionicons size={24} name="ellipsis-horizontal-circle-outline" />
           </View>
           <Text style={styles.text2}>{item.title}</Text>
-          <Image source={item.image} style={{width:'100%',height:100,resizeMode:'cover'}}/>
+          <Image
+            source={item.image}
+            style={{ width: "100%", height: 100, resizeMode: "cover" }}
+          />
         </LinearGradient>
       </Pressable>
     );
@@ -76,7 +79,9 @@ export default function DashBoard({navigation}) {
         <FlatList
           data={DashboardData}
           numColumns={2}
-          renderItem={({ item }) => <CurvedGridItem navigation={navigation} item={item} />}
+          renderItem={({ item }) => (
+            <CurvedGridItem navigation={navigation} item={item} />
+          )}
           scrollEnabled={false}
           keyExtractor={(item) => item.id}
         />
@@ -93,20 +98,19 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderColor: "black",
     borderWidth: 2, // Set the border width to the desired value
-
   },
   textContainer: {
     flexDirection: "row", // Arrange items in a column
-    justifyContent:'space-between',
-    alignItems:'center',
-    margin:6
+    justifyContent: "space-between",
+    alignItems: "center",
+    margin: 6,
   },
   gradient: {
     flex: 1,
     borderRadius: 15,
     backgroundColor: "black",
-    width:"100%",
-    height:150
+    width: "100%",
+    height: 150,
   },
   image: {
     width: 55,
@@ -130,7 +134,7 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight: "400",
     fontSize: 18,
-    marginHorizontal:6,
+    marginHorizontal: 6,
     alignSelf: "flex-start", // Align the text to the left
   },
 });

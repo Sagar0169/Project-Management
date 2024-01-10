@@ -27,7 +27,7 @@ function LoginForm() {
       <View>
         <Input
           label="Email Id"
-          onUpdateValue={onChangeText.bind(this, "email")}
+          secure={false} onUpdateValue={onChangeText.bind(this, "email")}
           value={enteredEmail}
         />
       </View>

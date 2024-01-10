@@ -1,3 +1,4 @@
+
 import {
   View,
   Image,
@@ -6,6 +7,7 @@ import {
   Dimensions,
   Pressable,
 } from "react-native";
+
 
 import LoginForm from "../components/LoginForm";
 import Button from "../components/ui/Button";
@@ -59,7 +61,6 @@ function Login() {
           padding: 10,
           width: w(98),
           borderRadius: 20,
-          
           borderColor: "black",
           borderWidth: 3,
         }}
@@ -89,7 +90,7 @@ function Login() {
                 padding: 10,
               }}
             >
-              <Text style={{ fontSize: 16 }}>forget Password?</Text>
+              <Text style={{ fontSize: 16 }}>Forget Password?</Text>
             </View>
           </Pressable>
         </View>

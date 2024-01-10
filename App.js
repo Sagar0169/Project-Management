@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Header } from 'react-native/Libraries/NewAppScreen';
 import DashBoard from './screens/DashBoard';
+import AddNewProjects from './screens/AddNewProjects';
 import AssignedProject from './screens/AssignedProject';
 
 
