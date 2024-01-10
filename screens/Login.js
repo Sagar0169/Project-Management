@@ -59,6 +59,7 @@ function Login() {
           padding: 10,
           width: w(98),
           borderRadius: 20,
+          
           borderColor: "black",
           borderWidth: 3,
         }}
