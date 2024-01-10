@@ -33,7 +33,7 @@ export default function BackArrowHeader({ title, backButton, showArrow }) {
               resizeMode: "cover",
               tintColor:'white'
             }}
-            source={require("../assets/images/left.png")}
+            source={require("../assets/Images/left.png")}
           />
         </Pressable>
       )}
