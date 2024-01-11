@@ -14,10 +14,10 @@ import DashboardData from "../components/DashboardData";
 
 export default function DashBoard({ navigation }) {
   const CurvedGridItem = ({ navigation, item }) => {
-    function navigationHandler(){
-      // if (item.title === "Add New Projects") {
-      //   navigation.navigate("AddNewProjects");
-      // }
+    function navigationHandler() {
+      if (item.title === "Add New Projects") {
+        navigation.navigate("AddNewProjects");
+      }
       if (item.title === "Assigned Projects") {
         navigation.navigate("AssignedProject");
       }
@@ -26,8 +26,7 @@ export default function DashBoard({ navigation }) {
       <Pressable onPress={navigationHandler} style={styles.itemContainer}>
         <LinearGradient
           colors={[item.color, item.color]} // Change colors as per your preference
-          style={styles.gradient}
-        >
+          style={styles.gradient}>
           <View style={styles.textContainer}>
             <Text style={styles.text}>{item.count}</Text>
             <Ionicons size={24} name="ellipsis-horizontal-circle-outline" />
