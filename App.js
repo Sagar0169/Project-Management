@@ -49,9 +49,7 @@ export default function App() {
             animation: "slide_from_right",
           }} />
        
-      <Stack.Screen name='TaskList' component={TaskList}
-      
-      />
+      <Stack.Screen name='TaskList' component={TaskList}/>
     </Stack.Navigator>
     </NavigationContainer>
   );

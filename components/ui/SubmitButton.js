@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View,Dimensions } from 'react-native';
 
 
 
-function SubmitButton({ children, onPress }) {
+function SubmitButton({ children, onPress,color }) {
   const { width, height } = Dimensions.get("window");
 
   // Calculate a scaling factor based on the screen width
@@ -24,7 +24,7 @@ function SubmitButton({ children, onPress }) {
   }
   return (
     <Pressable
-      style={({ pressed }) => [styles.button, pressed && styles.pressed,{width:w(35)}]}
+      style={({ pressed }) => [styles.button, pressed && styles.pressed,{width:w(35)},{backgroundColor:color}]}
       onPress={onPress}
     >
       <View>
