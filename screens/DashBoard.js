@@ -18,7 +18,6 @@ export default function DashBoard({ navigation }) {
       if (item.title === "Add New Projects") {
         navigation.navigate("AddNewProjects");
       }
-    function navigationHandler() {
       if (item.title === "Project List") {
         navigation.navigate("Projectlist");
       }
