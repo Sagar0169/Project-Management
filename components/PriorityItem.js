@@ -1,33 +1,26 @@
 import { Pressable, View, Text, Touchable, Image, ImageBackground, Dimensions, StyleSheet,TouchableNativeFeedback } from "react-native";
 import { useState } from "react";
 
-function PriorityItem({ item }){
+function PriorityItem({ item, onSelect, isSelected  }){
     const [backgroundColor, setBackgroundColor] = useState('white');
     const handlePress = () => {
         // Change the background color to item.color on press
+        onSelect(item);
         setBackgroundColor(item.color);
       };
-      const PressableComponent = Platform.OS === 'android' ? TouchableNativeFeedback : Pressable;
+      
     
     return(
         <Pressable onPress={handlePress}>
-        <View style={{...styles.borderContainer,backgroundColor}}>
+        {/* <View style={{...styles.borderContainer,backgroundColor}}> */}
+        <View style={[styles.borderContainer, { backgroundColor: isSelected ? item.color : 'white' }]}>
             <Text>
                 {item.title}
             </Text>
 
         </View>
     </Pressable>
-//     <PressableComponent
-//     onPress={handlePress}
-//     background={Platform.OS === 'android' ? TouchableNativeFeedback.Ripple("#888888", false) : null}
-//     >
-//   <View style={{ ...styles.borderContainer, backgroundColor }}>
-//         <Text>
-//           {item.title}
-//         </Text>
-//       </View>
-//     </PressableComponent>
+
     )
 
 }

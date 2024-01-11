@@ -42,7 +42,11 @@ function h(value) {
 function AddNewProjectFrom() {
 
     const [isModalVisible, setModalVisible] = useState(false);
-    const [selectedSport, setSelectedSport] = useState('');
+    const [selectedPriority, setSelectedPriority] = useState(null);
+
+    const selectPriority = (priority) => {
+        setSelectedPriority(priority);
+      };
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -197,13 +201,13 @@ function AddNewProjectFrom() {
                                         showsHorizontalScrollIndicator={false}
                                         pagingEnabled
                                         bounces={false}
-                                        renderItem={({ item }) => <PriorityItem item={item} />}
+                                        renderItem={({ item }) => <PriorityItem item={item} onSelect={selectPriority}
+                                        isSelected={selectedPriority && selectedPriority.id === item.id}
+                                        />}
                                         keyExtractor={(item) => item.id}
                                     />
                                 </View>
-                                <Pressable onPress={addPriorityItem}>
-                                <Ionicons name="add-circle" size={34} color="black" />
-                                </Pressable>
+                            
                             </View>
                         </ScrollView>
 
