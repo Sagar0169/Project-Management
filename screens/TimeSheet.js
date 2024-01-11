@@ -16,6 +16,7 @@ import DashboardData from "../components/DashboardData";
 import { Activity, Project } from "../components/Data";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format, differenceInMinutes } from "date-fns";
+import SubmitButton from "../components/ui/SubmitButton";
 
 export default function TimeSheet({ navigation }) {
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -491,7 +492,7 @@ export default function TimeSheet({ navigation }) {
               placeholder=""
               style={{ fontSize: dynamicFontSize * 0.8, color: "white",padding: w(4),flex:1  ,maxHeight:h(10)}}
               numberOfLines={3}
-              // multiline={true}
+              multiline={true}
               
               
              
@@ -514,7 +515,7 @@ export default function TimeSheet({ navigation }) {
               textAlign: "right",
             }}
           >
-            Activity:
+            Task Status:
           </Text>
           <DropDown
             data={Activity}
@@ -523,6 +524,11 @@ export default function TimeSheet({ navigation }) {
             hi={h(2)}
             wi={w(2)}
           />
+        </View>
+        <View style={{flexDirection:'row',justifyContent:'space-evenly',marginBottom:h(7),marginTop:h(5)}}>
+          <SubmitButton color={"#8e8cf3"}>Add TimeSheet</SubmitButton>
+          <SubmitButton color={"#8e8cf3"}>Cancel</SubmitButton>
+
         </View>
  
       </ScrollView>

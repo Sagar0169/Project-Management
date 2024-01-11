@@ -13,6 +13,7 @@ import PriorityItem from "./PriorityItem";
 import SubmitButton from "./ui/SubmitButton"
 import AssignedForItem from "./AssginedForItem";
 import BottomSheetDesign2 from "./BottomSheetDesign2";
+import BackArrowHeader from "./BackArrowHeader";
 const { width, height } = Dimensions.get("window");
 
 
@@ -90,10 +91,10 @@ function AddNewProjectFrom() {
     return (
     //MAIN
 
-        <View style={{ backgroundColor: 'white', flex: 1 }}>
+        <View style={{ paddingTop:h(4),flex:1,backgroundColor:"#d68eeb"}}>
 
-            <BackHeader title={"Add New Project"} backButton={() => navigation.goBack()} />
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <BackArrowHeader title={"Add New Project"} backButton={() => navigation.goBack()} color={"#d68eeb"}/>
+            <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor:'white'}}>
                 <View style={styles.container} >
                     <View>
                         <View style={{ flexDirection: 'row', paddingTop: 10 }}>
@@ -239,7 +240,7 @@ function AddNewProjectFrom() {
                     </View>
                 </View>
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: w(5) }}>
-                    <SubmitButton> Add Project</SubmitButton>
+                    <SubmitButton color={"#d68eeb"}> Add Project</SubmitButton>
 
                 </View>
 

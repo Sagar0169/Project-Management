@@ -41,9 +41,9 @@ export default function App() {
             animation: "slide_from_left",
           }}
         />
-        <Stack.Screen name="AddNewProjects" component={AddNewProjects} />
+        <Stack.Screen name="AddNewProjects" component={AddNewProjects} options={{ presentation: "modal",}} />
        
-      <Stack.Screen name='TaskList' component={TaskList}/>
+      <Stack.Screen name='TaskList' component={TaskList} options={{ presentation: "modal",}}/>
     </Stack.Navigator>
     </NavigationContainer>
   );
