@@ -22,7 +22,7 @@ export default function App() {
         <Stack.Screen name="Onboarding" component={OnBoarding} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Dashboard" component={DashBoard} />
-        <Stack.Screen name="AssignedProject" component={AssignedProject} />
+        <Stack.Screen name="AssignedProject" component={AssignedProject} options={{ presentation: "modal",}} />
         <Stack.Screen
           name="Projectlist"
           component={Projectlist}
@@ -42,7 +42,7 @@ export default function App() {
           }}
         />
         <Stack.Screen name="AddNewProjects" component={AddNewProjects} />
-        <Stack.Screen name='TimeSheet' component={TimeSheet}/>
+       
       <Stack.Screen name='TaskList' component={TaskList}/>
     </Stack.Navigator>
     </NavigationContainer>
