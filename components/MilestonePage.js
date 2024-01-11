@@ -1,103 +1,195 @@
-// import { StyleSheet, Text, View } from "react-native";
-// import React from "react";
-// import { LineChart, BarChart, PieChart } from "react-native-chart-kit";
 
+import React, { useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  Animated,
+  Image,
+} from "react-native";
+import Input from "./Input";
 
-// const lineChartData = {
-//   labels: ["January", "February", "March", "April", "May"],
-//   datasets: [s
-//     {
-//       data: [
-//         { value: 20, year: 2020 },
-//         { value: 45, year: 2021 },
-//         { value: 28, year: 2022 },
-//         { value: 80, year: 2023 },
-//         { value: 99, year: 2024 },
-//       ],
-//     },
-//   ],
-// };
+// Function to generate random project names
+const generateRandomProjectName = () => {
+  const adjectives = ["Red", "Blue", "Green", "Yellow", "Purple", "Orange"];
+  const nouns = ["Project", "Task", "Assignment", "Job", "Mission"];
+  const randomAdjective =
+    adjectives[Math.floor(Math.random() * adjectives.length)];
+  const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+  return `${randomAdjective} ${randomNoun}`;
+};
 
-// const barChartData = {
-//   labels: ["Project A", "Project B", "Project C", "Project D", "Project E"],
-//   datasets: [
-//     {
-//       data: [30, 45, 60, 75, 90],
-//     },
-//   ],
-// };
+// Generate project data with random project names
+const projectData = Array.from({ length: 20 }, (_, index) => ({
+  projectName: generateRandomProjectName(),
+  progress: Math.random(),
+  riskPriority: index % 3 === 0 ? "low" : index % 3 === 1 ? "medium" : "high",
+}));
 
-// const pieChartData = [
-//   {
-//     name: "Completed",
-//     value: 30,
-//     color: "#4CAF50",
-//   },
-//   {
-//     name: "In Progress",
-//     value: 50,
-//     color: "#FFC107",
-//   },
-//   {
-//     name: "Not Started",
-//     value: 20,
-//     color: "#F44336",
-//   },
-// ];
+const HorizontalBarChart = () => {
+  const screenWidth = Dimensions.get("window").width;
+  const animatedValues = projectData.map(() => new Animated.Value(0));
 
-// export default MilestonePage = () => {
-//   const chartConfig = {
-//     backgroundGradientFrom: "#fff",
-//     backgroundGradientTo: "#fff",
-//     color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-//     strokeWidth: 2,
-//     barPercentage: 0.5,
-//   };
+  useEffect(() => {
+    // Start filling animation when the component mounts
+    const animations = animatedValues.map((animatedValue, index) => {
+      return Animated.timing(animatedValue, {
+        toValue: projectData[index].progress,
+        duration: 1000,
+        useNativeDriver: false,
+      });
+    });
 
-//   return (
-//     <View style={styles.container}>
-//       <LineChart
-//         data={lineChartData}
-//         width={300}
-//         height={200}
-//         yAxisSuffix="%" // This adds a "%" suffix to y-axis values
-//         chartConfig={chartConfig}
-//         bezier // Use bezier interpolation
-//         style={{ marginVertical: 8, borderRadius: 16 }}
-//       />
+    Animated.stagger(100, animations).start();
+  }, []);
 
-//       {/* <BarChart
-//         data={barChartData}
-//         width={300}
-//         height={200}
-//         yAxisLabel="Progress"
-//         chartConfig={chartConfig}
-//       />
+  const getRiskStyles = (riskPriority) => {
+    switch (riskPriority) {
+      case "high":
+        return { borderColor: "red", borderWidth: 2 };
+      case "medium":
+        return { borderColor: "orange", borderWidth: 2 };
+      case "low":
+        return { borderColor: "green", borderWidth: 2 };
+      default:
+        return {};
+    }
+  };
 
-//       <PieChart
-//         data={pieChartData}
-//         width={300}
-//         height={200}
-//         chartConfig={chartConfig}
-//         accessor="value"
-//       /> */}
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-    
-//   },
-// });
-import { View, Text } from 'react-native'
-import React from 'react'
-
-export default function MilestonePage() {
   return (
-    <View>
-      <Text>MilestonePage</Text>
-    </View>
-  )
-}
+    <ScrollView style={styles.container}>
+      <View style={{ flex: 1 }}>
+        {projectData.map((item, index) => (
+          <View key={index} style={styles.barContainer}>
+            <Text style={styles.projectName}>{item.projectName}</Text>
+            <View style={styles.projectInfoContainer}>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  marginTop: 8,
+                }}
+              >
+                <Image
+                  style={{
+                    width: 30,
+                    height: 30,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius:10,
+                  }}
+                  source={require("../assets/Images/male.png")}
+                  resizeMode="contain"
+                />
+                <Text>Team Lead Name</Text>
+              </View>
+            </View>
+            <View style={styles.projectInfoContainer}>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginTop: 10,
+                }}
+              >
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Text>12/10/2023</Text>
+                  <Text>Kickoff Date</Text>
+                </View>
+                <View>
+                  <Text>12/10/2024</Text>
+                  <Text>Wrap-Up Date</Text>
+                </View>
+              </View>
+            </View>
+
+            <View
+              style={{
+                backgroundColor: "#e0e0e0",
+                height: 25,
+                width: screenWidth - 50,
+                borderRadius: 5,
+                marginVertical: 8,
+                marginHorizontal: 8,
+                ...getRiskStyles(item.riskPriority),
+              }}
+            >
+              <Animated.View
+                style={{
+                  backgroundColor: "rgb(134, 65, 244)",
+                  height: "100%",
+                  borderRadius: 4,
+                  width: animatedValues[index].interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ["0%", "100%"],
+                  }),
+                  position: "relative",
+                }}
+              >
+                <View style={styles.targetPercentage}>
+                  <Text
+                    style={{ color: "white", fontSize: 12, fontWeight: "bold",marginStart:8 }}
+                  >
+                    {Math.round(projectData[index].progress * 100)}%
+                  </Text>
+                </View>
+              </Animated.View>
+            </View>
+          </View>
+        ))}
+      </View>
+    </ScrollView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginHorizontal: 8,
+  },
+  barContainer: {
+    alignItems: "center",
+    marginBottom: 10,
+    marginTop: 5,
+    paddingHorizontal: 18,
+    paddingVertical: 20,
+    borderWidth: 2,
+    borderRadius: 8,
+    borderColor: "#A39090",
+  },
+  projectInfoContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  projectName: {
+    fontWeight: "500",
+    fontSize: 18,
+    marginLeft: 5,
+  },
+  targetPercentage: {
+    color: "white",
+    fontSize: 12,
+    fontWeight: "bold",
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    textAlign: "center",
+    textAlignVertical: "center",
+    justifyContent:'center',
+  },
+  
+});
+
+export default HorizontalBarChart;
+

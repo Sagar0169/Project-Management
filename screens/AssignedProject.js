@@ -37,7 +37,7 @@ export default function AssignedProject({ navigation }) {
 
   const Milestone = () => (
     <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-      <MilestonePage />
+      <MilestonePage/>
     </View>
   );
 

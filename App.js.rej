@@ -1,0 +1,10 @@
+diff a/App.js b/App.js	(rejected hunks)
+@@ -8,6 +8,8 @@
+ import DashBoard from './screens/DashBoard';
+ import AddNewProjects from './screens/AddNewProjects';
+ import AssignedProject from './screens/AssignedProject';
++import TimeSheet from './screens/TimeSheet';
++import TaskList from './screens/TaskList';
+ 
+ 
+ const Stack=createNativeStackNavigator();
