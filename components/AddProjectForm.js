@@ -26,6 +26,7 @@ import PriorityItem from "./PriorityItem";
 import SubmitButton from "./ui/SubmitButton";
 import AssignedForItem from "./AssginedForItem";
 import BottomSheetDesign2 from "./BottomSheetDesign2";
+import BackArrowHeader from "./BackArrowHeader";
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width
@@ -103,52 +104,43 @@ function AddNewProjectFrom() {
   return (
     //MAIN
 
-    <View style={{ backgroundColor: "white", flex: 1 }}>
-      <BackHeader
-        title={"Add New Project"}
-        backButton={() => navigation.goBack()}
-      />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
-          <View>
-            <View style={{ flexDirection: "row", paddingTop: 10 }}>
-              <Ionicons name="list-circle-sharp" size={30} color="#5cd669" />
-              <Text style={styles.textStyle}>New Project</Text>
-            </View>
-            <Input
-              label="Project Name"
-              secure={false}
-              onUpdateValue={onChangeText.bind(this, "projectName")}
-              value={enteredProjectName}
-            />
-          </View>
-          <View
-            style={{ flexDirection: "row", marginTop: w(5) }} //DUE DATE
-          >
-            <View
-              style={{
-                flex: 0.3,
-                flexDirection: "row",
-                paddingTop: 10,
-                marginTop: w(2),
-              }}
-            >
-              <Ionicons name="calendar" size={30} color="#f5b955" />
-              <Text
-                style={[styles.textStyle, { maxWidth: w(30), marginEnd: w(5) }]}
-              >
-                Due Date
-              </Text>
-            </View>
-            <View style={{ flex: 0.7, maxWidth: w(70), marginStart: w(2) }}>
-              <Input
-                label="Due Date"
-                secure={false}
-                onUpdateValue={onChangeText.bind(this, "dueDate")}
-                value={enteredDueDate}
-              />
-            </View>
-          </View>
+        <View style={{ paddingTop:h(4),flex:1,backgroundColor:"#d68eeb"}}>
+
+            <BackArrowHeader title={"Add New Project"} backButton={() => navigation.goBack()} color={"#d68eeb"}/>
+            <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor:'white'}}>
+                <View style={styles.container} >
+                    <View>
+                        <View style={{ flexDirection: 'row', paddingTop: 10 }}>
+                            <Ionicons name="list-circle-sharp" size={30} color="#5cd669"
+                            />
+                            <Text style={styles.textStyle}>New Project</Text>
+                        </View>
+                        <Input
+                            label="Project Name"
+                            secure={false}
+                            onUpdateValue={onChangeText.bind(this, "projectName")}
+                            value={enteredProjectName}
+                        />
+                    </View>
+                    <View style={{ flexDirection: 'row', marginTop: w(5) }}  //DUE DATE
+
+                    >
+                        <View style={{ flex: .3, flexDirection: 'row', paddingTop: 10, marginTop: w(2), }}>
+                            <Ionicons name="calendar" size={30} color="#f5b955"
+                            />
+                            <Text style={[styles.textStyle, { maxWidth: w(30), marginEnd: w(5) }]}>Due Date</Text>
+
+                        </View>
+                        <View style={{ flex: .7, maxWidth: w(70), marginStart: w(2) }}>
+                            <Input
+                                label="Due Date"
+
+                                secure={false}
+                                onUpdateValue={onChangeText.bind(this, "dueDate")}
+                                value={enteredDueDate}
+                            />
+                        </View>
+                    </View>
 
           <View
             style={{ marginTop: w(5) }} //ASSIGNED FOR
