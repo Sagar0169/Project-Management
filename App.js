@@ -22,7 +22,9 @@ export default function App() {
         <Stack.Screen name="Onboarding" component={OnBoarding} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Dashboard" component={DashBoard} />
-        <Stack.Screen name="AssignedProject" component={AssignedProject} options={{ presentation: "modal",}} />
+        <Stack.Screen name="AssignedProject" component={AssignedProject} options={{ headerShown: false,
+            presentation: "modal",
+            animation: "slide_from_left",}} />
         <Stack.Screen
           name="Projectlist"
           component={Projectlist}
@@ -41,9 +43,13 @@ export default function App() {
             animation: "slide_from_left",
           }}
         />
-        <Stack.Screen name="AddNewProjects" component={AddNewProjects} options={{ presentation: "modal",}} />
+        <Stack.Screen name="AddNewProjects" component={AddNewProjects} options={{
+            headerShown: false,
+            presentation: "modal",
+            animation: "slide_from_right",
+          }} />
        
-      <Stack.Screen name='TaskList' component={TaskList} options={{ presentation: "modal",}}/>
+      <Stack.Screen name='TaskList' component={TaskList}/>
     </Stack.Navigator>
     </NavigationContainer>
   );

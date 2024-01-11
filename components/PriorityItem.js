@@ -11,30 +11,28 @@ import {
 } from "react-native";
 import { useState } from "react";
 
-function PriorityItem({ item }) {
-  const [backgroundColor, setBackgroundColor] = useState("white");
-  const [color, setTextColor] = useState("black");
-  const handlePress = () => {
-    // Change the background color to item.color on press
-    if (item.title == "Assigned Projects") {
-      setBackgroundColor(item.color);
-      setTextColor("white");
-    }
-    if (item.title = "Add New Projects") {
-      setBackgroundColor(item.color);
-      setTextColor("white");
-    }
-  };
-  const PressableComponent =
-    Platform.OS === "android" ? TouchableNativeFeedback : Pressable;
+function PriorityItem({ item, onSelect, isSelected  }){
+    const [backgroundColor, setBackgroundColor] = useState('white');
+    const handlePress = () => {
+        // Change the background color to item.color on press
+        onSelect(item);
+        setBackgroundColor(item.color);
+      };
+      
+    
+    return(
+        <Pressable onPress={handlePress}>
+        {/* <View style={{...styles.borderContainer,backgroundColor}}> */}
+        <View style={[styles.borderContainer, { backgroundColor: isSelected ? item.color : 'white' }]}>
+            <Text>
+                {item.title}
+            </Text>
 
-  return (
-    <Pressable onPress={handlePress}>
-      <View style={{ ...styles.borderContainer, backgroundColor }}>
-        <Text style={{ ...styles.text, color }}>{item.title}</Text>
-      </View>
+        </View>
     </Pressable>
-  );
+
+    )
+
 }
 export default PriorityItem;
 const { width, height } = Dimensions.get("window");
