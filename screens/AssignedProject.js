@@ -68,7 +68,7 @@ export default function AssignedProject({ navigation }) {
   }
   return (
     <SafeAreaView style={{ backgroundColor: "#8e8cf3", flex: 1 }}>
-      <BackArrowHeader backButton={handlerBack} title="Assigned Projects" />
+      <BackArrowHeader backButton={handlerBack} title="Assigned Projects" color="#8e8cf3" />
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}

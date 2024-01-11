@@ -15,14 +15,14 @@ export default [
   },
   {
     id: "2",
-    title: "Priority Projects",
+    title: "Assigned Tasks",
     color: "#e5af54",
     count: "31",
     image:require('../assets/Images/dashYellow.png')
   },
   {
     id: "3",
-    title: "Task List",
+    title: "Project List",
     color: "#4ec05a",
     count: "50",
     image:require('../assets/Images/dashGreen.png')
