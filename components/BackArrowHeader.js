@@ -13,6 +13,7 @@ export default function BackArrowHeader({ title, backButton, showArrow ,color}) 
         paddingHorizontal: 16,
       }}
       colors={[color, color]}
+    
     >
       {showArrow ? null : ( // If showArrow is true, don't render the Pressable
         <Pressable
@@ -31,7 +32,7 @@ export default function BackArrowHeader({ title, backButton, showArrow ,color}) 
               width: 40,
               height: 40,
               resizeMode: "cover",
-              tintColor:'white'
+                tintColor: "white",
             }}
             source={require("../assets/Images/left.png")}
           />
