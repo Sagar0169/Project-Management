@@ -4,6 +4,7 @@ import {
   FlatList,
   Image,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -95,7 +96,21 @@ export default function DashBoard({ navigation }) {
           scrollEnabled={false}
           keyExtractor={(item) => item.id}
         />
-        <View style={{marginTop:8}}>
+        <Text
+          style={{
+            fontSize: 18,
+            color: "black",
+            fontWeight: "600",
+            margin: 8,
+          }}
+        >
+          Recent Ongoing Projects
+        </Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ marginTop: 8 }}
+        >
           <FlatList
             data={DashboardData}
             horizontal
@@ -106,7 +121,7 @@ export default function DashBoard({ navigation }) {
             renderItem={({ item }) => <PriorityItem item={item} />}
             keyExtractor={(item) => item.id}
           />
-        </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

@@ -13,9 +13,17 @@ import { useState } from "react";
 
 function PriorityItem({ item }) {
   const [backgroundColor, setBackgroundColor] = useState("white");
+  const [color, setTextColor] = useState("black");
   const handlePress = () => {
     // Change the background color to item.color on press
-    setBackgroundColor(item.color);
+    if (item.title == "Assigned Projects") {
+      setBackgroundColor(item.color);
+      setTextColor("white");
+    }
+    if (item.title = "Add New Projects") {
+      setBackgroundColor(item.color);
+      setTextColor("white");
+    }
   };
   const PressableComponent =
     Platform.OS === "android" ? TouchableNativeFeedback : Pressable;
@@ -23,7 +31,7 @@ function PriorityItem({ item }) {
   return (
     <Pressable onPress={handlePress}>
       <View style={{ ...styles.borderContainer, backgroundColor }}>
-        <Text>{item.title}</Text>
+        <Text style={{ ...styles.text, color }}>{item.title}</Text>
       </View>
     </Pressable>
   );
@@ -58,5 +66,9 @@ const styles = StyleSheet.create({
     borderRadius: w(4),
     justifyContent: "center",
     backgroundColor: "white",
+  },
+  text: {
+    fontSize: 16,
+    color: "black",
   },
 });
