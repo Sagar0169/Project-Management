@@ -11,6 +11,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import DashboardData from "../components/DashboardData";
+import PriorityItem from "../components/PriorityItem";
 
 export default function DashBoard({ navigation }) {
   const CurvedGridItem = ({ navigation, item }) => {
@@ -32,7 +33,8 @@ export default function DashBoard({ navigation }) {
       <Pressable onPress={navigationHandler} style={styles.itemContainer}>
         <LinearGradient
           colors={[item.color, item.color]} // Change colors as per your preference
-          style={styles.gradient}>
+          style={styles.gradient}
+        >
           <View style={styles.textContainer}>
             <Text style={styles.text}>{item.count}</Text>
             <Ionicons size={24} name="ellipsis-horizontal-circle-outline" />
@@ -93,6 +95,18 @@ export default function DashBoard({ navigation }) {
           scrollEnabled={false}
           keyExtractor={(item) => item.id}
         />
+        <View style={{marginTop:8}}>
+          <FlatList
+            data={DashboardData}
+            horizontal
+            scrollEnabled={false}
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+            bounces={false}
+            renderItem={({ item }) => <PriorityItem item={item} />}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

@@ -491,7 +491,7 @@ export default function TimeSheet({ navigation }) {
               placeholder=""
               style={{ fontSize: dynamicFontSize * 0.8, color: "white",padding: w(4),flex:1  ,maxHeight:h(10)}}
               numberOfLines={3}
-              // multiline={true}
+              multiline={true}
               
               
              
