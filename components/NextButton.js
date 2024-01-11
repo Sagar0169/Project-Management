@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import Svg, { G, Circle } from "react-native-svg";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
+
 const NextButton = ({ percentage, scrollTo }) => {
   const size = 128;
   const strokeWidth = 2;

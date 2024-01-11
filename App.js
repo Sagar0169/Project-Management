@@ -40,6 +40,17 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+   <NavigationContainer>
+  <Stack.Navigator screenOptions={{headerShown:false}}>
+      <Stack.Screen name="Onboarding" component={OnBoarding}/>
+      <Stack.Screen name='Login' component={Login}/>
+      <Stack.Screen name='Dashboard' component={DashBoard}/>
+      <Stack.Screen name='AssignedProject' component={AssignedProject}/>
+      <Stack.Screen name='AddNewProjects' component={AddNewProjects}/>
+    </Stack.Navigator>
+   </NavigationContainer>
+  
+ 
   );
 }
 

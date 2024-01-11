@@ -10,7 +10,7 @@ import {
 
 
 import LoginForm from "../components/LoginForm";
-import Button from "../components/ui/Button";
+import SubmitButton from "../components/ui/SubmitButton";
 import SvgSelector from "../components/SvgSelector";
 import { useNavigation } from "@react-navigation/native";
 
@@ -95,7 +95,7 @@ function Login() {
           </Pressable>
         </View>
         <View style={{ marginTop: 20, alignItems: "center" }}>
-          <Button onPress={dashboardHandler}>SUBMIT</Button>
+          <SubmitButton onPress={dashboardHandler}>SUBMIT</SubmitButton>
         </View>
       </View>
     </View>

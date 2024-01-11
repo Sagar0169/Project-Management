@@ -30,7 +30,7 @@ function Input({
         value={value}
       />
       {secure && (
-        <TouchableOpacity style={styles.eyeIcon} onPress={togglePasswordVisibility}>
+        <TouchableOpacity style={{marginEnd:10}} onPress={togglePasswordVisibility}>
           <Ionicons
             name={isPasswordVisible ? 'eye-off' : 'eye'}
             size={20}
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     borderWidth:2,
     borderColor:'black',
     borderRadius:10,
+    justifyContent:'space-between',
     marginVertical: 8,
     backgroundColor:'white',
     flexDirection: 'row', // Add this line to align items horizontally
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   input: {
-    
+    flex:1,
     borderRadius:10,
     paddingVertical: 10,
     paddingHorizontal: 8,
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     borderBottomColor:'#DCDCDC',
     fontSize: 16,
     color:'black',
-    width:'90%'
+   
   },
   inputInvalid: {
     backgroundColor: 'red',
