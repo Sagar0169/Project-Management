@@ -24,6 +24,7 @@ export default function DashBoard({ navigation }) {
       if (item.title === "Task List") {
         navigation.navigate("TaskList");
       }
+      
     }
     return (
       <Pressable onPress={navigationHandler} style={styles.itemContainer}>
