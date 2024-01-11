@@ -2,7 +2,7 @@ import { View, Text, Pressable, Image } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 
-export default function BackArrowHeader({ title, backButton, showArrow }) {
+export default function BackArrowHeader({ title, backButton, showArrow ,color}) {
   return (
     <LinearGradient
       style={{
@@ -12,7 +12,7 @@ export default function BackArrowHeader({ title, backButton, showArrow }) {
         justifyContent: "center", // Center the content horizontally
         paddingHorizontal: 16,
       }}
-      colors={["#8e8cf3", "#8e8cf3"]}
+      colors={[color, color]}
     >
       {showArrow ? null : ( // If showArrow is true, don't render the Pressable
         <Pressable
@@ -33,7 +33,7 @@ export default function BackArrowHeader({ title, backButton, showArrow }) {
               resizeMode: "cover",
               tintColor:'white'
             }}
-            source={require("../assets/images/left.png")}
+            source={require("../assets/Images/left.png")}
           />
         </Pressable>
       )}
