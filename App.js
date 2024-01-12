@@ -11,12 +11,14 @@ import AssignedProject from "./screens/AssignedProject";
 import Projectlist from "./screens/Projectlist";
 import AssignTask from "./screens/AssignTask";import TimeSheet from './screens/TimeSheet';
 import TaskList from './screens/TaskList';
+import ContextProvider from "./store/context";
 
 
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
+      <ContextProvider>
       
   <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Onboarding" component={OnBoarding} />
@@ -51,6 +53,7 @@ export default function App() {
        
       <Stack.Screen name='TaskList' component={TaskList}/>
     </Stack.Navigator>
+    </ContextProvider>
     </NavigationContainer>
   );
 }
