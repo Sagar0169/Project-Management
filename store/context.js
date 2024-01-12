@@ -1,4 +1,5 @@
 import { createContext,useReducer } from "react";
+import { DataSet } from "../components/Data";
 
 export const Context=createContext({
     items:[],
@@ -34,7 +35,7 @@ function contextReducer(state,action){
 }
 
 function ContextProvider({children}){
-    const[itemState,dispatch]=useReducer(contextReducer,[])
+    const[itemState,dispatch]=useReducer(contextReducer,DataSet)
     function addItem(itemData){
         dispatch({type:'ADD',payload:itemData})
         

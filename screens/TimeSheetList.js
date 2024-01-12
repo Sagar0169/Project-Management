@@ -1,7 +1,17 @@
-import { View, Text, Dimensions } from 'react-native'
-import React from 'react'
+import { View, Text, Dimensions, FlatList } from 'react-native'
+import React, { useContext } from 'react'
+import TimeSheetFlatListData from './TimeSheetFlatListData';
+
+import { DataSet } from '../components/Data';
+import { Context } from '../store/context';
 
 export default function TimeSheetList() {
+
+  const context=useContext(Context)
+  const List=context.items
+
+
+
     const { width, height } = Dimensions.get("window");
 
   // Calculate a scaling factor based on the screen width
@@ -21,17 +31,40 @@ export default function TimeSheetList() {
     const height = Dimensions.get("window").height / 100; // now height is 1% of screen height
     return height * value;
   }
+  function renderMealItem(itemData){
+    const item=itemData.item
+    const mealsDetails={
+      id:item.id,
+       project:item.project,
+       task:item.task,
+       activity:item.affordability,
+       workingHours:item.workingHours,
+       taskStatus:item.taskStatus,
+      
+
+
+       
+  }
+  // const mealFullDetails={
+
+  // }
+  // function onPressHandler(){
+  //   navigation.navigate("MealsDetailsScreen",{...mealsDetails})
+  // }
+      return <TimeSheetFlatListData  {...mealsDetails} />
+  }
 
   return (
-    <View style={{marginTop:h(3),borderWidth:1,marginHorizontal:w(5)}}>
-       <View style={{flexDirection:'row'}}>
-        <Text>Project</Text>
-        <Text>Task</Text>
-        <Text>Activity</Text>
-        <Text>Duration</Text>
-        <Text>Description</Text>
-        <Text>Status</Text>
+    <View style={{marginTop:h(3),borderWidth:1,marginHorizontal:w(2),padding:w(1),}}>
+       <View style={{flexDirection:'row',alignItems:'center'}}>
+        <Text style={{width:w(15.8),fontSize:dynamicFontSize*0.78}}>Project</Text>
+        <Text style={{width:w(25.8),fontSize:dynamicFontSize*0.78}}>Task</Text>
+        <Text style={{width:w(20.8),fontSize:dynamicFontSize*0.78}}>Activity</Text>
+        <Text style={{width:w(12.8),fontSize:dynamicFontSize*0.78}}>Duration</Text>
+        {/* <Text style={{width:w(15)}}>Description</Text> */}
+        <Text style={{width:w(18.8),fontSize:dynamicFontSize*0.78}}>Status</Text>
        </View>
+       <FlatList data={List} keyExtractor={(item)=>item.id} renderItem={renderMealItem}/>
     </View>
   )
 }
