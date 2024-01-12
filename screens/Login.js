@@ -95,7 +95,7 @@ function Login() {
           </Pressable>
         </View>
         <View style={{ marginTop: 20, alignItems: "center" }}>
-          <SubmitButton onPress={dashboardHandler}>SUBMIT</SubmitButton>
+          <SubmitButton onPress={dashboardHandler} color='black'>SUBMIT</SubmitButton>
         </View>
       </View>
     </View>

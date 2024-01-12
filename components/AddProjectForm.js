@@ -1,13 +1,13 @@
-import { Pressable, Modal, View, Text, Touchable, Image, ImageBackground, Dimensions, StyleSheet, FlatList, ScrollView, Button } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Pressable, Modal, View, Text, Dimensions, StyleSheet, FlatList, ScrollView, Button, ToastAndroid, } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import BackHeader from "./ui/BackHeader";
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome6 } from '@expo/vector-icons';
 import Input from "./Input";
-import BottomSheet from "./ui/BottomSheet";
 import PriorityData from "./PriorityData";
+import Toast from 'react-native-toast-message';
+
+
 import AssignedForData from "./AssignedForData";
 import PriorityItem from "./PriorityItem";
 import SubmitButton from "./ui/SubmitButton"
@@ -36,18 +36,37 @@ function h(value) {
 }
 
 
-
+//WORK ON MULTIPLE SELECTION
 
 
 
 function AddNewProjectFrom() {
+
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+    const handleDateChange = (event, selectedDate) => {
+        hideDatePicker();
+        if (selectedDate) {
+            setSelectedDate(selectedDate);
+            setEnteredDueDate(selectedDate.toISOString().split('T')[0]); // Update the input text with the selected date
+        }
+    };
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [selectedPriority, setSelectedPriority] = useState(null);
 
     const selectPriority = (priority) => {
         setSelectedPriority(priority);
-      };
+    };
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -75,6 +94,14 @@ function AddNewProjectFrom() {
                 break;
         }
     }
+    function validateForm() {
+        // Check if enteredProjectName, enteredDueDate, and AssginedForItem have values
+        if (enteredProjectName.trim() !== "" && enteredDueDate.trim() !== "" && AssginedForItem.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     const addPriorityItem = () => {
         // Add a new priority item to the state
         const newPriorityItem = { id: Math.random().toString(), title: "New Priority", color: "#ffffff" };
@@ -82,23 +109,32 @@ function AddNewProjectFrom() {
     };
     const addAssignedForItem = (sport) => {
         // Check if the item already exists in the list
-        const isDuplicate = AssginedForItem.some(item => item.title === sport);
-
-        if (!isDuplicate) {
-            // Add a new assigned for item to the state
-            const newAssignedForItem = { id: Math.random().toString(), title: sport, color: "#ffffff" };
-            setAssginedForItem((prevItems) => [...prevItems, newAssignedForItem]);
-        }
+        sport.forEach((sport) => {
+            // Check if the item already exists in the list
+            const isDuplicate = AssginedForItem.some(item => item.title === sport);
+        
+            if (!isDuplicate) {
+              // Add a new assigned for item to the state
+              const newAssignedForItem = { id: Math.random().toString(), title: sport, color: "#ffffff" };
+              setAssginedForItem((prevItems) => [...prevItems, newAssignedForItem]);
+            }
+            else{
+                ToastAndroid.show(
+                    "This member already selected",
+                    ToastAndroid.SHORT
+                  );
+            }
+          });
 
         toggleModal();
     };
     return (
-    //MAIN
+        //MAIN
 
-        <View style={{ paddingTop:h(4),flex:1,backgroundColor:"#d68eeb"}}>
+        <View style={{ paddingTop: h(4), flex: 1, backgroundColor: "#d68eeb" }}>
 
-            <BackArrowHeader title={"Add New Project"} backButton={() => navigation.goBack()} color={"#d68eeb"}/>
-            <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor:'white'}}>
+            <BackArrowHeader title={"Add New Project"} backButton={() => navigation.goBack()} color={"#d68eeb"} />
+            <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: 'white' }}>
                 <View style={styles.container} >
                     <View>
                         <View style={{ flexDirection: 'row', paddingTop: 10 }}>
@@ -119,17 +155,22 @@ function AddNewProjectFrom() {
                         <View style={{ flex: .3, flexDirection: 'row', paddingTop: 10, marginTop: w(2), }}>
                             <Ionicons name="calendar" size={30} color="#f5b955"
                             />
-                            <Text style={[styles.textStyle, { maxWidth: w(30), marginEnd: w(5) }]}>Due Date</Text>
-
+                            <Pressable onPress={showDatePicker}>
+                                <Text style={[styles.textStyle, { maxWidth: w(30), marginEnd: w(5) }]}>Due Date</Text>
+                            </Pressable>
                         </View>
                         <View style={{ flex: .7, maxWidth: w(70), marginStart: w(2) }}>
+
+
+
                             <Input
                                 label="Due Date"
-
+                                editable={false}
                                 secure={false}
                                 onUpdateValue={onChangeText.bind(this, "dueDate")}
                                 value={enteredDueDate}
                             />
+
                         </View>
                     </View>
 
@@ -142,13 +183,13 @@ function AddNewProjectFrom() {
                         </View>
                         <ScrollView horizontal={true}
                             showsHorizontalScrollIndicator={false}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: w(1) }}>
-                            <Pressable >
-                                <View style={{ borderRadius: w(50), borderWidth: 2, width: w(6), marginLeft: 2 }}>
-                                    <Ionicons name="people-outline" size={25} color="black" />
-                                </View>
-                            </Pressable>
-                            <View style={{ flex: 1 }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: w(1) }}>
+                                <Pressable >
+                                    <View style={{ borderRadius: w(50), borderWidth: 2, width: w(6), marginLeft: 2 }}>
+                                        <Ionicons name="people-outline" size={25} color="black" />
+                                    </View>
+                                </Pressable>
+                                <View style={{ flex: 1 }}>
                                     <FlatList
                                         data={AssginedForItem}
                                         horizontal
@@ -160,11 +201,11 @@ function AddNewProjectFrom() {
                                         keyExtractor={(item) => item.id}
                                     />
                                 </View>
-                            
-                            <Pressable onPress={toggleModal} style={{ marginHorizontal: w(1) }}>
-                                <Ionicons name="add-circle" size={34} color="black" />
-                            </Pressable>
-                        </View>
+
+                                <Pressable onPress={toggleModal} style={{ marginHorizontal: w(1) }}>
+                                    <Ionicons name="add-circle" size={34} color="black" />
+                                </Pressable>
+                            </View>
                         </ScrollView>
 
                         <Modal
@@ -177,7 +218,7 @@ function AddNewProjectFrom() {
                         >
                             <View style={[styles.modalContainer]}>
                                 {/* <BottomSheet sports={['Shreyash Jain (Android)', 'Nimish Sharma(Android)', 'Akshat Bansal (Android)', 'Sagar (Android)', 'Rohit (Java)', 'Aman pandey(Java)', 'Atul (Java)', 'Shubhra srivastava (php)', 'Yashika gupta (php)', 'Abhay sahani (Designer)', 'Jitendar singh (Designer)']} handleSportSelection={handleSportSelection} /> */}
-                                <BottomSheetDesign2 handleSportSelection={handleSportSelection}/>
+                                <BottomSheetDesign2 handleSportSelection={handleSportSelection} />
                             </View>
                         </Modal>
                     </View>
@@ -203,12 +244,12 @@ function AddNewProjectFrom() {
                                         pagingEnabled
                                         bounces={false}
                                         renderItem={({ item }) => <PriorityItem item={item} onSelect={selectPriority}
-                                        isSelected={selectedPriority && selectedPriority.id === item.id}
+                                            isSelected={selectedPriority && selectedPriority.id === item.id}
                                         />}
                                         keyExtractor={(item) => item.id}
                                     />
                                 </View>
-                            
+
                             </View>
                         </ScrollView>
 
@@ -220,7 +261,7 @@ function AddNewProjectFrom() {
                             />
                             <Text style={styles.textStyle}>Attachments</Text>
                         </View>
-                        <View style={[styles.borderContainer,{marginTop:w(5)}]}>
+                        <View style={[styles.borderContainer, { marginTop: w(5) }]}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Ionicons name="document" size={30} color="#F32323" />
                                 <Text style={{ fontSize: dynamicFontSize * 1 }}> Requirements</Text>
@@ -244,7 +285,20 @@ function AddNewProjectFrom() {
                     </View>
                 </View>
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: w(5) }}>
-                    <SubmitButton color={"#d68eeb"}> Add Project</SubmitButton>
+                    <SubmitButton onPress={()=>{
+                        if(validateForm())
+                        {
+                        ToastAndroid.show(
+                            "Project Added Successfully",
+                            ToastAndroid.SHORT
+                          );}
+                          else{
+                            ToastAndroid.show(
+                                "Please fill details",
+                                ToastAndroid.SHORT
+                              );
+                          }
+                    }} color={"#d68eeb"}> Add Project</SubmitButton>
 
                 </View>
 
@@ -252,7 +306,15 @@ function AddNewProjectFrom() {
 
 
 
-
+            {isDatePickerVisible && (
+                <DateTimePicker
+                    value={selectedDate}
+                    mode="date"
+                    is24Hour={true}
+                    display="default"
+                    onChange={handleDateChange}
+                />
+            )}
 
 
         </View>
