@@ -7,50 +7,75 @@ import {
   StyleSheet,
   Pressable,
 } from "react-native";
+import SubmitButton from "./ui/SubmitButton";
+import DashboardData from "./DashboardData";
 
-const ProjectDetails = ({ item,handleSportSelection }) => {
+
+const ProjectDetails = ({ item,handleSportSelection,isSelected }) => {
+  const backgroundColor = isSelected ? "#D58EEB91" : "#f5f5f5";
  
     return (
-      <Pressable onPress={() => handleSportSelection(item.projectName)} style={styles.itemContainer2}>
+      <Pressable
+      onPress={() => handleSportSelection(item.projectName)}
+      style={[styles.itemContainer2, ]}
+    >
+      <View
+        style={[{
+          flexDirection: "row",
+          flex: 1,
+          alignItems: "center",
+          
+          borderColor: isSelected ? "#4ec05a" : "#d68eeb",
+          backgroundColor 
+        }]}
+      >
         <View
           style={{
-            flexDirection: "row",
             flex: 1,
-            alignItems: "center",
-            borderColor: "#4ec05a",
+            marginStart: 8,
+            marginVertical: 14,
           }}
         >
-          <View
-            style={{
-              flex: 1,
-              marginStart: 8,
-              marginVertical: 14,
-            }}
-          >
-            <Text style={styles.text2}>{item.projectName}</Text>
-          </View>
+          <Text style={styles.text2}>{item.projectName}</Text>
         </View>
-      </Pressable>
+      </View>
+    </Pressable>
+  
     );
 
 };
 
+
 const BottomSheetDesign2 = ({handleSportSelection}) => {
+  const [selectedItems, setSelectedItems] = useState([]);
+  const members = ['Shreyash Jain (Android)', 'Nimish Sharma(Android)', 'Akshat Bansal (Android)', 'Sagar (Android)', 'Rohit (Java)', 'Aman pandey(Java)', 'Atul (Java)', 'Shubhra srivastava (php)', 'Yashika gupta (php)', 'Abhay sahani (Designer)', 'Jitendar singh (Designer)'];
+  let lastMemberIndex = -1;
   const generateRandomProjectName = () => {
-    const adjectives = ["Red", "Blue", "Green", "Yellow", "Purple", "Orange"];
-    const members = ['Shreyash Jain (Android)', 'Nimish Sharma(Android)', 'Akshat Bansal (Android)', 'Sagar (Android)', 'Rohit (Java)', 'Aman pandey(Java)', 'Atul (Java)', 'Shubhra srivastava (php)', 'Yashika gupta (php)', 'Abhay sahani (Designer)', 'Jitendar singh (Designer)'];
-    // const nouns = ["Project", "Task", "Assignment", "Job", "Mission"];
-    const randomAdjective =
-      members[Math.floor(Math.random() * members.length)];
-    // const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
-    return `${randomAdjective}`;
+   
+      lastMemberIndex = (lastMemberIndex + 1) % members.length;
+
+     
+      return members[lastMemberIndex];
+
+  };
+
+  const toggleSelection = (projectName) => {
+    // Check if the item is already selected
+    if (selectedItems.includes(projectName)) {
+      // Item is selected, remove it from the selection
+      setSelectedItems((prevSelected) =>
+        prevSelected.filter((item) => item !== projectName)
+      );
+    } else {
+      // Item is not selected, add it to the selection
+      setSelectedItems((prevSelected) => [...prevSelected, projectName]);
+    }
   };
 
   // Generate project data with random project names
-  const projectData = Array.from({ length: 20 }, (_, index) => ({
+  const projectData = Array.from({ length:11 }, (_, index) => ({
     projectName: generateRandomProjectName(),
-    progress: Math.random(),
-    riskPriority: index % 3 === 0 ? "low" : index % 3 === 1 ? "medium" : "high",
+
   }));
   return (
     <View style={{flex:1}}>
@@ -60,10 +85,18 @@ const BottomSheetDesign2 = ({handleSportSelection}) => {
    <View style={{flex:1}}>
    <FlatList
       data={projectData}
-      renderItem={({ item }) => <ProjectDetails item={item} handleSportSelection={handleSportSelection} />}
+      renderItem={({ item }) =>    
+      <ProjectDetails
+      item={item}
+      handleSportSelection={toggleSelection}
+      isSelected={selectedItems.includes(item.projectName)}
+    />}
       keyExtractor={(item, index) => `${item.id}-${index}`}
     />
    </View>
+   <View style={{ alignItems: 'center',marginTop:10, marginBottom:20 }}>
+          <SubmitButton onPress={() => handleSportSelection(selectedItems)} color='black'>Add</SubmitButton>
+        </View>
    
      </View>
   );
@@ -82,7 +115,7 @@ const styles = StyleSheet.create({
     elevation: 6,
     marginHorizontal: 20,
     marginVertical: 12,
-    paddingVertical: 4,
+    
     borderWidth: 1,
     borderColor:'#d68eeb'
   },

@@ -7,7 +7,7 @@ function AssignedForItem({ item }){
         // Change the background color to item.color on press
         setBackgroundColor(item.color);
       };
-      const PressableComponent = Platform.OS === 'android' ? TouchableNativeFeedback : Pressable;
+    
     
     return(
         <Pressable onPress={handlePress}>
