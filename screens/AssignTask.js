@@ -5,9 +5,8 @@ import AssignTaskFlatList from "../components/AssignTaskFlatList";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import BackArrowHeaderWhite from "../components/BackArrowHeaderWhite";
 
-export default function AssignTask() {
-  const navigation = useNavigation();
-
+export default function AssignTask({navigation}) {
+  // const navigation = useNavigation();
   const handleAddTaskPress = () => {
     navigation.navigate("AssignNewTask");
     console.log("pressed");
@@ -23,14 +22,14 @@ export default function AssignTask() {
         backButton={() => navigation.goBack()}
       />
       <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-        <AssignTaskFlatList />
-        <Pressable
-          style={[styles.addButton, { backgroundColor: "#e5af54" }]}
-          onPress={handleAddTaskPress}
-        >
-          <MaterialCommunityIcons name="plus" size={30} color="#fff" />
-        </Pressable>
+        <AssignTaskFlatList navigation={navigation} />
       </View>
+      <TouchableOpacity
+        style={[styles.addButton, { backgroundColor: "#e5af54" }]}
+        onPress={handleAddTaskPress}
+      >
+        <MaterialCommunityIcons name="plus" size={30} color="#fff" />
+      </TouchableOpacity>
     </View>
   );
 }

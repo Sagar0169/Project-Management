@@ -7,18 +7,64 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import BackArrowHeader from "../components/BackArrowHeader";
 import { StatusBar } from "expo-status-bar";
 import { Calendar } from "react-native-calendars";
 import DropDown from "../components/TimeSheet/DropDown";
 import DashboardData from "../components/DashboardData";
-import { Activity, Project } from "../components/Data";
+import {
+  Activity,
+  Issue,
+  Project,
+  Status,
+  TaskGroup,
+  Tasks,
+} from "../components/Data";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format, differenceInMinutes } from "date-fns";
 import SubmitButton from "../components/ui/SubmitButton";
+import { Context } from "../store/context";
+import TimeSheetList from "./TimeSheetList";
 
 export default function TimeSheet({ navigation }) {
+  // context
+  const context = useContext(Context);
+  console.log(context.items[4]);
+
+  function addTimeSheetHandler() {
+    if (
+      project &&
+      taskGroup &&
+      task &&
+      issue &&
+      activity &&
+      description &&
+      status &&
+      selectedDate
+    ) {
+      const id = `id_${Math.random().toString(36).substr(2, 9)}_${Date.now()}`;
+      context.addItem({
+        id,
+        selectedDate,
+        project,
+        taskGroup,
+        task,
+        issue,
+        activity,
+        formattedTime,
+        formattedTime2,
+        formattedWorkingHours,
+        formattedWorkingHours,
+        description,
+        status,
+      });
+      console.log(context.items[0]);
+    } else {
+      console.log("fill completely");
+    }
+  }
+
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showTimePicker2, setShowTimePicker2] = useState(false);
   const [selectedTime, setSelectedTime] = useState(new Date());
@@ -66,6 +112,9 @@ export default function TimeSheet({ navigation }) {
   useEffect(() => {
     // This block of code will be executed when selectedDate changes
     console.log(selectedDate);
+    const today = new Date();
+    setSelectedDate(today);
+
     console.log(formattedTime);
     console.log(formattedTime2);
     console.log(formattedWorkingHours);
@@ -75,7 +124,7 @@ export default function TimeSheet({ navigation }) {
       // Set selectedTime2 to 00:00 if formattedWorkingHours is less than 0 or NaN
       setSelectedTime2(new Date(selectedTime.setHours(0, 0, 0, 0)));
     }
-  }, [selectedDate, selectedTime, selectedTime2, formattedWorkingHours]);
+  }, [formattedWorkingHours]);
 
   const { width, height } = Dimensions.get("window");
 
@@ -113,6 +162,7 @@ export default function TimeSheet({ navigation }) {
   const [issue, setSelectedIssue] = useState(null);
   const [activity, setSelectedActivity] = useState(null);
   const [status, setSelectedstatus] = useState(null);
+  const [description, setSelecteddescription] = useState(null);
   const scrollViewRef = useRef(null);
   const handleSelectCategory = (category) => {
     setSelectedproject(category);
@@ -143,6 +193,10 @@ export default function TimeSheet({ navigation }) {
     setSelectedstatus(category);
     // Add any additional logic you want when a category is selected
     scrollViewRef.current.scrollTo({ y: 1200, animated: true });
+  };
+  const handleSelectDesciption = (category) => {
+    setSelecteddescription(category);
+    // Add any additional logic you want when a category is selected
   };
 
   const projectDropDownRef = useRef(null);
@@ -207,7 +261,7 @@ export default function TimeSheet({ navigation }) {
             Task Group:
           </Text>
           <DropDown
-            data={DashboardData}
+            data={TaskGroup}
             selectValue={taskGroup}
             oneSelect={handleSelectTaskGroup}
             hi={h(2)}
@@ -215,7 +269,7 @@ export default function TimeSheet({ navigation }) {
           />
         </View>
         {/* Task */}
-        
+
         <View
           style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
         >
@@ -232,7 +286,7 @@ export default function TimeSheet({ navigation }) {
           </Text>
           {/* <TouchableWithoutFeedback onPress={()=>{scrollToItem(600)}}> */}
           <DropDown
-            data={DashboardData}
+            data={Tasks}
             selectValue={task}
             oneSelect={handleSelectTask}
             // onPresss={scrollToItem(600)}
@@ -241,7 +295,7 @@ export default function TimeSheet({ navigation }) {
           />
           {/* </TouchableWithoutFeedback> */}
         </View>
-        
+
         {/* Issue */}
         <View
           style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
@@ -258,7 +312,7 @@ export default function TimeSheet({ navigation }) {
             Issue:
           </Text>
           <DropDown
-            data={DashboardData}
+            data={Issue}
             selectValue={issue}
             oneSelect={handleSelectIssue}
             hi={h(2)}
@@ -461,9 +515,8 @@ export default function TimeSheet({ navigation }) {
               onChange={handleTimeChange}
             />
           )} */}
-
         </View>
-          {/*Description */}
+        {/*Description */}
         <View
           style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
         >
@@ -484,26 +537,26 @@ export default function TimeSheet({ navigation }) {
               marginVertical: h(1),
               flex: 1,
               backgroundColor: "#8e8cf3",
-              
             }}
-            
           >
             <TextInput
               placeholder=""
-              style={{ fontSize: dynamicFontSize * 0.8, color: "white",padding: w(4),flex:1  ,maxHeight:h(10)}}
+              style={{
+                fontSize: dynamicFontSize * 0.8,
+                color: "white",
+                padding: w(4),
+                flex: 1,
+                maxHeight: h(10),
+              }}
               numberOfLines={3}
               multiline={true}
-              
-              
-             
-            
+              onChangeText={handleSelectDesciption}
+              value={description}
             />
           </View>
-          
-
         </View>
-         {/* Task Status */}
-         <View
+        {/* Task Status */}
+        <View
           style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
@@ -518,19 +571,38 @@ export default function TimeSheet({ navigation }) {
             Task Status:
           </Text>
           <DropDown
-            data={Activity}
-            selectValue={activity}
+            data={Status}
+            selectValue={status}
             oneSelect={handleSelectStatus}
             hi={h(2)}
             wi={w(2)}
           />
         </View>
-        <View style={{flexDirection:'row',justifyContent:'space-evenly',marginBottom:h(7),marginTop:h(5)}}>
-          <SubmitButton color={"#8e8cf3"}>Add TimeSheet</SubmitButton>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            marginBottom: h(1),
+            marginTop: h(5),
+          }}
+        >
+          <SubmitButton color={"#8e8cf3"} onPress={addTimeSheetHandler}>
+            Add TimeSheet
+          </SubmitButton>
           <SubmitButton color={"#8e8cf3"}>Cancel</SubmitButton>
-
         </View>
- 
+        <Text
+          style={{
+            alignSelf: "center",
+            fontSize: dynamicFontSize * 1.2,
+            marginTop: h(2),
+            fontWeight: "600",
+          }}
+        >
+          Daily Work
+        </Text>
+
+        <TimeSheetList />
       </ScrollView>
     </>
   );
