@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Pressable,
 } from "react-native";
+import TasksData from "./TasksData";
 
 const ProjectDetails = ({ item }) => {
   if (item.id !== "placeholder") {
@@ -27,7 +28,7 @@ const ProjectDetails = ({ item }) => {
               marginVertical: 14,
             }}
           >
-            <Text style={styles.text2}>{item.projectName}</Text>
+            <Text style={styles.text2}>{item.title}</Text>
           </View>
           <Pressable style={styles.viewBox}>
             <Text style={styles.viewText}>View</Text>
@@ -58,7 +59,7 @@ const ProjectListFlatList = ({}) => {
   }));
   return (
     <FlatList
-      data={projectData}
+      data={TasksData}
       renderItem={({ item }) => <ProjectDetails item={item} />}
       keyExtractor={(item, index) => `${item.id}-${index}`}
     />
