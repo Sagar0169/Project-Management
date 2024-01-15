@@ -35,7 +35,7 @@ function contextReducer(state,action){
 }
 
 function ContextProvider({children}){
-    const[itemState,dispatch]=useReducer(contextReducer,DataSet)
+    const[itemState,dispatch]=useReducer(contextReducer,[])
     function addItem(itemData){
         dispatch({type:'ADD',payload:itemData})
         

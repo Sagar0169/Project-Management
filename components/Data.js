@@ -61,9 +61,5 @@ export  const Issue=[
 ]
 export const DataSet=[
     {id:1,date:"10/09/2023",project:"Udid",taskGroup:"UI",task:"Correcting UI",issue:"UI",activity:"Done Correction in ui",fromTime:"09:00",toTime:"20:00",workingHours:"12:00",billingHours:"12:00",description:"testing",taskStatus:"In Progress"}
-    ,{id:1,date:"10/09/2023",project:"BharatEmart",taskGroup:"UI",task:"Correcting UI",issue:"UI",activity:"Done Correction in ui",fromTime:"09:00",toTime:"20:00",workingHours:"12:00",billingHours:"12:00",description:"testing",taskStatus:"In Progress"}
-   , {id:1,date:"10/09/2023",project:"Udid",taskGroup:"UI",task:"Correcting UI",issue:"UI",activity:"Done Correction in ui",fromTime:"09:00",toTime:"20:00",workingHours:"12:00",billingHours:"12:00",description:"testing",taskStatus:"In Progress"}
-    ,{id:1,date:"10/09/2023",project:"Udid",taskGroup:"UI",task:"Correcting UI",issue:"UI",activity:"Done Correction in ui",fromTime:"09:00",toTime:"20:00",workingHours:"12:00",billingHours:"12:00",description:"testing",taskStatus:"In Progress"}
-    ,{id:1,date:"10/09/2023",project:"Udid",taskGroup:"UI",task:"Correcting UI",issue:"UI",activity:"Done Correction in ui",fromTime:"09:00",toTime:"20:00",workingHours:"12:00",billingHours:"12:00",description:"testing",taskStatus:"In Progress"}
-    ,{id:1,date:"10/09/2023",project:"Udid",taskGroup:"UI",task:"Correcting UI",issue:"UI",activity:"Done Correction in ui",fromTime:"09:00",toTime:"20:00",workingHours:"12:00",billingHours:"12:00",description:"testing",taskStatus:"In Progress"}
-]
+    ,{id:2,date:"10/09/2023",project:"BharatEmart",taskGroup:"UI",task:"Correcting UI",issue:"UI",activity:"Done Correction in ui",fromTime:"09:00",toTime:"20:00",workingHours:"12:00",billingHours:"12:00",description:"testing",taskStatus:"In Progress"}
+   , {id:3,date:"10/09/2023",project:"Udid",taskGroup:"UI",task:"Correcting UI",issue:"UI",activity:"Done Correction in ui",fromTime:"09:00",toTime:"20:00",workingHours:"12:00",billingHours:"12:00",description:"testing",taskStatus:"In Progress"}]

@@ -9,6 +9,7 @@ export default function TimeSheetList() {
 
   const context=useContext(Context)
   const List=context.items
+  console.log(List)
 
 
 
@@ -35,11 +36,11 @@ export default function TimeSheetList() {
     const item=itemData.item
     const mealsDetails={
       id:item.id,
-       project:item.project,
-       task:item.task,
-       activity:item.affordability,
-       workingHours:item.workingHours,
-       taskStatus:item.taskStatus,
+       project:item.project.title,
+       task:item.task.title,
+       activity:item.activity.title,
+       workingHours:item.formattedWorkingHours,
+       taskStatus:item.status.title,
       
 
 
@@ -51,12 +52,12 @@ export default function TimeSheetList() {
   // function onPressHandler(){
   //   navigation.navigate("MealsDetailsScreen",{...mealsDetails})
   // }
-      return <TimeSheetFlatListData  {...mealsDetails} />
+      return <TimeSheetFlatListData  {...mealsDetails}  />
   }
 
   return (
-    <View style={{marginTop:h(3),borderWidth:1,marginHorizontal:w(2),padding:w(1),}}>
-       <View style={{flexDirection:'row',alignItems:'center'}}>
+    <View style={{marginVertical:h(3),borderWidth:1,marginHorizontal:w(2)}}>
+       <View style={{flexDirection:'row',alignItems:'center',backgroundColor:'#ccc',padding:w(1)}}>
         <Text style={{width:w(15.8),fontSize:dynamicFontSize*0.78}}>Project</Text>
         <Text style={{width:w(25.8),fontSize:dynamicFontSize*0.78}}>Task</Text>
         <Text style={{width:w(20.8),fontSize:dynamicFontSize*0.78}}>Activity</Text>
@@ -64,7 +65,7 @@ export default function TimeSheetList() {
         {/* <Text style={{width:w(15)}}>Description</Text> */}
         <Text style={{width:w(18.8),fontSize:dynamicFontSize*0.78}}>Status</Text>
        </View>
-       <FlatList data={List} keyExtractor={(item)=>item.id} renderItem={renderMealItem}/>
+       <FlatList data={List} keyExtractor={(item)=>item.id} renderItem={renderMealItem} scrollEnabled={false} />
     </View>
   )
 }

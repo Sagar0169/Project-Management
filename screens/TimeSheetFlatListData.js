@@ -1,8 +1,8 @@
-import { View, Text, Dimensions } from 'react-native'
+import { View, Text, Dimensions, TouchableWithoutFeedback } from 'react-native'
 import React from 'react'
 import { DataSet } from '../components/Data'
 
-export default function TimeSheetFlatListData({project,id,task,activity,workingHours,taskStatus}) {
+export default function TimeSheetFlatListData({project,id,task,activity,workingHours,taskStatus,del}) {
     const { width, height } = Dimensions.get("window");
 
   // Calculate a scaling factor based on the screen width
@@ -24,12 +24,15 @@ export default function TimeSheetFlatListData({project,id,task,activity,workingH
   }
 
   return (
-    <View style={{flexDirection:'row',alignItems:"center",marginVertical:h(0.8)}}>
+    <TouchableWithoutFeedback >   
+       <View style={{flexDirection:'row',alignItems:"center",marginVertical:h(0.8)}}>
       <Text style={{width:w(15.8),fontSize:dynamicFontSize*0.78}}>{project}</Text>
       <Text style={{width:w(25.8),fontSize:dynamicFontSize*0.78}}>{task}</Text>
       <Text style={{width:w(20.8),fontSize:dynamicFontSize*0.78}}>{activity}</Text>
       <Text style={{width:w(12.8),fontSize:dynamicFontSize*0.78,textAlign:'center'}}>{workingHours}</Text>
       <Text style={{width:w(18.8),fontSize:dynamicFontSize*0.78}}>{taskStatus}</Text>
     </View>
+    </TouchableWithoutFeedback>
+
   )
 }
