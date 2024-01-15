@@ -1,5 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
+import React, { useState } from "react";
 import {
   FlatList,
   Image,
@@ -13,8 +13,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import DashboardData from "../components/DashboardData";
 import PriorityItem from "../components/PriorityItem";
+import AssignTask from "./AssignTask";
+import AssignTaskFlatList from "../components/AssignTaskFlatList";
+import ProjectListFlatList from "../components/ProjectListFlatList";
+import TasksData from "../components/TasksData";
 
 export default function DashBoard({ navigation }) {
+  const [selectedPriority, setSelectedPriority] = useState(null);
+
+  const selectPriority = (priority) => {
+    setSelectedPriority(priority);
+  };
+
   const CurvedGridItem = ({ navigation, item }) => {
     function navigationHandler() {
       if (item.title === "Add New Projects") {
@@ -118,10 +128,17 @@ export default function DashBoard({ navigation }) {
             showsHorizontalScrollIndicator={false}
             pagingEnabled
             bounces={false}
-            renderItem={({ item }) => <PriorityItem item={item} />}
+            renderItem={({ item }) => (
+              <PriorityItem
+                item={item}
+                onSelect={selectPriority}
+                isSelected={selectedPriority && selectedPriority.id === item.id}
+              />
+            )}
             keyExtractor={(item) => item.id}
-          />
+          /> 
         </ScrollView>
+
       </View>
     </SafeAreaView>
   );

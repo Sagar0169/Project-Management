@@ -48,13 +48,12 @@ function h(value) {
 }
 
 function AddNewProjectFrom() {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [selectedPriority, setSelectedPriority] = useState(null);
 
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [selectedPriority, setSelectedPriority] = useState(null);
-
-    const selectPriority = (priority) => {
-        setSelectedPriority(priority);
-      };
+  const selectPriority = (priority) => {
+    setSelectedPriority(priority);
+  };
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -239,70 +238,84 @@ function AddNewProjectFrom() {
               <Text style={styles.textStyle}>Priority</Text>
             </View>
 
-                        <ScrollView horizontal={true}
-                            showsHorizontalScrollIndicator={false}>
-                            <View style={{ flexDirection: 'row', marginTop: w(5), alignItems: 'center' }}>
-                                <View style={{ flex: 1 }}>
-                                    <FlatList
-                                        data={priorityItems}
-                                        horizontal
-                                        scrollEnabled={false}
-                                        showsHorizontalScrollIndicator={false}
-                                        pagingEnabled
-                                        bounces={false}
-                                        renderItem={({ item }) => <PriorityItem item={item} onSelect={selectPriority}
-                                        isSelected={selectedPriority && selectedPriority.id === item.id}
-                                        />}
-                                        keyExtractor={(item) => item.id}
-                                    />
-                                </View>
-                            
-                            </View>
-                        </ScrollView>
-
-                    </View>
-                    <View style={{ marginTop: w(5) }}>
-                        <View style={{ flexDirection: 'row', paddingTop: 10 }}>
-                            <Ionicons name="attach-sharp" size={32} color="#ffa5a5"
-                                style={{ transform: [{ rotate: '90deg' }] }}
-                            />
-                            <Text style={styles.textStyle}>Attachments</Text>
-                        </View>
-                        <View style={[styles.borderContainer,{marginTop:w(5)}]}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Ionicons name="document" size={30} color="#F32323" />
-                                <Text style={{ fontSize: dynamicFontSize * 1 }}> Requirements</Text>
-                            </View>
-
-                        </View>
-                        <View style={[styles.borderContainer, { marginTop: w(5) }]}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Ionicons name="document" size={30} color="#F32323" />
-                                <Text style={{ fontSize: dynamicFontSize * 1 }}> SRS</Text>
-                            </View>
-
-                        </View>
-                        <View style={[styles.borderContainer, { marginTop: w(5) }]}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Ionicons name="document" size={30} color="#F32323" />
-                                <Text style={{ fontSize: dynamicFontSize * 1 }}> Documentation</Text>
-                            </View>
-                        </View>
-
-                    </View>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: w(5),
+                  alignItems: "center",
+                }}
+              >
+                <View style={{ flex: 1 }}>
+                  <FlatList
+                    data={priorityItems}
+                    horizontal
+                    scrollEnabled={false}
+                    showsHorizontalScrollIndicator={false}
+                    pagingEnabled
+                    bounces={false}
+                    renderItem={({ item }) => (
+                      <PriorityItem
+                        item={item}
+                        onSelect={selectPriority}
+                        isSelected={
+                          selectedPriority && selectedPriority.id === item.id
+                        }
+                      />
+                    )}
+                    keyExtractor={(item) => item.id}
+                  />
                 </View>
-                <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: w(5) }}>
-                    <SubmitButton color={"#d68eeb"}> Add Project</SubmitButton>
-
-                </View>
-
+              </View>
             </ScrollView>
-
-
-
-
-
-
+          </View>
+          <View style={{ marginTop: w(5) }}>
+            <View style={{ flexDirection: "row", paddingTop: 10 }}>
+              <Ionicons
+                name="attach-sharp"
+                size={32}
+                color="#ffa5a5"
+                style={{ transform: [{ rotate: "90deg" }] }}
+              />
+              <Text style={styles.textStyle}>Attachments</Text>
+            </View>
+            <View style={[styles.borderContainer, { marginTop: w(5) }]}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Ionicons name="document" size={30} color="#F32323" />
+                <Text style={{ fontSize: dynamicFontSize * 1 }}>
+                  {" "}
+                  Requirements
+                </Text>
+              </View>
+            </View>
+            <View style={[styles.borderContainer, { marginTop: w(5) }]}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Ionicons name="document" size={30} color="#F32323" />
+                <Text style={{ fontSize: dynamicFontSize * 1 }}> SRS</Text>
+              </View>
+            </View>
+            <View style={[styles.borderContainer, { marginTop: w(5) }]}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Ionicons name="document" size={30} color="#F32323" />
+                <Text style={{ fontSize: dynamicFontSize * 1 }}>
+                  {" "}
+                  Documentation
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginVertical: w(5),
+          }}
+        >
+          <SubmitButton color={"#d68eeb"}> Add Project</SubmitButton>
         </View>
       </ScrollView>
     </View>
