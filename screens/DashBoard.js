@@ -96,7 +96,7 @@ export default function DashBoard({ navigation }) {
           >
             <View style={styles.textContainer}>
               <Text style={styles.text}>{item.count}</Text>
-              <Ionicons size={24} name="ellipsis-horizontal-circle-outline" />
+              <Ionicons size={24} name="ellipsis-horizontal-circle-outline" />    
             </View>
             <Text style={styles.text2}>{item.title}</Text>
             <Image
