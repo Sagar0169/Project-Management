@@ -11,6 +11,7 @@ import {
     Modal,
     TextInput
 } from "react-native";
+import SubmitButton from "./ui/SubmitButton";
 
 import BottomSheetDesign2 from "./BottomSheetDesign2";
 import AssignedForData from "./AssignedForData";
@@ -35,6 +36,17 @@ function AssignTaskForm() {
     }
     const [isModalVisible, setModalVisible] = useState(false);
     const [AssginedForItem, setAssginedForItem] = useState('');
+    const [selectedOption, setSelectedOption] = useState(null);
+    const handleOptionPress = (option) => {
+        setSelectedOption(option);
+    };
+    const getOptionStyle = (option) => {
+        if (selectedOption === option) {
+            return styles.viewBoxBorder;
+        } else {
+            return styles.viewBox;
+        }
+    };
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -138,7 +150,7 @@ function AssignTaskForm() {
                         <Text style={{ color: "#666666", fontSize: 26 }}>Task Type</Text>
                     </View>
                     <View style={{ flex: 1 }}>
-                    <TextInput
+                        <TextInput
                             placeholder="Enter Type"
                             style={{
                                 color: "#666666",
@@ -284,12 +296,16 @@ function AssignTaskForm() {
                             justifyContent: "flex-start",
                         }}
                     >
-                        <View style={styles.viewBox}>
-                            <Text style={styles.viewText}>Yes</Text>
-                        </View>
-                        <View style={styles.viewBox}>
-                            <Text style={styles.viewText}>NO</Text>
-                        </View>
+                        <Pressable onPress={() => handleOptionPress("Yes")}>
+                            <View style={getOptionStyle("Yes")}>
+                                <Text style={styles.viewText}>Yes</Text>
+                            </View>
+                        </Pressable>
+                        <Pressable onPress={() => handleOptionPress("No")}>
+                            <View style={getOptionStyle("No")}>
+                                <Text style={styles.viewText}>NO</Text>
+                            </View>
+                        </Pressable>
                     </View>
                 </View>
 
@@ -314,18 +330,26 @@ function AssignTaskForm() {
                         }}
                     >
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} >
-                            <View style={styles.viewBox}>
-                                <Text style={styles.viewText}>Low</Text>
-                            </View>
-                            <View style={styles.viewBox}>
-                                <Text style={styles.viewText}>Medium</Text>
-                            </View>
-                            <View style={styles.viewBox}>
-                                <Text style={styles.viewText}>High</Text>
-                            </View>
-                            <View style={styles.viewBox}>
-                                <Text style={styles.viewText}>Critical</Text>
-                            </View>
+                            <Pressable onPress={() => handleOptionPress("Low")} >
+                                <View style={getOptionStyle("Low")}>
+                                    <Text style={styles.viewText}>Low</Text>
+                                </View>
+                            </Pressable>
+                            <Pressable onPress={() => handleOptionPress("Medium")}>
+                                <View style={getOptionStyle("Medium")}>
+                                    <Text style={styles.viewText}>Medium</Text>
+                                </View>
+                            </Pressable>
+                            <Pressable onPress={() => handleOptionPress("High")}>
+                                <View style={getOptionStyle("High")}>
+                                    <Text style={styles.viewText}>High</Text>
+                                </View>
+                            </Pressable>
+                            <Pressable onPress={() => handleOptionPress("Critical")}>
+                                <View style={getOptionStyle("Critical")}>
+                                    <Text style={styles.viewText}>Critical</Text>
+                                </View>
+                            </Pressable>
                         </ScrollView>
                     </View>
                 </View>
@@ -358,6 +382,8 @@ function AssignTaskForm() {
                         </View>
                     </View>
                 </View>
+                <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 40 }}>
+                <SubmitButton onPress={()=>{}} color={"#e5af54"}> Add Project</SubmitButton></View>
             </ScrollView>
         </View>
     )
