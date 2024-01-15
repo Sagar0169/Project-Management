@@ -13,6 +13,7 @@ import AssignTask from "./screens/AssignTask";
 import TimeSheet from "./screens/TimeSheet";
 import TaskList from "./screens/TaskList";
 import AssignedTaskDetails from "./screens/AssignedTaskDetails";
+import AssignNewTask from "./screens/AssignNewTasks";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -63,6 +64,10 @@ export default function App() {
         <Stack.Screen
           name="AssignedTaskDetails"
           component={AssignedTaskDetails}
+        />
+         <Stack.Screen
+          name="AssignNewTask"
+          component={AssignNewTask}
         />
       </Stack.Navigator>
     </NavigationContainer>
