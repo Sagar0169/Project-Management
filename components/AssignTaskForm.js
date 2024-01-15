@@ -12,11 +12,34 @@ import {
     TextInput
 } from "react-native";
 import SubmitButton from "./ui/SubmitButton";
+import Toast from "react-native-simple-toast";
 
 import BottomSheetDesign2 from "./BottomSheetDesign2";
 import AssignedForData from "./AssignedForData";
 
+
+//CHANGE MULTIPLE SELECTION FROM BOTTOMSHEET2
+
+
 function AssignTaskForm() {
+    function validateForm() {
+        // Check if enteredProjectName, enteredDueDate, and AssginedForItem have values
+        if (
+            enteredTaskName.trim() !== "" &&
+          enteredDueDate.trim() !== "" &&
+          enteredTaskPhase.trim() !== "" &&
+          enteredTaskType.trim() !== "" &&
+          enteredEstimatedTime.trim() !== "" &&
+          selectedOption!== null &&
+          selectedPriority!== null &&
+          AssginedForItem.length > 0
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
 
     function ModalHandler() {
         return (
@@ -34,14 +57,42 @@ function AssignTaskForm() {
                 </View>
             </Modal>)
     }
+    const [enteredTaskName, setEnteredTaskName] = useState("");
+    const [enteredTaskPhase, setEnteredTaskPhase] = useState("");
+    const [enteredTaskType, setEnteredTaskType] = useState("");
+    const [enteredDueDate, setEnteredDueDate] = useState("");
+    const [enteredEstimatedTime, setEnteredEstimatedTime] = useState("");
+      function onChangeText(inputType, enteredValue) {
+          switch (inputType) {
+            case "taskName":
+                setEnteredTaskName(enteredValue);
+              break;
+            case "dueDate":
+              setEnteredDueDate(enteredValue);
+              break;
+              case "taskPhase":
+                setEnteredTaskPhase(enteredValue);
+              break;
+              case "taskType":
+                setEnteredTaskType(enteredValue);
+              break;
+              case "estimatedTime":
+                setEnteredEstimatedTime(enteredValue);
+              break;
+          }
+        }
     const [isModalVisible, setModalVisible] = useState(false);
     const [AssginedForItem, setAssginedForItem] = useState('');
     const [selectedOption, setSelectedOption] = useState(null);
+    const [selectedPriority, setSelectedPriority] = useState(null);
     const handleOptionPress = (option) => {
         setSelectedOption(option);
     };
+    const handleOptionPressPriority = (option) => {
+        setSelectedPriority(option);
+    };
     const getOptionStyle = (option) => {
-        if (selectedOption === option) {
+        if (selectedOption === option || selectedPriority===option) {
             return styles.viewBoxBorder;
         } else {
             return styles.viewBox;
@@ -55,27 +106,7 @@ function AssignTaskForm() {
         setAssginedForItem(sport);
         toggleModal();
     };
-    const addAssignedForItem = (sport) => {
-        // Check if the item already exists in the list
-        sport.forEach((sport) => {
-            // Check if the item already exists in the list
-            const isDuplicate = AssginedForItem.some(item => item.title === sport);
 
-            if (!isDuplicate) {
-                // Add a new assigned for item to the state
-                const newAssignedForItem = { id: Math.random().toString(), title: sport, color: "#ffffff" };
-                setAssginedForItem((prevItems) => [...prevItems, newAssignedForItem]);
-            }
-            else {
-                ToastAndroid.show(
-                    "This member already selected",
-                    ToastAndroid.SHORT
-                );
-            }
-        });
-
-        toggleModal();
-    };
 
     return (
         <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
@@ -97,6 +128,7 @@ function AssignTaskForm() {
                     </View>
                     <View style={{ flex: 1 }}>
                         <TextInput
+                        onChangeText={onChangeText.bind(this, "taskName")}
                             placeholder="Enter TaskName"
                             style={{
                                 color: "#666666",
@@ -125,6 +157,7 @@ function AssignTaskForm() {
                     </View>
                     <View style={{ flex: 1 }}>
                         <TextInput
+                        onChangeText={onChangeText.bind(this, "taskPhase")}
                             placeholder="Enter Phase"
                             style={{
                                 color: "#666666",
@@ -151,6 +184,7 @@ function AssignTaskForm() {
                     </View>
                     <View style={{ flex: 1 }}>
                         <TextInput
+                        onChangeText={onChangeText.bind(this, "taskType")}
                             placeholder="Enter Type"
                             style={{
                                 color: "#666666",
@@ -195,7 +229,7 @@ function AssignTaskForm() {
                                     margin: 4,
                                 }}
                             />
-                            <TextInput placeholder="enter Due Date" style={{ marginHorizontal: 6, color: "#181818" }}>
+                            <TextInput onChangeText={onChangeText.bind(this, "dueDate")} placeholder="enter Due Date" style={{ marginHorizontal: 6, color: "#181818" }}>
 
                             </TextInput>
                         </View>
@@ -228,7 +262,7 @@ function AssignTaskForm() {
                                     margin: 4,
                                 }}
                             />
-                            <TextInput placeholder="Time" style={{ marginHorizontal: 6, color: "#181818" }}>
+                            <TextInput onChangeText={onChangeText.bind(this, "estimatedTime")} placeholder="Time" style={{ marginHorizontal: 6, color: "#181818" }}>
 
                             </TextInput>
                         </View>
@@ -330,22 +364,22 @@ function AssignTaskForm() {
                         }}
                     >
                         <ScrollView horizontal showsHorizontalScrollIndicator={false} >
-                            <Pressable onPress={() => handleOptionPress("Low")} >
+                            <Pressable onPress={() => handleOptionPressPriority("Low")} >
                                 <View style={getOptionStyle("Low")}>
                                     <Text style={styles.viewText}>Low</Text>
                                 </View>
                             </Pressable>
-                            <Pressable onPress={() => handleOptionPress("Medium")}>
+                            <Pressable onPress={() => handleOptionPressPriority("Medium")}>
                                 <View style={getOptionStyle("Medium")}>
                                     <Text style={styles.viewText}>Medium</Text>
                                 </View>
                             </Pressable>
-                            <Pressable onPress={() => handleOptionPress("High")}>
+                            <Pressable onPress={() => handleOptionPressPriority("High")}>
                                 <View style={getOptionStyle("High")}>
                                     <Text style={styles.viewText}>High</Text>
                                 </View>
                             </Pressable>
-                            <Pressable onPress={() => handleOptionPress("Critical")}>
+                            <Pressable onPress={() => handleOptionPressPriority("Critical")}>
                                 <View style={getOptionStyle("Critical")}>
                                     <Text style={styles.viewText}>Critical</Text>
                                 </View>
@@ -383,7 +417,21 @@ function AssignTaskForm() {
                     </View>
                 </View>
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 40 }}>
-                <SubmitButton onPress={()=>{}} color={"#e5af54"}> Add Project</SubmitButton></View>
+                <SubmitButton onPress={()=>{
+              if (validateForm()) {
+                Toast.showWithGravity(
+                  "Project Added Sucessfully.",
+                  Toast.SHORT,
+                  Toast.BOTTOM
+                );
+              } else {
+                Toast.showWithGravity(
+                  "Please fill all details.",
+                  Toast.SHORT,
+                  Toast.BOTTOM
+                );
+              }
+            }} color={"#e5af54"}> Add Project</SubmitButton></View>
             </ScrollView>
         </View>
     )
