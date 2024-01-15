@@ -1,15 +1,11 @@
-import {
-  Pressable,
-  View,
-  Text,
-  Touchable,
-  Image,
-  ImageBackground,
-  Dimensions,
-  StyleSheet,
-  TouchableNativeFeedback,
-} from "react-native";
 import { useState } from "react";
+import {
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  Text,
+  View
+} from "react-native";
 
 function PriorityItem({ item, onSelect, isSelected  }){
     const [backgroundColor, setBackgroundColor] = useState('white');

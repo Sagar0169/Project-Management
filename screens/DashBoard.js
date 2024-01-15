@@ -1,6 +1,8 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
+  Animated,
+  Dimensions,
   FlatList,
   Image,
   Pressable,
@@ -17,15 +19,61 @@ import AssignTask from "./AssignTask";
 import AssignTaskFlatList from "../components/AssignTaskFlatList";
 import ProjectListFlatList from "../components/ProjectListFlatList";
 import TasksData from "../components/TasksData";
+import RecentProjectFlatList from "../components/RecentProjectFlatList";
+const { width, height } = Dimensions.get("window");
+
+// Calculate a scaling factor based on the screen width
+const scaleFactor = width / 375; // Adjust 375 based on your design reference width
+
+// Define the base font size for your design
+const baseFontSize = 16;
+
+// Calculate the dynamic font size
+const dynamicFontSize = baseFontSize * scaleFactor;
+// const fontSize=FontSize font={16}
+function w(value) {
+  const width = Dimensions.get("window").width / 100; // now width is 1% of screen width
+  return width * value;
+}
+function h(value) {
+  const height = Dimensions.get("window").height / 100; // now height is 1% of screen height
+  return height * value;
+}
 
 export default function DashBoard({ navigation }) {
+  const animatedValue = useRef(new Animated.Value(0)).current;
+
+  const animateList = () => {
+    Animated.timing(animatedValue, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: false, // Set to true if possible for better performance
+    }).start();
+  };
+
+  useEffect(() => {
+    animateList();
+  }, []);
+
+  const translateY = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [100, 0], // Adjust the values based on your desired animation
+  });
   const [selectedPriority, setSelectedPriority] = useState(null);
+  const [taskNumber, setTaskNumber] = useState(TasksData.length);
+  console.log(taskNumber);
+  useEffect(() => {
+    setTaskNumber(TasksData.length);
+  }, [TasksData]);
 
   const selectPriority = (priority) => {
     setSelectedPriority(priority);
   };
 
-  const CurvedGridItem = ({ navigation, item }) => {
+  const CurvedGridItem = ({ navigation, item, taskNumber }) => {
+    if (item.title === "Assigned Tasks" || item.title === "Project List") {
+      item.count = taskNumber;
+    }
     function navigationHandler() {
       if (item.title === "Add New Projects") {
         navigation.navigate("AddNewProjects");
@@ -42,26 +90,26 @@ export default function DashBoard({ navigation }) {
     }
     return (
       <Pressable onPress={navigationHandler} style={styles.itemContainer}>
-        <LinearGradient
-          colors={[item.color, item.color]} // Change colors as per your preference
-          style={styles.gradient}
-        >
-          <View style={styles.textContainer}>
-            <Text style={styles.text}>{item.count}</Text>
-            <Ionicons size={24} name="ellipsis-horizontal-circle-outline" />
-          </View>
-          <Text style={styles.text2}>{item.title}</Text>
-          <Image
-            source={item.image}
-            style={{ width: "100%", height: 100, resizeMode: "cover" }}
-          />
-        </LinearGradient>
+          <LinearGradient
+            colors={[item.color, item.color]} // Change colors as per your preference
+            style={styles.gradient}
+          >
+            <View style={styles.textContainer}>
+              <Text style={styles.text}>{item.count}</Text>
+              <Ionicons size={24} name="ellipsis-horizontal-circle-outline" />
+            </View>
+            <Text style={styles.text2}>{item.title}</Text>
+            <Image
+              source={item.image}
+              style={{ width: "100%", height: 100, resizeMode: "cover" }}
+            />
+          </LinearGradient>
       </Pressable>
     );
   };
 
   return (
-    <SafeAreaView>
+    <ScrollView style={{ paddingTop: h(4), flex: 1 }}>
       <View
         style={{
           flexDirection: "row",
@@ -81,12 +129,7 @@ export default function DashBoard({ navigation }) {
         </Text>
         <Ionicons size={20} name="notifications-outline" />
       </View>
-      <View
-        style={{
-          marginHorizontal: 8,
-          marginVertical: 8,
-        }}
-      >
+      <View style={{ flex: 1, marginHorizontal: 8, marginVertical: 8 }}>
         <Text
           style={{
             fontSize: 18,
@@ -97,50 +140,50 @@ export default function DashBoard({ navigation }) {
         >
           Project Summary
         </Text>
-        <FlatList
-          data={DashboardData}
-          numColumns={2}
-          renderItem={({ item }) => (
-            <CurvedGridItem navigation={navigation} item={item} />
-          )}
-          scrollEnabled={false}
-          keyExtractor={(item) => item.id}
-        />
-        <Text
-          style={{
-            fontSize: 18,
-            color: "black",
-            fontWeight: "600",
-            margin: 8,
-          }}
-        >
-          Recent Ongoing Projects
-        </Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={{ marginTop: 8 }}
-        >
+        <View>
           <FlatList
             data={DashboardData}
-            horizontal
             scrollEnabled={false}
-            showsHorizontalScrollIndicator={false}
-            pagingEnabled
-            bounces={false}
+            numColumns={2}
             renderItem={({ item }) => (
-              <PriorityItem
+              <CurvedGridItem
+                navigation={navigation}
+                item={item}
+                taskNumber={taskNumber}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
+        <View style={{ marginBottom: w(8) }}>
+          <Text
+            style={{
+              fontSize: 18,
+              color: "black",
+              fontWeight: "600",
+              margin: 8,
+            }}
+          >
+            Recent Ongoing Projects
+          </Text>
+          <FlatList
+            data={TasksData.slice(0, 5)}
+            scrollEnabled={false}
+            renderItem={({ item }) => (
+              <RecentProjectFlatList
                 item={item}
                 onSelect={selectPriority}
                 isSelected={selectedPriority && selectedPriority.id === item.id}
               />
             )}
             keyExtractor={(item) => item.id}
-          /> 
-        </ScrollView>
-
+            // Set the following props to allow vertical scrolling
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 1 }}
+          />
+        </View>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 }
 

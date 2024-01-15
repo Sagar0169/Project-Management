@@ -13,6 +13,7 @@ import AssignTask from "./screens/AssignTask";
 import TimeSheet from "./screens/TimeSheet";
 import TaskList from "./screens/TaskList";
 import AssignedTaskDetails from "./screens/AssignedTaskDetails";
+import AssignNewTask from "./screens/AssignNewTasks";
 
 
 import ContextProvider from "./store/context";
@@ -74,6 +75,10 @@ export default function App() {
             presentation: "modal",
             animation: "slide_from_right",
           }}
+        />
+         <Stack.Screen
+          name="AssignNewTask"
+          component={AssignNewTask}
         />
       </Stack.Navigator>
       </ContextProvider>
