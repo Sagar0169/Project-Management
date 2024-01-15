@@ -5,7 +5,8 @@ import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import Input from "./Input";
 import PriorityData from "./PriorityData";
-import Toast from 'react-native-toast-message';
+import Toast from "react-native-simple-toast";
+
 
 
 import AssignedForData from "./AssignedForData";
@@ -285,14 +286,18 @@ function AddNewProjectFrom() {
                     <SubmitButton onPress={()=>{
                         if(validateForm())
                         {
-                        ToastAndroid.show(
-                            "Project Added Successfully",
-                            ToastAndroid.SHORT
-                          );}
+                            Toast.showWithGravity(
+                                'Project Added Sucessfully.',
+                                Toast.SHORT,
+                                Toast.BOTTOM,
+                              );
+                        
+                        }
                           else{
-                            ToastAndroid.show(
-                                "Please fill details",
-                                ToastAndroid.SHORT
+                            Toast.showWithGravity(
+                                'Please fill all details.',
+                                Toast.SHORT,
+                                Toast.BOTTOM,
                               );
                           }
                     }} color={"#d68eeb"}> Add Project</SubmitButton>

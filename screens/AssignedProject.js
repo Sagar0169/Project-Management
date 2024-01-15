@@ -92,6 +92,7 @@ export default function AssignedProject({ navigation }) {
     <View style={{paddingTop:h(4),flex:1,backgroundColor:"#8e8cf3"}}>
 
       <BackArrowHeader backButton={handlerBack} title="Assigned Projects" color={"#8e8cf3"} />
+      
       <View style={{backgroundColor:'white', flex:1}}>
 
       <TabView
