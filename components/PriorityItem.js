@@ -3,10 +3,12 @@ import { useState } from "react";
 
 function PriorityItem({ item, onSelect, isSelected  }){
     const [backgroundColor, setBackgroundColor] = useState('white');
+    const [textBgColor, setTextBgColor] = useState('black');
     const handlePress = () => {
         // Change the background color to item.color on press
         onSelect(item);
         setBackgroundColor(item.color);
+        setTextBgColor('white')
       };
       
     
@@ -14,7 +16,7 @@ function PriorityItem({ item, onSelect, isSelected  }){
         <Pressable onPress={handlePress}>
         {/* <View style={{...styles.borderContainer,backgroundColor}}> */}
         <View style={[styles.borderContainer, { backgroundColor: isSelected ? item.color : 'white' }]}>
-            <Text>
+            <Text style={{color:isSelected? textBgColor:'black'}}>
                 {item.title}
             </Text>
 
