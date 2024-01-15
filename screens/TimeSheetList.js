@@ -1,15 +1,25 @@
 import { View, Text, Dimensions, FlatList } from 'react-native'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import TimeSheetFlatListData from './TimeSheetFlatListData';
 
 import { DataSet } from '../components/Data';
 import { Context } from '../store/context';
+import CustomModal from '../components/CustomModal';
 
 export default function TimeSheetList() {
 
   const context=useContext(Context)
   const List=context.items
   console.log(List)
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const showModal = () => {
+    setModalVisible(true);
+  };
+
+  const hideModal = () => {
+    setModalVisible(false);
+  };
 
 
 
@@ -52,11 +62,17 @@ export default function TimeSheetList() {
   // function onPressHandler(){
   //   navigation.navigate("MealsDetailsScreen",{...mealsDetails})
   // }
-      return <TimeSheetFlatListData  {...mealsDetails}  />
+      return <TimeSheetFlatListData  {...mealsDetails} onPress={deleteHandler} />
+  }
+  function deleteHandler(id){
+    context.deleteItem(id)
+    setModalVisible(true)
+    
+
   }
 
   return (
-    <View style={{marginVertical:h(3),borderWidth:1,marginHorizontal:w(2)}}>
+    <View style={{marginVertical:h(3),marginHorizontal:w(2)}}>
        <View style={{flexDirection:'row',alignItems:'center',backgroundColor:'#ccc',padding:w(1)}}>
         <Text style={{width:w(15.8),fontSize:dynamicFontSize*0.78}}>Project</Text>
         <Text style={{width:w(25.8),fontSize:dynamicFontSize*0.78}}>Task</Text>
@@ -65,6 +81,11 @@ export default function TimeSheetList() {
         {/* <Text style={{width:w(15)}}>Description</Text> */}
         <Text style={{width:w(18.8),fontSize:dynamicFontSize*0.78}}>Status</Text>
        </View>
+       {isModalVisible&& <CustomModal
+        visible={isModalVisible}
+        message="Deleted Successfully"
+        onHide={hideModal}
+      />}
        <FlatList data={List} keyExtractor={(item)=>item.id} renderItem={renderMealItem} scrollEnabled={false} />
     </View>
   )

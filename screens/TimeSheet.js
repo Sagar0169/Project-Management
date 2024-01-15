@@ -13,7 +13,14 @@ import { StatusBar } from "expo-status-bar";
 import { Calendar } from "react-native-calendars";
 import DropDown from "../components/TimeSheet/DropDown";
 import DashboardData from "../components/DashboardData";
-import { Activity, Issue, Project, Status, TaskGroup, Tasks } from "../components/Data";
+import {
+  Activity,
+  Issue,
+  Project,
+  Status,
+  TaskGroup,
+  Tasks,
+} from "../components/Data";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format, differenceInMinutes } from "date-fns";
 import SubmitButton from "../components/ui/SubmitButton";
@@ -21,27 +28,42 @@ import { Context } from "../store/context";
 import TimeSheetList from "./TimeSheetList";
 
 export default function TimeSheet({ navigation }) {
-// context
-const context=useContext(Context)
-console.log(context.items[4])
+  // context
+  const context = useContext(Context);
+  console.log(context.items[4]);
 
-function addTimeSheetHandler(){
-  if(project&&taskGroup&&task&&issue&&activity&&description&&status&&selectedDate){
-    const id = `id_${Math.random().toString(36).substr(2, 9)}_${Date.now()}`;
-    context.addItem({id,selectedDate,project,taskGroup,task,issue,activity,formattedTime,formattedTime2,formattedWorkingHours,formattedWorkingHours,description,status})
-console.log(context.items[0])
+  function addTimeSheetHandler() {
+    if (
+      project &&
+      taskGroup &&
+      task &&
+      issue &&
+      activity &&
+      description &&
+      status &&
+      selectedDate
+    ) {
+      const id = `id_${Math.random().toString(36).substr(2, 9)}_${Date.now()}`;
+      context.addItem({
+        id,
+        selectedDate,
+        project,
+        taskGroup,
+        task,
+        issue,
+        activity,
+        formattedTime,
+        formattedTime2,
+        formattedWorkingHours,
+        formattedWorkingHours,
+        description,
+        status,
+      });
+      console.log(context.items[0]);
+    } else {
+      console.log("fill completely");
+    }
   }
-  else{
-    console.log("fill completely")
-  }
-  
-
-}
-
-
-
-
-
 
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showTimePicker2, setShowTimePicker2] = useState(false);
@@ -102,7 +124,7 @@ console.log(context.items[0])
       // Set selectedTime2 to 00:00 if formattedWorkingHours is less than 0 or NaN
       setSelectedTime2(new Date(selectedTime.setHours(0, 0, 0, 0)));
     }
-  }, [ formattedWorkingHours]);
+  }, [formattedWorkingHours]);
 
   const { width, height } = Dimensions.get("window");
 
@@ -175,7 +197,6 @@ console.log(context.items[0])
   const handleSelectDesciption = (category) => {
     setSelecteddescription(category);
     // Add any additional logic you want when a category is selected
-    
   };
 
   const projectDropDownRef = useRef(null);
@@ -248,7 +269,7 @@ console.log(context.items[0])
           />
         </View>
         {/* Task */}
-        
+
         <View
           style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
         >
@@ -274,7 +295,7 @@ console.log(context.items[0])
           />
           {/* </TouchableWithoutFeedback> */}
         </View>
-        
+
         {/* Issue */}
         <View
           style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
@@ -494,9 +515,8 @@ console.log(context.items[0])
               onChange={handleTimeChange}
             />
           )} */}
-
         </View>
-          {/*Description */}
+        {/*Description */}
         <View
           style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
         >
@@ -517,29 +537,26 @@ console.log(context.items[0])
               marginVertical: h(1),
               flex: 1,
               backgroundColor: "#8e8cf3",
-              
             }}
-            
           >
             <TextInput
               placeholder=""
-              style={{ fontSize: dynamicFontSize * 0.8, color: "white",padding: w(4),flex:1  ,maxHeight:h(10)}}
+              style={{
+                fontSize: dynamicFontSize * 0.8,
+                color: "white",
+                padding: w(4),
+                flex: 1,
+                maxHeight: h(10),
+              }}
               numberOfLines={3}
               multiline={true}
               onChangeText={handleSelectDesciption}
               value={description}
-              
-              
-              
-             
-            
             />
           </View>
-          
-
         </View>
-         {/* Task Status */}
-         <View
+        {/* Task Status */}
+        <View
           style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
@@ -561,16 +578,31 @@ console.log(context.items[0])
             wi={w(2)}
           />
         </View>
-        <View style={{flexDirection:'row',justifyContent:'space-evenly',marginBottom:h(1),marginTop:h(5)}}>
-          <SubmitButton color={"#8e8cf3"} onPress={addTimeSheetHandler}>Add TimeSheet</SubmitButton>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            marginBottom: h(1),
+            marginTop: h(5),
+          }}
+        >
+          <SubmitButton color={"#8e8cf3"} onPress={addTimeSheetHandler}>
+            Add TimeSheet
+          </SubmitButton>
           <SubmitButton color={"#8e8cf3"}>Cancel</SubmitButton>
-
         </View>
-        <Text style={{alignSelf:'center',fontSize:dynamicFontSize*1.2,marginTop:h(2),fontWeight:"600"}}>Daily Work</Text>
-        
-        
-        <TimeSheetList/>
- 
+        <Text
+          style={{
+            alignSelf: "center",
+            fontSize: dynamicFontSize * 1.2,
+            marginTop: h(2),
+            fontWeight: "600",
+          }}
+        >
+          Daily Work
+        </Text>
+
+        <TimeSheetList />
       </ScrollView>
     </>
   );

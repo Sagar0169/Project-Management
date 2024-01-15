@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import Input from "./Input";
 import PriorityData from "./PriorityData";
-import Toast from "react-native-simple-toast";
+// import Toast from "react-native-simple-toast";
 
 
 
@@ -15,6 +15,7 @@ import SubmitButton from "./ui/SubmitButton";
 import AssignedForItem from "./AssginedForItem";
 import BottomSheetDesign2 from "./BottomSheetDesign2";
 import BackArrowHeader from "./BackArrowHeader";
+import CustomModal from "./CustomModal";
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width
@@ -45,6 +46,21 @@ function AddNewProjectFrom() {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
 
+
+    const [isModalVisible2, setModalVisible2] = useState(false);
+    const [isModalVisible3, setModalVisible3] = useState(false);
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const showModal = () => {
+      setModalVisible2(true);
+    };
+  
+    const hideModal = () => {
+      setModalVisible2(false);
+      setModalVisible3(false);
+    };
+  
+
     const showDatePicker = () => {
         setDatePickerVisibility(true);
     };
@@ -61,7 +77,7 @@ function AddNewProjectFrom() {
         }
     };
 
-    const [isModalVisible, setModalVisible] = useState(false);
+
     const [selectedPriority, setSelectedPriority] = useState(null);
 
     const selectPriority = (priority) => {
@@ -286,24 +302,37 @@ function AddNewProjectFrom() {
                     <SubmitButton onPress={()=>{
                         if(validateForm())
                         {
-                            Toast.showWithGravity(
-                                'Project Added Sucessfully.',
-                                Toast.SHORT,
-                                Toast.BOTTOM,
-                              );
+                            // Toast.showWithGravity(
+                            //     'Project Added Sucessfully.',
+                            //     Toast.SHORT,
+                            //     Toast.BOTTOM,
+                            //   );
+                            setModalVisible2(true)
+                            
                         
                         }
                           else{
-                            Toast.showWithGravity(
-                                'Please fill all details.',
-                                Toast.SHORT,
-                                Toast.BOTTOM,
-                              );
+                            // Toast.showWithGravity(
+                            //     'Please fill all details.',
+                            //     Toast.SHORT,
+                            //     Toast.BOTTOM,
+                            //   );
+                             setModalVisible3(true)
+                           
                           }
                     }} color={"#d68eeb"}> Add Project</SubmitButton>
 
                 </View>
-
+                {isModalVisible2&& <CustomModal
+                                visible={isModalVisible2}
+                                message="Project Added Sucessfully."
+                                onHide={hideModal}
+                              />}
+                               {isModalVisible3&& <CustomModal
+                                visible={isModalVisible3}
+                                message="Please fill all details."
+                                onHide={hideModal}
+                              />}
             </ScrollView>
 
 

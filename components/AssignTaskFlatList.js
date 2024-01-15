@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import TasksData from "./TasksData";
 
-const ProjectDetails = ({ item }) => {
-  const navigation = useNavigation();
+const ProjectDetails = ({ item,navigation }) => {
+  // const navigation = useNavigation();
   function detailsHandler() {
     navigation.navigate("AssignedTaskDetails", { ID: item });
   }
@@ -46,7 +46,7 @@ const ProjectDetails = ({ item }) => {
   }
 };
 
-const AssignTaskFlatList = ({}) => {
+const AssignTaskFlatList = ({navigation}) => {
   const generateRandomProjectName = () => {
     const adjectives = ["Red", "Blue", "Green", "Yellow", "Purple", "Orange"];
     const nouns = ["Project", "Task", "Assignment", "Job", "Mission"];
@@ -65,7 +65,7 @@ const AssignTaskFlatList = ({}) => {
   return (
     <FlatList
       data={TasksData}
-      renderItem={({ item }) => <ProjectDetails item={item} />}
+      renderItem={({ item }) => <ProjectDetails item={item} navigation={navigation} />}
       keyExtractor={(item, index) => `${item.id}-${index}`}
     />
   );

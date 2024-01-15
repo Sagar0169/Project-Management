@@ -69,6 +69,11 @@ export default function App() {
         <Stack.Screen
           name="AssignedTaskDetails"
           component={AssignedTaskDetails}
+          options={{
+            headerShown: false,
+            presentation: "modal",
+            animation: "slide_from_right",
+          }}
         />
       </Stack.Navigator>
       </ContextProvider>
