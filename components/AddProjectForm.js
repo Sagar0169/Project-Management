@@ -304,19 +304,15 @@ function AddNewProjectFrom() {
 
 
             {isDatePickerVisible && (
-                <DateTimePicker
-                    value={selectedDate}
-                    mode="date"
-                    is24Hour={true}
-                    display="default"
+              <DateTimePicker
+              value={selectedDate}
+              mode="date"
+              is24Hour={true}
+              display="default"
                     onChange={handleDateChange}
                 />
             )}
-
-
         </View>
-      </ScrollView>
-    </View>
   );
 }
 export default AddNewProjectFrom;
