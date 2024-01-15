@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -7,8 +8,13 @@ import {
   StyleSheet,
   Pressable,
 } from "react-native";
+import TasksData from "./TasksData";
 
 const ProjectDetails = ({ item }) => {
+  const navigation = useNavigation();
+  function detailsHandler() {
+    navigation.navigate("AssignedTaskDetails", { ID: item });
+  }
   if (item.id !== "placeholder") {
     return (
       <Pressable style={styles.itemContainer2}>
@@ -27,9 +33,9 @@ const ProjectDetails = ({ item }) => {
               marginVertical: 14,
             }}
           >
-            <Text style={styles.text2}>{item.projectName}</Text>
+            <Text style={styles.text2}>{item.Assigned}</Text>
           </View>
-          <Pressable style={styles.viewBox}>
+          <Pressable onPress={detailsHandler} style={styles.viewBox}>
             <Text style={styles.viewText}>View</Text>
           </Pressable>
         </View>
@@ -58,7 +64,7 @@ const AssignTaskFlatList = ({}) => {
   }));
   return (
     <FlatList
-      data={projectData}
+      data={TasksData}
       renderItem={({ item }) => <ProjectDetails item={item} />}
       keyExtractor={(item, index) => `${item.id}-${index}`}
     />
@@ -80,15 +86,14 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     paddingVertical: 4,
     borderWidth: 1,
-    borderColor:"#e5af54"
+    borderColor: "#e5af54",
   },
   viewBox: {
     backgroundColor: "#f5f5f5",
     elevation: 2,
     paddingVertical: 8,
-    paddingHorizontal:8,
-    marginHorizontal:8,
- 
+    paddingHorizontal: 8,
+    marginHorizontal: 8,
   },
   gradient: {
     flex: 1,

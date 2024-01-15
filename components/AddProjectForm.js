@@ -5,17 +5,17 @@ import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import Input from "./Input";
 import PriorityData from "./PriorityData";
-import Toast from 'react-native-toast-message';
+import Toast from "react-native-simple-toast";
+
 
 
 import AssignedForData from "./AssignedForData";
 import PriorityItem from "./PriorityItem";
-import SubmitButton from "./ui/SubmitButton"
+import SubmitButton from "./ui/SubmitButton";
 import AssignedForItem from "./AssginedForItem";
 import BottomSheetDesign2 from "./BottomSheetDesign2";
 import BackArrowHeader from "./BackArrowHeader";
 const { width, height } = Dimensions.get("window");
-
 
 // Calculate a scaling factor based on the screen width
 const scaleFactor = width / 375; // Adjust 375 based on your design reference width
@@ -27,12 +27,12 @@ const baseFontSize = 16;
 const dynamicFontSize = baseFontSize * scaleFactor;
 // const fontSize=FontSize font={16}
 function w(value) {
-    const width = Dimensions.get("window").width / 100; // now width is 1% of screen width
-    return width * value;
+  const width = Dimensions.get("window").width / 100; // now width is 1% of screen width
+  return width * value;
 }
 function h(value) {
-    const height = Dimensions.get("window").height / 100; // now height is 1% of screen height
-    return height * value;
+  const height = Dimensions.get("window").height / 100; // now height is 1% of screen height
+  return height * value;
 }
 
 
@@ -68,17 +68,16 @@ function AddNewProjectFrom() {
         setSelectedPriority(priority);
     };
 
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
-    const handleSportSelection = (sport) => {
-        addAssignedForItem(sport);
-        toggleModal();
-    };
+  const handleSportSelection = (sport) => {
+    addAssignedForItem(sport);
+    toggleModal();
+  };
 
-    const navigation = useNavigation()
-
+  const navigation = useNavigation();
 
     const [enteredProjectName, setEnteredProjectName] = useState("");
     const [enteredDueDate, setEnteredDueDate] = useState("");
@@ -223,14 +222,13 @@ function AddNewProjectFrom() {
                         </Modal>
                     </View>
 
-
-                    <View style={{ marginTop: w(5) }}              //PRIORITY 
-                    >
-                        <View style={{ flexDirection: 'row', paddingTop: 10, }}>
-                            <Ionicons name="md-flag" size={28} color="#5cd669"
-                            />
-                            <Text style={styles.textStyle}>Priority</Text>
-                        </View>
+          <View
+            style={{ marginTop: w(5) }} //PRIORITY
+          >
+            <View style={{ flexDirection: "row", paddingTop: 10 }}>
+              <Ionicons name="md-flag" size={28} color="#5cd669" />
+              <Text style={styles.textStyle}>Priority</Text>
+            </View>
 
                         <ScrollView horizontal={true}
                             showsHorizontalScrollIndicator={false}>
@@ -288,14 +286,18 @@ function AddNewProjectFrom() {
                     <SubmitButton onPress={()=>{
                         if(validateForm())
                         {
-                        ToastAndroid.show(
-                            "Project Added Successfully",
-                            ToastAndroid.SHORT
-                          );}
+                            Toast.showWithGravity(
+                                'Project Added Sucessfully.',
+                                Toast.SHORT,
+                                Toast.BOTTOM,
+                              );
+                        
+                        }
                           else{
-                            ToastAndroid.show(
-                                "Please fill details",
-                                ToastAndroid.SHORT
+                            Toast.showWithGravity(
+                                'Please fill all details.',
+                                Toast.SHORT,
+                                Toast.BOTTOM,
                               );
                           }
                     }} color={"#d68eeb"}> Add Project</SubmitButton>
@@ -307,46 +309,39 @@ function AddNewProjectFrom() {
 
 
             {isDatePickerVisible && (
-                <DateTimePicker
-                    value={selectedDate}
-                    mode="date"
-                    is24Hour={true}
-                    display="default"
+              <DateTimePicker
+              value={selectedDate}
+              mode="date"
+              is24Hour={true}
+              display="default"
                     onChange={handleDateChange}
                 />
             )}
-
-
         </View>
-
-
-
-    )
+  );
 }
-export default AddNewProjectFrom
+export default AddNewProjectFrom;
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-
-    },
-    textStyle: {
-        marginLeft: 5,
-        fontSize: dynamicFontSize * 1,
-        fontWeight: '500'
-    },
-    borderContainer: {
-        padding: w(3),
-        borderWidth: 2,
-        borderColor: 'black',
-        borderRadius: w(4),
-        justifyContent: 'center',
-        backgroundColor: 'white',
-
-    },
-    modalContainer: {
-        flex: 1,
-        backgroundColor: 'white',
-        justifyContent: 'flex-end',
-    },
-})
+  container: {
+    padding: 10,
+  },
+  textStyle: {
+    marginLeft: 5,
+    fontSize: dynamicFontSize * 1,
+    fontWeight: "500",
+  },
+  borderContainer: {
+    padding: w(3),
+    borderWidth: 2,
+    borderColor: "black",
+    borderRadius: w(4),
+    justifyContent: "center",
+    backgroundColor: "white",
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "white",
+    justifyContent: "flex-end",
+  },
+});

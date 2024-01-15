@@ -1,9 +1,10 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
+import React, { useState } from "react";
 import {
   FlatList,
   Image,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -11,8 +12,19 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import DashboardData from "../components/DashboardData";
+import PriorityItem from "../components/PriorityItem";
+import AssignTask from "./AssignTask";
+import AssignTaskFlatList from "../components/AssignTaskFlatList";
+import ProjectListFlatList from "../components/ProjectListFlatList";
+import TasksData from "../components/TasksData";
 
 export default function DashBoard({ navigation }) {
+  const [selectedPriority, setSelectedPriority] = useState(null);
+
+  const selectPriority = (priority) => {
+    setSelectedPriority(priority);
+  };
+
   const CurvedGridItem = ({ navigation, item }) => {
     function navigationHandler() {
       if (item.title === "Add New Projects") {
@@ -32,7 +44,8 @@ export default function DashBoard({ navigation }) {
       <Pressable onPress={navigationHandler} style={styles.itemContainer}>
         <LinearGradient
           colors={[item.color, item.color]} // Change colors as per your preference
-          style={styles.gradient}>
+          style={styles.gradient}
+        >
           <View style={styles.textContainer}>
             <Text style={styles.text}>{item.count}</Text>
             <Ionicons size={24} name="ellipsis-horizontal-circle-outline" />
@@ -93,6 +106,39 @@ export default function DashBoard({ navigation }) {
           scrollEnabled={false}
           keyExtractor={(item) => item.id}
         />
+        <Text
+          style={{
+            fontSize: 18,
+            color: "black",
+            fontWeight: "600",
+            margin: 8,
+          }}
+        >
+          Recent Ongoing Projects
+        </Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ marginTop: 8 }}
+        >
+          <FlatList
+            data={DashboardData}
+            horizontal
+            scrollEnabled={false}
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+            bounces={false}
+            renderItem={({ item }) => (
+              <PriorityItem
+                item={item}
+                onSelect={selectPriority}
+                isSelected={selectedPriority && selectedPriority.id === item.id}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+          /> 
+        </ScrollView>
+
       </View>
     </SafeAreaView>
   );

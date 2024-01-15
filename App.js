@@ -9,8 +9,12 @@ import DashBoard from "./screens/DashBoard";
 import AddNewProjects from "./screens/AddNewProjects";
 import AssignedProject from "./screens/AssignedProject";
 import Projectlist from "./screens/Projectlist";
-import AssignTask from "./screens/AssignTask";import TimeSheet from './screens/TimeSheet';
-import TaskList from './screens/TaskList';
+import AssignTask from "./screens/AssignTask";
+import TimeSheet from "./screens/TimeSheet";
+import TaskList from "./screens/TaskList";
+import AssignedTaskDetails from "./screens/AssignedTaskDetails";
+
+
 import ContextProvider from "./store/context";
 
 
@@ -24,9 +28,15 @@ export default function App() {
         <Stack.Screen name="Onboarding" component={OnBoarding} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Dashboard" component={DashBoard} />
-        <Stack.Screen name="AssignedProject" component={AssignedProject} options={{ headerShown: false,
+        <Stack.Screen
+          name="AssignedProject"
+          component={AssignedProject}
+          options={{
+            headerShown: false,
             presentation: "modal",
-            animation: "slide_from_left",}} />
+            animation: "slide_from_left",
+          }}
+        />
         <Stack.Screen
           name="Projectlist"
           component={Projectlist}
@@ -45,15 +55,23 @@ export default function App() {
             animation: "slide_from_left",
           }}
         />
-        <Stack.Screen name="AddNewProjects" component={AddNewProjects} options={{
+        <Stack.Screen
+          name="AddNewProjects"
+          component={AddNewProjects}
+          options={{
             headerShown: false,
             presentation: "modal",
             animation: "slide_from_right",
-          }} />
-       
-      <Stack.Screen name='TaskList' component={TaskList}/>
-    </Stack.Navigator>
-    </ContextProvider>
+          }}
+        />
+
+        <Stack.Screen name="TaskList" component={TaskList} />
+        <Stack.Screen
+          name="AssignedTaskDetails"
+          component={AssignedTaskDetails}
+        />
+      </Stack.Navigator>
+      </ContextProvider>
     </NavigationContainer>
   );
 }

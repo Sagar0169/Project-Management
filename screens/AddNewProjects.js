@@ -1,12 +1,6 @@
 import AddNewProjectFrom from "../components/AddProjectForm";
 
-
-function AddNewProjects(){
-    return(
-    
-   <AddNewProjectFrom/>
-    
- )
-
+function AddNewProjects() {
+  return <AddNewProjectFrom />;
 }
- export default AddNewProjects;
+export default AddNewProjects;
