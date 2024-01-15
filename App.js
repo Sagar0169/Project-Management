@@ -15,11 +15,17 @@ import TaskList from "./screens/TaskList";
 import AssignedTaskDetails from "./screens/AssignedTaskDetails";
 import AssignNewTask from "./screens/AssignNewTasks";
 
+
+import ContextProvider from "./store/context";
+
+
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <ContextProvider>
+      
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Onboarding" component={OnBoarding} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Dashboard" component={DashBoard} />
@@ -64,12 +70,18 @@ export default function App() {
         <Stack.Screen
           name="AssignedTaskDetails"
           component={AssignedTaskDetails}
+          options={{
+            headerShown: false,
+            presentation: "modal",
+            animation: "slide_from_right",
+          }}
         />
          <Stack.Screen
           name="AssignNewTask"
           component={AssignNewTask}
         />
       </Stack.Navigator>
+      </ContextProvider>
     </NavigationContainer>
   );
 }

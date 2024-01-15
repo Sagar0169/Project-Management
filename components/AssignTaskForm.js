@@ -2,14 +2,14 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useState } from "react";
 import {
-    Image,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
-    Modal,
-    TextInput
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Modal,
+  TextInput,
 } from "react-native";
 import SubmitButton from "./ui/SubmitButton";
 import Toast from "react-native-simple-toast";
@@ -436,42 +436,41 @@ function AssignTaskForm() {
         </View>
     )
 }
-export default AssignTaskForm
+export default AssignTaskForm;
 
 const styles = StyleSheet.create({
-    rootContainer: {
-        flex: 1,
-        paddingTop: 40,
-        backgroundColor: "#e5af54",
-    },
-    viewBox: {
-        backgroundColor: "#f5f5f5",
-        elevation: 2,
-        paddingVertical: 8,
-        paddingHorizontal: 8,
-        marginHorizontal: 8,
-        marginVertical: 8,
+  rootContainer: {
+    flex: 1,
+    paddingTop: 40,
+    backgroundColor: "#e5af54",
+  },
+  viewBox: {
+    backgroundColor: "#f5f5f5",
+    elevation: 2,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    marginHorizontal: 8,
+    marginVertical: 8,
+  },
+  viewBoxBorder: {
+    backgroundColor: "#f5f5f5",
+    elevation: 2,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    marginHorizontal: 8,
+    borderWidth: 1,
+    borderColor: "black",
+  },
 
-    },
-    viewBoxBorder: {
-        backgroundColor: "#f5f5f5",
-        elevation: 2,
-        paddingVertical: 8,
-        paddingHorizontal: 8,
-        marginHorizontal: 8,
-        borderWidth: 1,
-        borderColor: 'black'
-    },
-
-    viewText: {
-        color: "#DFA242",
-        fontSize: 20,
-        marginHorizontal: 4,
-        fontWeight: "600",
-    },
-    modalContainer: {
-        flex: 1,
-        backgroundColor: "white",
-        justifyContent: "flex-end",
-    },
+  viewText: {
+    color: "#DFA242",
+    fontSize: 20,
+    marginHorizontal: 4,
+    fontWeight: "600",
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "white",
+    justifyContent: "flex-end",
+  },
 });

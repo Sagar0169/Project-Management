@@ -65,6 +65,7 @@ function RecentProjectFlatList({ item }) {
               marginEnd: 6,
               borderRadius: 18,
               borderWidth: 2,
+              overflow:'hidden',
               paddingHorizontal: 16,
               paddingVertical: 6,
               backgroundColor: priorityColor,
@@ -78,6 +79,7 @@ function RecentProjectFlatList({ item }) {
               marginEnd: 6,
               borderRadius: 18,
               borderWidth: 2,
+              overflow:'hidden',
               paddingHorizontal: 16,
               paddingVertical: 6,
               backgroundColor: complexityColor,
@@ -142,6 +144,7 @@ const styles = StyleSheet.create({
   borderContainer: {
     margin: w(1),
     borderWidth: 2,
+    overflow:'hidden',
     borderColor: "black",
     borderRadius: w(6),
     backgroundColor: "white",
