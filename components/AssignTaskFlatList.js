@@ -9,15 +9,16 @@ import {
   Pressable,
 } from "react-native";
 import TasksData from "./TasksData";
+import { useSearch } from "../store/search-redux";
 
-const ProjectDetails = ({ item,navigation }) => {
+const ProjectDetails = ({ item, navigation }) => {
   // const navigation = useNavigation();
   function detailsHandler() {
     navigation.navigate("AssignedTaskDetails", { ID: item });
   }
   if (item.id !== "placeholder") {
     return (
-      <Pressable style={styles.itemContainer2}>
+      <Pressable style={styles.itemContainer2} onPress={detailsHandler}>
         <View
           style={{
             flexDirection: "row",
@@ -46,7 +47,9 @@ const ProjectDetails = ({ item,navigation }) => {
   }
 };
 
-const AssignTaskFlatList = ({navigation}) => {
+const AssignTaskFlatList = ({ navigation }) => {
+  const { searchQuery, setSearchQuery } = useSearch();
+
   const generateRandomProjectName = () => {
     const adjectives = ["Red", "Blue", "Green", "Yellow", "Purple", "Orange"];
     const nouns = ["Project", "Task", "Assignment", "Job", "Mission"];
@@ -62,16 +65,44 @@ const AssignTaskFlatList = ({navigation}) => {
     progress: Math.random(),
     riskPriority: index % 3 === 0 ? "low" : index % 3 === 1 ? "medium" : "high",
   }));
+
+  useEffect(() => {
+    return () => {
+      setSearchQuery("");
+    };
+  }, []);
+
+  const filteredData = TasksData.filter((item) =>
+    item.Assigned.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   return (
     <FlatList
-      data={TasksData}
-      renderItem={({ item }) => <ProjectDetails item={item} navigation={navigation} />}
+      data={filteredData}
+      renderItem={({ item }) => (
+        <ProjectDetails item={item} navigation={navigation} />
+      )}
       keyExtractor={(item, index) => `${item.id}-${index}`}
+      ListEmptyComponent={() => (
+        <View style={styles.noDataContainer}>
+        <View style={styles.noDataContainer}>
+          <Text style={styles.noDataText}>No Data Found</Text>
+        </View>
+        </View>
+      )}
     />
   );
 };
 
 const styles = StyleSheet.create({
+  noDataContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noDataText: {
+    fontSize: 18,
+    color: "#666666",
+  },
   itemContainer: {
     flex: 1,
     margin: 8,

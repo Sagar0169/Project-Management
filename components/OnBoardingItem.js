@@ -6,6 +6,7 @@ import {
   StyleSheet,
 } from "react-native";
 import React from "react";
+import { Colors } from "../Utilities/Colors";
 
 export default function OnBoardingItem({ item }) {
   const { width } = useWindowDimensions();
@@ -39,12 +40,12 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     fontSize: 28,
     marginBottom: 10,
-    color: "#493d8a",
+    color: Colors.darkPurple,
     textAlign: "center",
   },
   description: {
     fontWeight: "800",
-    color: "#493d8a",
+    color: Colors.darkPurple,
     textAlign: "center",
     paddingHorizontal: 64,
   },

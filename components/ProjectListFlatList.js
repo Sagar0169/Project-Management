@@ -8,6 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import TasksData from "./TasksData";
+import { useSearch } from "../store/search-redux";
 
 const ProjectDetails = ({ item }) => {
   if (item.id !== "placeholder") {
@@ -42,6 +43,8 @@ const ProjectDetails = ({ item }) => {
 };
 
 const ProjectListFlatList = ({}) => {
+  const { searchQuery, setSearchQuery } = useSearch();
+
   const generateRandomProjectName = () => {
     const adjectives = ["Red", "Blue", "Green", "Yellow", "Purple", "Orange"];
     const nouns = ["Project", "Task", "Assignment", "Job", "Mission"];
@@ -57,16 +60,40 @@ const ProjectListFlatList = ({}) => {
     progress: Math.random(),
     riskPriority: index % 3 === 0 ? "low" : index % 3 === 1 ? "medium" : "high",
   }));
+
+  useEffect(() => {
+    return () => {
+      setSearchQuery("");
+    };
+  }, []);
+
+  const filteredData = TasksData.filter((item) =>
+    item.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   return (
     <FlatList
-      data={TasksData}
+      data={filteredData}
       renderItem={({ item }) => <ProjectDetails item={item} />}
       keyExtractor={(item, index) => `${item.id}-${index}`}
+      ListEmptyComponent={() => (
+        <View style={styles.noDataContainer}>
+          <Text style={styles.noDataText}>No Data Found</Text>
+        </View>
+      )}
     />
   );
 };
 
 const styles = StyleSheet.create({
+  noDataContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noDataText: {
+    fontSize: 18,
+    color: "#666666",
+  },
   itemContainer: {
     flex: 1,
     margin: 8,
@@ -81,14 +108,14 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     paddingVertical: 4,
     borderWidth: 1,
-    borderColor:'#98C09C'
+    borderColor: "#98C09C",
   },
   viewBox: {
     backgroundColor: "#f5f5f5",
     elevation: 2,
     paddingVertical: 8,
-    paddingHorizontal:8,
-    marginHorizontal:8,
+    paddingHorizontal: 8,
+    marginHorizontal: 8,
   },
   gradient: {
     flex: 1,

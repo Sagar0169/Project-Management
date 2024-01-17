@@ -106,9 +106,9 @@ function AddNewProjectFrom() {
     };
 
 
-    const showDatePicker = () => {
-        setDatePickerVisibility(true);
-    };
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
 
     const hideDatePicker = () => {
         setDatePickerVisibility(false);

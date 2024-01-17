@@ -1,4 +1,4 @@
-export default [
+export default moviesData= [
   {
     id: "0",
     title: "Welcome to TeamSync",
