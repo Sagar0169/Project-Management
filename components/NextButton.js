@@ -2,6 +2,7 @@ import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useRef } from "react";
 import Svg, { G, Circle } from "react-native-svg";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Colors } from "../Utilities/Colors";
 
 
 const NextButton = ({ percentage, scrollTo }) => {
@@ -47,7 +48,7 @@ const NextButton = ({ percentage, scrollTo }) => {
         <G rotation="-90" origin={center}>
           <Circle
             fill="transparent"
-            stroke="#E6E7E8"
+            stroke={Colors.strokeWhite}
             cx={center}
             cy={center}
             r={radius}
@@ -57,7 +58,7 @@ const NextButton = ({ percentage, scrollTo }) => {
           <Circle
             ref={progressRef}
             fill="transparent" // Add fill to make the circle transparent
-            stroke="#ffb814"
+            stroke={Colors.strokeYellow}
             cx={center}
             cy={center}
             r={radius}
@@ -71,7 +72,7 @@ const NextButton = ({ percentage, scrollTo }) => {
         style={styles.button}
         activeOpacity={0.6}
       >
-        <Ionicons name="arrow-forward-outline" size={32} color="#fff" />
+        <Ionicons name="arrow-forward-outline" size={32} color={Colors.lightWhite} />
       </TouchableOpacity>
     </View>
   );
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
   },
   button: {
     position: "absolute",
-    backgroundColor: "#000c2a",
+    backgroundColor: Colors.darkBlue,
     borderRadius: 100,
     padding: 20,
   },

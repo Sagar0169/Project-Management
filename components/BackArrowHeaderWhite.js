@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, Pressable, Image, TextInput } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import { useSearch } from "../store/search-redux";
 
 export default function BackArrowHeaderWhite({
   title,
@@ -11,7 +12,8 @@ export default function BackArrowHeaderWhite({
   showSearch,
   color,
 }) {
-  const [searchQuery, setSearchQuery] = useState();
+  const { searchQuery, setSearchQuery } = useSearch();
+
 
   return (
     <LinearGradient

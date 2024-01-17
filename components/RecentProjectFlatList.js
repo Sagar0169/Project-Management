@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useEffect, useRef } from "react";
+import { Colors } from "../Utilities/Colors";
 
 function RecentProjectFlatList({ item }) {
   const animatedValue = useRef(new Animated.Value(0)).current;
@@ -31,22 +32,22 @@ function RecentProjectFlatList({ item }) {
   });
   const priorityColor =
     item.Priority === "Low"
-      ? "#5cd669"
+      ? Colors.lowPriority
       : item.Priority === "High"
-      ? "#ffb1b1"
-      : "#f6bb54";
+      ? Colors.highPriority
+      : Colors.mediumPriority;
   const complexityColor =
     item.TaskComplexity === "Low"
-      ? "#e9a5ff"
+      ? Colors.lowComplexity
       : item.TaskComplexity === "High"
-      ? "#9d9bff"
-      : "#f6bb54";
+      ? Colors.highComplexity
+      : Colors.mediumComplexity;
   return (
     <Animated.View style={[styles.item, { transform: [{ translateY }] }]}>
       <Pressable style={styles.borderContainer}>
         <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
           <View style={{ width: w(80) }}>
-            <Text style={{ color: "black", fontWeight: "500", fontSize: 16 }}>
+            <Text style={{ color: Colors.black, fontWeight: "500", fontSize: 16 }}>
               {item.title}
             </Text>
           </View>
@@ -61,7 +62,7 @@ function RecentProjectFlatList({ item }) {
         >
           <Text
             style={{
-              color: "black",
+              color: Colors.black,
               marginEnd: 6,
               borderRadius: 18,
               borderWidth: 2,
@@ -75,7 +76,7 @@ function RecentProjectFlatList({ item }) {
           </Text>
           <Text
             style={{
-              color: "black",
+              color: Colors.black,
               marginEnd: 6,
               borderRadius: 18,
               borderWidth: 2,
@@ -152,6 +153,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    color: "black",
+    color: Colors.black,
   },
 });

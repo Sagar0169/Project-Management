@@ -18,8 +18,6 @@ import Input from "./Input";
 import PriorityData from "./PriorityData";
 // import Toast from "react-native-simple-toast";
 
-
-
 import AssignedForData from "./AssignedForData";
 import PriorityItem from "./PriorityItem";
 import SubmitButton from "./ui/SubmitButton";
@@ -53,24 +51,22 @@ function AddNewProjectFrom() {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+  const [isModalVisible2, setModalVisible2] = useState(false);
+  const [isModalVisible3, setModalVisible3] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
 
-    const [isModalVisible2, setModalVisible2] = useState(false);
-    const [isModalVisible3, setModalVisible3] = useState(false);
-    const [isModalVisible, setModalVisible] = useState(false);
+  const showModal = () => {
+    setModalVisible2(true);
+  };
 
-    const showModal = () => {
-      setModalVisible2(true);
-    };
-  
-    const hideModal = () => {
-      setModalVisible2(false);
-      setModalVisible3(false);
-    };
-  
+  const hideModal = () => {
+    setModalVisible2(false);
+    setModalVisible3(false);
+  };
 
-    const showDatePicker = () => {
-        setDatePickerVisibility(true);
-    };
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
 
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
@@ -84,8 +80,7 @@ function AddNewProjectFrom() {
     }
   };
 
-   
-    const [selectedPriority, setSelectedPriority] = useState(null);
+  const [selectedPriority, setSelectedPriority] = useState(null);
 
   const selectPriority = (priority) => {
     setSelectedPriority(priority);
@@ -297,85 +292,112 @@ function AddNewProjectFrom() {
               <Text style={styles.textStyle}>Priority</Text>
             </View>
 
-                        <ScrollView horizontal={true}
-                            showsHorizontalScrollIndicator={false}>
-                            <View style={{ flexDirection: 'row', marginTop: w(5), alignItems: 'center' }}>
-                                <View style={{ flex: 1 }}>
-                                    <FlatList
-                                        data={priorityItems}
-                                        horizontal
-                                        scrollEnabled={false}
-                                        showsHorizontalScrollIndicator={false}
-                                        pagingEnabled
-                                        bounces={false}
-                                        renderItem={({ item }) => <PriorityItem item={item} onSelect={selectPriority}
-                                            isSelected={selectedPriority && selectedPriority.id === item.id}
-                                        />}
-                                        keyExtractor={(item) => item.id}
-                                    />
-                                </View>
-
-                            </View>
-                        </ScrollView>
-
-                    </View>
-                    <View style={{ marginTop: w(5) }}>
-                        <View style={{ flexDirection: 'row', paddingTop: 10 }}>
-                            <Ionicons name="attach-sharp" size={32} color="#ffa5a5"
-                                style={{ transform: [{ rotate: '90deg' }] }}
-                            />
-                            <Text style={styles.textStyle}>Attachments</Text>
-                        </View>
-                        <View style={[styles.borderContainer, { marginTop: w(5) }]}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Ionicons name="document" size={30} color="#F32323" />
-                                <Text style={{ fontSize: dynamicFontSize * 1 }}> Requirements</Text>
-                            </View>
-
-                        </View>
-                        <View style={[styles.borderContainer, { marginTop: w(5) }]}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Ionicons name="document" size={30} color="#F32323" />
-                                <Text style={{ fontSize: dynamicFontSize * 1 }}> SRS</Text>
-                            </View>
-
-                        </View>
-                        <View style={[styles.borderContainer, { marginTop: w(5) }]}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Ionicons name="document" size={30} color="#F32323" />
-                                <Text style={{ fontSize: dynamicFontSize * 1 }}> Documentation</Text>
-                            </View>
-                        </View>
-
-                    </View>
-                </View>
-                <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: w(5) }}>
-                    <SubmitButton onPress={()=>{
-                        if(validateForm())
-                        {
-                            setModalVisible2(true)
-                        
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: w(5),
+                  alignItems: "center",
+                }}
+              >
+                <View style={{ flex: 1 }}>
+                  <FlatList
+                    data={priorityItems}
+                    horizontal
+                    scrollEnabled={false}
+                    showsHorizontalScrollIndicator={false}
+                    pagingEnabled
+                    bounces={false}
+                    renderItem={({ item }) => (
+                      <PriorityItem
+                        item={item}
+                        onSelect={selectPriority}
+                        isSelected={
+                          selectedPriority && selectedPriority.id === item.id
                         }
-                          else{
-                            setModalVisible3(true)
-                          }
-                    }} color={"#d68eeb"}> Add Project</SubmitButton>
-
+                      />
+                    )}
+                    keyExtractor={(item) => item.id}
+                  />
                 </View>
-                {isModalVisible2&& <CustomModal
-                                visible={isModalVisible2}
-                                message="Project Added Sucessfully."
-                                onHide={hideModal}
-                              />}
-                               {isModalVisible3&& <CustomModal
-                                visible={isModalVisible3}
-                                message="Please fill all details."
-                                onHide={hideModal}
-                              />}
-
+              </View>
             </ScrollView>
-
-
+          </View>
+          <View style={{ marginTop: w(5) }}>
+            <View style={{ flexDirection: "row", paddingTop: 10 }}>
+              <Ionicons
+                name="attach-sharp"
+                size={32}
+                color="#ffa5a5"
+                style={{ transform: [{ rotate: "90deg" }] }}
+              />
+              <Text style={styles.textStyle}>Attachments</Text>
+            </View>
+            <View style={[styles.borderContainer, { marginTop: w(5) }]}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Ionicons name="document" size={30} color="#F32323" />
+                <Text style={{ fontSize: dynamicFontSize * 1 }}>
+                  {" "}
+                  Requirements
+                </Text>
+              </View>
+            </View>
+            <View style={[styles.borderContainer, { marginTop: w(5) }]}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Ionicons name="document" size={30} color="#F32323" />
+                <Text style={{ fontSize: dynamicFontSize * 1 }}> SRS</Text>
+              </View>
+            </View>
+            <View style={[styles.borderContainer, { marginTop: w(5) }]}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Ionicons name="document" size={30} color="#F32323" />
+                <Text style={{ fontSize: dynamicFontSize * 1 }}>
+                  {" "}
+                  Documentation
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginVertical: w(5),
+          }}
+        >
+          <SubmitButton
+            onPress={() => {
+              if (validateForm()) {
+                setModalVisible2(true);
+              } else {
+                setModalVisible3(true);
+              }
+            }}
+            color={"#d68eeb"}
+          >
+            {" "}
+            Add Project
+          </SubmitButton>
+        </View>
+        {isModalVisible2 && (
+          <CustomModal
+            visible={isModalVisible2}
+            message="Project Added Sucessfully."
+            onHide={hideModal}
+          />
+        )}
+        {isModalVisible3 && (
+          <CustomModal
+            visible={isModalVisible3}
+            message="Please fill all details."
+            onHide={hideModal}
+          />
+        )}
+      </ScrollView>
 
       {isDatePickerVisible && (
         <DateTimePicker

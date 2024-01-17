@@ -1,4 +1,3 @@
-
 import {
   View,
   Image,
@@ -8,19 +7,58 @@ import {
   Pressable,
 } from "react-native";
 
-
 import LoginForm from "../components/LoginForm";
 import SubmitButton from "../components/ui/SubmitButton";
 import SvgSelector from "../components/SvgSelector";
 import { useNavigation } from "@react-navigation/native";
+import { Colors } from "../Utilities/Colors";
+import { Strings } from "../Utilities/Strings";
 
 function Login() {
   const { width, height } = Dimensions.get("window");
 
   const navigation = useNavigation();
+
   function dashboardHandler() {
-    navigation.navigate("Dashboard");
+    // navigation.navigate("Dashboard");
+    navigation.navigate("Music");
   }
+
+  const handleLoginValidation = (email, password) => {
+    // Basic email validation
+    if (!email.trim()) {
+      alert("Email cannot be empty");
+      return false;
+    }
+
+    // Basic password validation
+    if (!password.trim()) {
+      alert("Password cannot be empty");
+      return false;
+    }
+
+    // More advanced email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert("Invalid email format");
+      return false;
+    }
+    
+    if (password.length < 8) {
+      alert("Password must be at least 8 characters long");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleLoginFormSubmit = (email, password) => {
+    if (handleLoginValidation(email, password)) {
+      // Your login logic here
+      alert("Login successful!");
+      dashboardHandler();
+    }
+  };
   // Calculate a scaling factor based on the screen width
   const scaleFactor = width / 375; // Adjust 375 based on your design reference width
 
@@ -44,20 +82,20 @@ function Login() {
         <Text
           style={{
             textAlign: "center",
-            color: "#171716",
+            color: Colors.loginBlue,
             marginTop: 25,
             fontSize: dynamicFontSize * 1.7,
             fontWeight: 700,
           }}
         >
-          PROJECT MANAGEMENT SYSTEM
+          {Strings.project_management_system}
         </Text>
       </View>
 
       <View
         style={{
           marginTop: 40,
-          backgroundColor: "white",
+          backgroundColor: Colors.white,
           padding: 10,
           width: w(98),
           borderRadius: 20,
@@ -69,7 +107,7 @@ function Login() {
           <Text
             style={{
               textAlign: "center",
-              color: "#171716",
+              color: Colors.loginBlue,
               marginTop: 20,
               fontSize: dynamicFontSize * 1.7,
               fontWeight: 700,
@@ -79,23 +117,8 @@ function Login() {
           </Text>
         </View>
         <View style={{ marginTop: 20, marginHorizontal: 5 }}>
-          <LoginForm />
-        </View>
-        <View>
-          <Pressable>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "flex-end",
-                padding: 10,
-              }}
-            >
-              <Text style={{ fontSize: 16 }}>Forget Password?</Text>
-            </View>
-          </Pressable>
-        </View>
-        <View style={{ marginTop: 20, alignItems: "center" }}>
-          <SubmitButton onPress={dashboardHandler} color='black'>SUBMIT</SubmitButton>
+          <LoginForm onSubmit={dashboardHandler} />
+          {/* change onSubmit to handlerLoginFormSubmit for validation */}
         </View>
       </View>
     </View>
