@@ -17,6 +17,7 @@ import AssignNewTask from "./screens/AssignNewTasks";
 
 
 import ContextProvider from "./store/context";
+import CreateNewIssues from "./screens/CreateNewIssues";
 
 
 const Stack = createNativeStackNavigator();
@@ -79,6 +80,10 @@ export default function App() {
          <Stack.Screen
           name="AssignNewTask"
           component={AssignNewTask}
+        />
+         <Stack.Screen
+          name="CreateNewIssues"
+          component={CreateNewIssues}
         />
       </Stack.Navigator>
       </ContextProvider>
