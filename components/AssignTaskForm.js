@@ -15,7 +15,8 @@ import SubmitButton from "./ui/SubmitButton";
 // import Toast from "react-native-simple-toast";
 
 import BottomSheetDesign2 from "./BottomSheetDesign2";
-import AssignedForData from "./AssignedForData";
+
+
 
 
 //CHANGE MULTIPLE SELECTION FROM BOTTOMSHEET2

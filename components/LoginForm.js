@@ -1,13 +1,14 @@
-import { View, Alert, StyleSheet } from "react-native";
-
-import { useState } from "react";
+import React, { useState } from "react";
+import { Button, Pressable, Text, View } from "react-native";
 import Input from "./Input";
+import SubmitButton from "./ui/SubmitButton";
+import { Colors } from "../Utilities/Colors";
 
-function LoginForm() {
+function LoginForm({ onSubmit }) {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
 
-  function onChangeText(inputType, enteredValue) {
+  const onChangeText = (inputType, enteredValue) => {
     switch (inputType) {
       case "email":
         setEnteredEmail(enteredValue);
@@ -16,18 +17,19 @@ function LoginForm() {
         setEnteredPassword(enteredValue);
         break;
     }
-  }
-  const [isChecked, setChecked] = useState(false);
+  };
 
-  // const handleToggle = () => {
-  //     setChecked(!isChecked);
-  // };
+  const  handleFormSubmit = () => {
+    onSubmit(enteredEmail, enteredPassword);
+  };
+
   return (
     <View>
       <View>
         <Input
           label="Email Id"
-          secure={false} onUpdateValue={onChangeText.bind(this, "email")}
+          secure={false}
+          onUpdateValue={onChangeText.bind(this, "email")}
           value={enteredEmail}
         />
       </View>
@@ -39,8 +41,26 @@ function LoginForm() {
           value={enteredPassword}
         />
       </View>
+      <View>
+          <Pressable>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                padding: 10,
+              }}
+            >
+              <Text style={{ fontSize: 16 }}>Forget Password?</Text>
+            </View>
+          </Pressable>
+        </View>
+        <View style={{ marginTop: 20, alignItems: "center" }}>
+          <SubmitButton onPress={handleFormSubmit} color={Colors.black}>
+            SUBMIT
+          </SubmitButton>
+        </View>
     </View>
   );
 }
+
 export default LoginForm;
-const styles = StyleSheet.create({});

@@ -1,4 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Animated,
@@ -11,15 +12,10 @@ import {
   Text,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { LinearGradient } from "expo-linear-gradient";
 import DashboardData from "../components/DashboardData";
-import PriorityItem from "../components/PriorityItem";
-import AssignTask from "./AssignTask";
-import AssignTaskFlatList from "../components/AssignTaskFlatList";
-import ProjectListFlatList from "../components/ProjectListFlatList";
-import TasksData from "../components/TasksData";
 import RecentProjectFlatList from "../components/RecentProjectFlatList";
+import TasksData from "../components/TasksData";
+import { Colors } from "../Utilities/Colors";
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width
@@ -90,20 +86,20 @@ export default function DashBoard({ navigation }) {
     }
     return (
       <Pressable onPress={navigationHandler} style={styles.itemContainer}>
-          <LinearGradient
-            colors={[item.color, item.color]} // Change colors as per your preference
-            style={styles.gradient}
-          >
-            <View style={styles.textContainer}>
-              <Text style={styles.text}>{item.count}</Text>
-              <Ionicons size={24} name="ellipsis-horizontal-circle-outline" />    
-            </View>
-            <Text style={styles.text2}>{item.title}</Text>
-            <Image
-              source={item.image}
-              style={{ width: "100%", height: 100, resizeMode: "cover" }}
-            />
-          </LinearGradient>
+        <LinearGradient
+          colors={[item.color, item.color]} // Change colors as per your preference
+          style={styles.gradient}
+        >
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>{item.count}</Text>
+            <Ionicons size={24} name="ellipsis-horizontal-circle-outline" />
+          </View>
+          <Text style={styles.text2}>{item.title}</Text>
+          <Image
+            source={item.image}
+            style={{ width: "100%", height: 100, resizeMode: "cover" }}
+          />
+        </LinearGradient>
       </Pressable>
     );
   };
@@ -133,7 +129,7 @@ export default function DashBoard({ navigation }) {
         <Text
           style={{
             fontSize: 18,
-            color: "black",
+            color: Colors.black,
             fontWeight: "600",
             margin: 8,
           }}
@@ -159,7 +155,7 @@ export default function DashBoard({ navigation }) {
           <Text
             style={{
               fontSize: 18,
-              color: "black",
+              color: Colors.black,
               fontWeight: "600",
               margin: 8,
             }}
@@ -193,7 +189,7 @@ const styles = StyleSheet.create({
     margin: 8,
     borderRadius: 15,
     overflow: "hidden",
-    borderColor: "black",
+    borderColor: Colors.black,
     borderWidth: 2, // Set the border width to the desired value
   },
   textContainer: {
@@ -205,7 +201,7 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
     borderRadius: 15,
-    backgroundColor: "black",
+    backgroundColor: Colors.black,
     width: "100%",
     height: 150,
   },
@@ -222,13 +218,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   text: {
-    color: "black",
+    color: Colors.black,
     fontWeight: "bold",
     fontSize: 35,
     alignSelf: "flex-start", // Align the text to the left
   },
   text2: {
-    color: "black",
+    color: Colors.black,
     fontWeight: "400",
     fontSize: 18,
     marginHorizontal: 6,

@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import MilestonePage from "../components/MilestonePage";
 import TimeSheet from "./TimeSheet";
+import IssuesProject from "./IssuesProject";
 
 export default function AssignedProject({ navigation }) {
   const { width, height } = Dimensions.get("window");
@@ -20,13 +21,12 @@ export default function AssignedProject({ navigation }) {
   // const fontSize=FontSize font={16}
   function w(value) {
     const width = Dimensions.get("window").width / 100; // now width is 1% of screen width
-    return width*value
+    return width * value;
   }
   function h(value) {
     const height = Dimensions.get("window").height / 100; // now height is 1% of screen height
-    return height*value
+    return height * value;
   }
-
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
@@ -37,19 +37,20 @@ export default function AssignedProject({ navigation }) {
 
   const Milestone = () => (
     <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-      <MilestonePage/>
+      <MilestonePage />
     </View>
   );
 
   const Issues = () => (
     <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-      {/* Issues component content */}
+      
+      <IssuesProject navigation={navigation} />
     </View>
   );
 
   const Timesheet = () => (
     <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-   <TimeSheet/>
+      <TimeSheet />
     </View>
   );
 
@@ -89,21 +90,22 @@ export default function AssignedProject({ navigation }) {
     );
   }
   return (
-    <View style={{paddingTop:h(4),flex:1,backgroundColor:"#8e8cf3"}}>
-
-      <BackArrowHeader backButton={handlerBack} title="Assigned Projects" color={"#8e8cf3"} />
-      
-      <View style={{backgroundColor:'white', flex:1}}>
-
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{ width: 0, height: 0 }}
-        renderTabBar={renderTabBar}
+    <View style={{ paddingTop: h(4), flex: 1, backgroundColor: "#8e8cf3" }}>
+      <BackArrowHeader
+        backButton={handlerBack}
+        title="Assigned Projects"
+        color={"#8e8cf3"}
       />
-</View>
 
+      <View style={{ backgroundColor: "white", flex: 1 }}>
+        <TabView
+          navigationState={{ index, routes }}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          initialLayout={{ width: 0, height: 0 }}
+          renderTabBar={renderTabBar}
+        />
+      </View>
     </View>
   );
 }
