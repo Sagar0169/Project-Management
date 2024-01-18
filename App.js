@@ -103,6 +103,11 @@ export default function App() {
              <Stack.Screen
           name="CreateNewIssues"
           component={CreateNewIssues}
+          options={{
+            headerShown: false,
+            presentation: "modal",
+            animation: "slide_from_right",
+          }}
         />
       </Stack.Navigator>
         </ContextProvider>
