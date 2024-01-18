@@ -34,8 +34,8 @@ const IssuesProject = ({ navigation }) => {
   }
 
   const handleAddTaskPress = () => {
-    navigation.navigate("AssignNewTask");
-    console.log("pressed");
+    navigation.navigate("CreateNewIssues");
+    
   };
   return (
     <View style={{ flex: 1, backgroundColor: Colors.white }}>

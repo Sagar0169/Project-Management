@@ -19,6 +19,7 @@ import ContextProvider from "./store/context";
 import { SearchProvider } from "./store/search-redux";
 import IssuesProject from "./screens/IssuesProject";
 import Music from "./screens/Music";
+import CreateNewIssues from "./screens/CreateNewIssues";
 
 const Stack = createNativeStackNavigator();
 export default function App() {

@@ -32,6 +32,16 @@ export  const TaskGroup=[
     
     
 
+    
+]
+export  const ProjectGroup=[
+    { id: 1, title: "KhelSathi"},
+    { id: 2, title: "Hrms"},
+    { id: 3, title: "Icucaa"},
+    
+    
+    
+
 ]
 export  const Tasks=[
     { id: 1, title: "Design HomePagee"},

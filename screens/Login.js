@@ -20,8 +20,8 @@ function Login() {
   const navigation = useNavigation();
 
   function dashboardHandler() {
-    // navigation.navigate("Dashboard");
-    navigation.navigate("Music");
+    navigation.navigate("Dashboard");
+    // navigation.navigate("Music");
   }
 
   const handleLoginValidation = (email, password) => {
