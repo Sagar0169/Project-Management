@@ -22,8 +22,11 @@ import ContextProvider from "./store/context";
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
-    <NavigationContainer>
+    <>
+    <StatusBar  backgroundColor='transparent'/>
       <ContextProvider>
+    <NavigationContainer>
+        
       
   <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Onboarding" component={OnBoarding} />
@@ -79,10 +82,17 @@ export default function App() {
          <Stack.Screen
           name="AssignNewTask"
           component={AssignNewTask}
+          options={{
+            headerShown: false,
+            presentation: "modal",
+            animation: "slide_from_right",
+          }}
         />
       </Stack.Navigator>
-      </ContextProvider>
     </NavigationContainer>
+      </ContextProvider>
+    </>
+
   );
 }
 

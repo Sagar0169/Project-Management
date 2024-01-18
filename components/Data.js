@@ -63,3 +63,38 @@ export const DataSet=[
     {id:1,date:"10/09/2023",project:"Udid",taskGroup:"UI",task:"Correcting UI",issue:"UI",activity:"Done Correction in ui",fromTime:"09:00",toTime:"20:00",workingHours:"12:00",billingHours:"12:00",description:"testing",taskStatus:"In Progress"}
     ,{id:2,date:"10/09/2023",project:"BharatEmart",taskGroup:"UI",task:"Correcting UI",issue:"UI",activity:"Done Correction in ui",fromTime:"09:00",toTime:"20:00",workingHours:"12:00",billingHours:"12:00",description:"testing",taskStatus:"In Progress"}
    , {id:3,date:"10/09/2023",project:"Udid",taskGroup:"UI",task:"Correcting UI",issue:"UI",activity:"Done Correction in ui",fromTime:"09:00",toTime:"20:00",workingHours:"12:00",billingHours:"12:00",description:"testing",taskStatus:"In Progress"}]
+
+
+   export const DataTimeSheet=
+    [
+        {"activity": {"id": 1, "title": "Break"}, 
+        "description": "G",
+         "formattedTime": "09:40", 
+         "formattedTime2": "14:40",
+          "formattedWorkingHours": "05:00",
+           "id": "id_i8cmlcsa0_1705471834462", 
+           "issue": {"id": 2, "title": "Login Api Issue"},
+            "project": {"id": 1, "title": "Khel Sathi"},
+             "selectedDate": "22-07-0017", 
+             "status": {"id": 1, "title": "In Progress"},
+              "task": {"id": 1, "title": "Design HomePagee"},
+               "taskGroup": {"id": 2, "title": "Development"}},
+               {"activity": {"id": 1, "title": "Break"}, 
+               "description": "G",
+                "formattedTime": "09:40", 
+                "formattedTime2": "14:40",
+                 "formattedWorkingHours": "05:00",
+                  "id": "id_i9cmlcsa0_1705471834462", 
+                  "issue": {"id": 2, "title": "Login Api Issue"},
+                   "project": {"id": 1, "title": "Khel Sathi"},
+                    "selectedDate": "22-07-0017", 
+                    "status": {"id": 1, "title": "In Progress"},
+                     "task": {"id": 1, "title": "Design HomePagee"},
+                      "taskGroup": {"id": 2, "title": "Development"}}
+            
+            
+            
+            
+            
+            
+            ]

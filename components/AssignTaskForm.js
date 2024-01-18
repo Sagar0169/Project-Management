@@ -12,7 +12,7 @@ import {
   TextInput,
 } from "react-native";
 import SubmitButton from "./ui/SubmitButton";
-import Toast from "react-native-simple-toast";
+// import Toast from "react-native-simple-toast";
 
 import BottomSheetDesign2 from "./BottomSheetDesign2";
 import AssignedForData from "./AssignedForData";
@@ -419,17 +419,17 @@ function AssignTaskForm() {
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 40 }}>
                 <SubmitButton onPress={()=>{
               if (validateForm()) {
-                Toast.showWithGravity(
-                  "Project Added Sucessfully.",
-                  Toast.SHORT,
-                  Toast.BOTTOM
-                );
+                // Toast.showWithGravity(
+                //   "Project Added Sucessfully.",
+                //   Toast.SHORT,
+                //   Toast.BOTTOM
+                // );
               } else {
-                Toast.showWithGravity(
-                  "Please fill all details.",
-                  Toast.SHORT,
-                  Toast.BOTTOM
-                );
+                // Toast.showWithGravity(
+                //   "Please fill all details.",
+                //   Toast.SHORT,
+                //   Toast.BOTTOM
+                // );
               }
             }} color={"#e5af54"}> Add Project</SubmitButton></View>
             </ScrollView>

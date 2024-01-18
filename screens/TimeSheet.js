@@ -103,17 +103,21 @@ export default function TimeSheet({ navigation }) {
 
   const formattedBillingHours = format(selectedTime2, "HH:mm");
   const workingHoursMinutes = differenceInMinutes(selectedTime2, selectedTime);
-  // Convert working hours from minutes to hours
-  const workingHoursHours = workingHoursMinutes / 60;
-  const formattedWorkingHours = isNaN(workingHoursHours)
-    ? "Invalid Time"
-    : `${workingHoursHours.toFixed(2)}`;
+
+// Convert working hours from minutes to hours
+const workingHoursHours = workingHoursMinutes / 60;
+
+// Format working hours in hours and minutes
+const formattedWorkingHours = isNaN(workingHoursHours)
+  ? 'Invalid Time'
+  : format(new Date().setHours(0, workingHoursMinutes), 'HH:mm');
 
   useEffect(() => {
     // This block of code will be executed when selectedDate changes
     console.log(selectedDate);
-    const today = new Date();
-    setSelectedDate(today);
+    // const today = new Date();
+    formattedSelectedDate = format(new Date(selectedDate), 'dd-MM-yyyy');
+    setSelectedDate(formattedSelectedDate);
 
     console.log(formattedTime);
     console.log(formattedTime2);
@@ -150,11 +154,12 @@ export default function TimeSheet({ navigation }) {
     navigation.goBack();
   }
 
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const onDayPress = (day) => {
     // Handle the selected date
     setSelectedDate(day.dateString);
   };
+  const today=format(new Date(), 'yyyy-MM-dd')
 
   const [project, setSelectedproject] = useState(null);
   const [taskGroup, setSelectedtaskGroup] = useState(null);
@@ -218,6 +223,7 @@ export default function TimeSheet({ navigation }) {
         <Calendar
           onDayPress={onDayPress}
           markedDates={{ [selectedDate]: { selected: true } }}
+          maxDate={today.toString().split('T')[0]} // Set minDate to the current dat
         />
         <Text style={{ alignSelf: "center", fontSize: dynamicFontSize * 1.3 }}>
           Fill All Details
@@ -602,7 +608,7 @@ export default function TimeSheet({ navigation }) {
           Daily Work
         </Text>
 
-        <TimeSheetList />
+        <TimeSheetList selectedDate={selectedDate}/>
       </ScrollView>
     </>
   );
