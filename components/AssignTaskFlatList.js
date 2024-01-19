@@ -1,21 +1,22 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useCallback, useEffect, useState } from "react";
 import {
-  View,
-  Text,
   FlatList,
-  Image,
-  StyleSheet,
   Pressable,
+  StyleSheet,
+  Text,
+  View
 } from "react-native";
-import TasksData from "./TasksData";
+import { ActivityIndicator } from "react-native-paper";
+import { assignedTasksFetch, fetchTasks } from "../store/http";
 import { useSearch } from "../store/search-redux";
 
-const ProjectDetails = ({ item, navigation }) => {
-  // const navigation = useNavigation();
+const ProjectDetails = ({ item, navigation, storedProfile }) => {
+  const header = storedProfile === "Developer" ? item.title : item.Assigned;
   function detailsHandler() {
     navigation.navigate("AssignedTaskDetails", { ID: item });
   }
+
   if (item.id !== "placeholder") {
     return (
       <Pressable style={styles.itemContainer2} onPress={detailsHandler}>
@@ -34,7 +35,7 @@ const ProjectDetails = ({ item, navigation }) => {
               marginVertical: 14,
             }}
           >
-            <Text style={styles.text2}>{item.Assigned}</Text>
+            <Text style={styles.text2}>{header}</Text>
           </View>
           <Pressable onPress={detailsHandler} style={styles.viewBox}>
             <Text style={styles.viewText}>View</Text>
@@ -49,44 +50,83 @@ const ProjectDetails = ({ item, navigation }) => {
 
 const AssignTaskFlatList = ({ navigation }) => {
   const { searchQuery, setSearchQuery } = useSearch();
+  const [task, setTask] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
+  const [storedProfile, setStoreProfile] = useState("");
 
-  const generateRandomProjectName = () => {
-    const adjectives = ["Red", "Blue", "Green", "Yellow", "Purple", "Orange"];
-    const nouns = ["Project", "Task", "Assignment", "Job", "Mission"];
-    const randomAdjective =
-      adjectives[Math.floor(Math.random() * adjectives.length)];
-    const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
-    return `${randomAdjective} ${randomNoun}`;
-  };
+  const fetchStoredProfile = useCallback(async () => {
+    try {
+      setStoreProfile(await AsyncStorage.getItem("profile"));
 
-  // Generate project data with random project names
-  const projectData = Array.from({ length: 20 }, (_, index) => ({
-    projectName: generateRandomProjectName(),
-    progress: Math.random(),
-    riskPriority: index % 3 === 0 ? "low" : index % 3 === 1 ? "medium" : "high",
-  }));
+      if (storedProfile !== null) {
+        console.log("Stored Profile:", storedProfile);
+      } else {
+        console.log("Profile not found in AsyncStorage");
+      }
+    } catch (error) {
+      console.error("Error fetching profile from AsyncStorage:", error);
+    }
+  }, [storedProfile]);
 
   useEffect(() => {
-    return () => {
-      setSearchQuery("");
-    };
-  }, []);
+    fetchStoredProfile();
+  }, [fetchStoredProfile]);
 
-  const filteredData = TasksData.filter((item) =>
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchData = async () => {
+      setIsFetching(true);
+
+      try {
+        let expenses;
+        if (storedProfile === "super admin") {
+          const tasks = await fetchTasks();
+          const assignedTasks = await assignedTasksFetch();
+
+          // Merge the two arrays
+          expenses = [...tasks, ...assignedTasks];
+        } else {
+          expenses = await assignedTasksFetch();
+        }
+
+        if (isMounted) {
+          setTask(expenses);
+        }
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      } finally {
+        if (isMounted) {
+          setIsFetching(false);
+        }
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [storedProfile, task]);
+
+  const filteredData = task.filter((item) =>
     item.Assigned.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
   return (
     <FlatList
       data={filteredData}
       renderItem={({ item }) => (
-        <ProjectDetails item={item} navigation={navigation} />
+        <ProjectDetails
+          item={item}
+          navigation={navigation}
+          storedProfile={storedProfile}
+        />
       )}
       keyExtractor={(item, index) => `${item.id}-${index}`}
       ListEmptyComponent={() => (
-        <View style={styles.noDataContainer}>
-        <View style={styles.noDataContainer}>
-          <Text style={styles.noDataText}>No Data Found</Text>
-        </View>
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator size="large" color="#e5af54" />
         </View>
       )}
     />
@@ -94,6 +134,11 @@ const AssignTaskFlatList = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  loaderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   noDataContainer: {
     flex: 1,
     justifyContent: "center",

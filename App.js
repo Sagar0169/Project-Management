@@ -19,6 +19,7 @@ import ContextProvider from "./store/context";
 import { SearchProvider } from "./store/search-redux";
 import IssuesProject from "./screens/IssuesProject";
 import Music from "./screens/Music";
+import AudioFile from "./screens/AudioFile";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -96,6 +97,7 @@ export default function App() {
               }}
             />
             <Stack.Screen name="AssignNewTask" component={AssignNewTask} />
+            <Stack.Screen name="AudioFile" component={AudioFile} />
           </Stack.Navigator>
         </ContextProvider>
       </SearchProvider>

@@ -1,16 +1,37 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View, TouchableOpacity, Pressable } from "react-native";
 import AssignTaskFlatList from "../components/AssignTaskFlatList";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import BackArrowHeaderWhite from "../components/BackArrowHeaderWhite";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function AssignTask({navigation}) {
+export default function AssignTask({ navigation }) {
   // const navigation = useNavigation();
+  const [storedProfile, setStoreProfile] = useState("");
+
   const handleAddTaskPress = () => {
     navigation.navigate("AssignNewTask");
     console.log("pressed");
   };
+
+  const fetchStoredProfile = useCallback(async () => {
+    try {
+      setStoreProfile(await AsyncStorage.getItem("profile"));
+
+      if (storedProfile !== null) {
+        console.log("Stored Profile:", storedProfile);
+      } else {
+        console.log("Profile not found in AsyncStorage");
+      }
+    } catch (error) {
+      console.error("Error fetching profile from AsyncStorage:", error);
+    }
+  }, [storedProfile]);
+
+  useEffect(() => {
+    fetchStoredProfile();
+  }, [fetchStoredProfile]);
 
   return (
     <View style={styles.rootContainer}>
@@ -22,14 +43,16 @@ export default function AssignTask({navigation}) {
         backButton={() => navigation.goBack()}
       />
       <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-        <AssignTaskFlatList navigation={navigation} />
+        <AssignTaskFlatList navigation={navigation} storedProfile={storedProfile}/>
       </View>
-      <TouchableOpacity
-        style={[styles.addButton, { backgroundColor: "#e5af54" }]}
-        onPress={handleAddTaskPress}
-      >
-        <MaterialCommunityIcons name="plus" size={30} color="#fff" />
-      </TouchableOpacity>
+      {storedProfile !== "Developer" && (
+        <TouchableOpacity
+          style={[styles.addButton, { backgroundColor: "#e5af54" }]}
+          onPress={handleAddTaskPress}
+        >
+          <MaterialCommunityIcons name="plus" size={30} color="#fff" />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
