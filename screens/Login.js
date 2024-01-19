@@ -24,8 +24,7 @@ function Login() {
 
   function dashboardHandler() {
     navigation.navigate("Dashboard");
-    // storeTask(TasksData)
-    // navigation.navigate("AudioFile");
+    // navigation.navigate("Music");
   }
 
   const handleLoginValidation = (email, password) => {
