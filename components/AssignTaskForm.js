@@ -13,6 +13,7 @@ import Toast from "react-native-simple-toast";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import BottomSheetDesign2 from "./BottomSheetDesign2";
 import BottomSheetDesign3 from "./BottomSheedDesign3";
+import SubmitButton from "./ui/SubmitButton";
 
 
 
@@ -458,8 +459,7 @@ function AssignTaskForm() {
                 />
             )}
         </View>
-      </ScrollView>
-    </View>
+     
   );
 }
 export default AssignTaskForm;
