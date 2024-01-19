@@ -2,24 +2,26 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useState } from "react";
 import {
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  Modal,
-  TextInput,
+    Image,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+    Modal,
+    TextInput,
 } from "react-native";
 import SubmitButton from "./ui/SubmitButton";
 import Toast from "react-native-simple-toast";
-
+import DateTimePicker from "@react-native-community/datetimepicker";
 import BottomSheetDesign2 from "./BottomSheetDesign2";
+import BottomSheetDesign3 from "./BottomSheedDesign3";
 
 
 
 
 //CHANGE MULTIPLE SELECTION FROM BOTTOMSHEET2
+// give todays date before hand
 
 
 function AssignTaskForm() {
@@ -27,19 +29,19 @@ function AssignTaskForm() {
         // Check if enteredProjectName, enteredDueDate, and AssginedForItem have values
         if (
             enteredTaskName.trim() !== "" &&
-          enteredDueDate.trim() !== "" &&
-          enteredTaskPhase.trim() !== "" &&
-          enteredTaskType.trim() !== "" &&
-          enteredEstimatedTime.trim() !== "" &&
-          selectedOption!== null &&
-          selectedPriority!== null &&
-          AssginedForItem.length > 0
+            enteredDueDate.trim() !== "" &&
+            enteredTaskPhase.trim() !== "" &&
+            enteredTaskType.trim() !== "" &&
+            enteredEstimatedTime.trim() !== "" &&
+            selectedOption !== null &&
+            selectedPriority !== null &&
+            AssginedForItem.length > 0
         ) {
-          return true;
+            return true;
         } else {
-          return false;
+            return false;
         }
-      }
+    }
 
 
     function ModalHandler() {
@@ -53,8 +55,8 @@ function AssignTaskForm() {
                 }}
             >
                 <View style={[styles.modalContainer]}>
-                    {/* <BottomSheet sports={['Shreyash Jain (Android)', 'Nimish Sharma(Android)', 'Akshat Bansal (Android)', 'Sagar (Android)', 'Rohit (Java)', 'Aman pandey(Java)', 'Atul (Java)', 'Shubhra srivastava (php)', 'Yashika gupta (php)', 'Abhay sahani (Designer)', 'Jitendar singh (Designer)']} handleSportSelection={handleSportSelection} /> */}
-                    <BottomSheetDesign2 handleSportSelection={handleSportSelection} />
+        
+                    <BottomSheetDesign3 handleSportSelection={handleSportSelection} />
                 </View>
             </Modal>)
     }
@@ -63,25 +65,42 @@ function AssignTaskForm() {
     const [enteredTaskType, setEnteredTaskType] = useState("");
     const [enteredDueDate, setEnteredDueDate] = useState("");
     const [enteredEstimatedTime, setEnteredEstimatedTime] = useState("");
-      function onChangeText(inputType, enteredValue) {
-          switch (inputType) {
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+    const handleDateChange = (event, selectedDate) => {
+        hideDatePicker();
+        if (selectedDate) {
+            setSelectedDate(selectedDate);
+            setEnteredDueDate(selectedDate.toISOString().split("T")[0]); // Update the input text with the selected date
+        }
+    };
+
+    function onChangeText(inputType, enteredValue) {
+        switch (inputType) {
             case "taskName":
                 setEnteredTaskName(enteredValue);
-              break;
+                break;
             case "dueDate":
-              setEnteredDueDate(enteredValue);
-              break;
-              case "taskPhase":
+                setEnteredDueDate(enteredValue);
+                break;
+            case "taskPhase":
                 setEnteredTaskPhase(enteredValue);
-              break;
-              case "taskType":
+                break;
+            case "taskType":
                 setEnteredTaskType(enteredValue);
-              break;
-              case "estimatedTime":
+                break;
+            case "estimatedTime":
                 setEnteredEstimatedTime(enteredValue);
-              break;
-          }
+                break;
         }
+    }
     const [isModalVisible, setModalVisible] = useState(false);
     const [AssginedForItem, setAssginedForItem] = useState('');
     const [selectedOption, setSelectedOption] = useState(null);
@@ -93,7 +112,7 @@ function AssignTaskForm() {
         setSelectedPriority(option);
     };
     const getOptionStyle = (option) => {
-        if (selectedOption === option || selectedPriority===option) {
+        if (selectedOption === option || selectedPriority === option) {
             return styles.viewBoxBorder;
         } else {
             return styles.viewBox;
@@ -129,7 +148,7 @@ function AssignTaskForm() {
                     </View>
                     <View style={{ flex: 1 }}>
                         <TextInput
-                        onChangeText={onChangeText.bind(this, "taskName")}
+                            onChangeText={onChangeText.bind(this, "taskName")}
                             placeholder="Enter TaskName"
                             style={{
                                 color: "#666666",
@@ -158,7 +177,7 @@ function AssignTaskForm() {
                     </View>
                     <View style={{ flex: 1 }}>
                         <TextInput
-                        onChangeText={onChangeText.bind(this, "taskPhase")}
+                            onChangeText={onChangeText.bind(this, "taskPhase")}
                             placeholder="Enter Phase"
                             style={{
                                 color: "#666666",
@@ -185,7 +204,7 @@ function AssignTaskForm() {
                     </View>
                     <View style={{ flex: 1 }}>
                         <TextInput
-                        onChangeText={onChangeText.bind(this, "taskType")}
+                            onChangeText={onChangeText.bind(this, "taskType")}
                             placeholder="Enter Type"
                             style={{
                                 color: "#666666",
@@ -202,39 +221,41 @@ function AssignTaskForm() {
                 </View>
 
                 <View style={{ flexDirection: "row", marginVertical: 8, }}>
-                    <View
-                        style={{
-                            flex: 1,
-                            margin: 4,
-                            borderWidth: 2,
-                            paddingVertical: 8,
-                            paddingHorizontal: 8,
-                            borderRadius: 10,
-                            borderColor: "#eaeaea",
-                        }}
-                    >
-                        <Text style={{ color: "#666666" }}>Due Date</Text>
+                    <Pressable onPress={showDatePicker}>
                         <View
                             style={{
-                                flexDirection: "row",
-                                justifyContent: "flex-start",
-                                alignItems: "center",
+                                flex: 1,
+                                margin: 4,
+                                borderWidth: 2,
+                                paddingVertical: 8,
+                                paddingHorizontal: 8,
+                                borderRadius: 10,
+                                borderColor: "#eaeaea",
                             }}
                         >
-                            <Image
-                                source={require("../assets/Images/calendar.png")}
+                            <Text style={{ color: "#666666" }}>Due Date</Text>
+                            <View
                                 style={{
-                                    width: 20,
-                                    height: 20,
-                                    resizeMode: "contain",
-                                    margin: 4,
+                                    flexDirection: "row",
+                                    justifyContent: "flex-start",
+                                    alignItems: "center",
                                 }}
-                            />
-                            <TextInput onChangeText={onChangeText.bind(this, "dueDate")} placeholder="enter Due Date" style={{ marginHorizontal: 6, color: "#181818" }}>
-
-                            </TextInput>
+                            >
+                                <Image
+                                    source={require("../assets/Images/calendar.png")}
+                                    style={{
+                                        width: 20,
+                                        height: 20,
+                                        resizeMode: "contain",
+                                        margin: 4,
+                                    }}
+                                />
+                                <TextInput editable={false} value={enteredDueDate} onChangeText={onChangeText.bind(this, "dueDate")} placeholder="enter Due Date" style={{ marginHorizontal: 6, color: "#181818" }}>
+                                
+                                </TextInput>
+                            </View>
                         </View>
-                    </View>
+                    </Pressable>
                     <View
                         style={{
                             flex: 1,
@@ -418,60 +439,69 @@ function AssignTaskForm() {
                     </View>
                 </View>
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 40 }}>
-                <SubmitButton onPress={()=>{
-              if (validateForm()) {
-                Toast.showWithGravity(
-                  "Project Added Sucessfully.",
-                  Toast.SHORT,
-                  Toast.BOTTOM
-                );
-              } else {
-                Toast.showWithGravity(
-                  "Please fill all details.",
-                  Toast.SHORT,
-                  Toast.BOTTOM
-                );
-              }
-            }} color={"#e5af54"}> Add Project</SubmitButton></View>
+                    <SubmitButton onPress={() => {
+                        if (validateForm()) {
+                            Toast.showWithGravity(
+                                "Project Added Sucessfully.",
+                                Toast.SHORT,
+                                Toast.BOTTOM
+                            );
+                        } else {
+                            Toast.showWithGravity(
+                                "Please fill all details.",
+                                Toast.SHORT,
+                                Toast.BOTTOM
+                            );
+                        }
+                    }} color={"#e5af54"}> Add Project</SubmitButton></View>
             </ScrollView>
+            {isDatePickerVisible && (
+                <DateTimePicker
+                    value={selectedDate}
+                    mode="date"
+                    is24Hour={true}
+                    display="default"
+                    onChange={handleDateChange}
+                />
+            )}
         </View>
     )
 }
 export default AssignTaskForm;
 
 const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    paddingTop: 40,
-    backgroundColor: "#e5af54",
-  },
-  viewBox: {
-    backgroundColor: "#f5f5f5",
-    elevation: 2,
-    paddingVertical: 8,
-    paddingHorizontal: 8,
-    marginHorizontal: 8,
-    marginVertical: 8,
-  },
-  viewBoxBorder: {
-    backgroundColor: "#f5f5f5",
-    elevation: 2,
-    paddingVertical: 8,
-    paddingHorizontal: 8,
-    marginHorizontal: 8,
-    borderWidth: 1,
-    borderColor: "black",
-  },
+    rootContainer: {
+        flex: 1,
+        paddingTop: 40,
+        backgroundColor: "#e5af54",
+    },
+    viewBox: {
+        backgroundColor: "#f5f5f5",
+        elevation: 2,
+        paddingVertical: 8,
+        paddingHorizontal: 8,
+        marginHorizontal: 8,
+        marginVertical: 8,
+    },
+    viewBoxBorder: {
+        backgroundColor: "#f5f5f5",
+        elevation: 2,
+        paddingVertical: 8,
+        paddingHorizontal: 8,
+        marginHorizontal: 8,
+        borderWidth: 1,
+        borderColor: "black",
+    },
 
-  viewText: {
-    color: "#DFA242",
-    fontSize: 20,
-    marginHorizontal: 4,
-    fontWeight: "600",
-  },
-  modalContainer: {
-    flex: 1,
-    backgroundColor: "white",
-    justifyContent: "flex-end",
-  },
+    viewText: {
+        color: "#DFA242",
+        fontSize: 20,
+        marginHorizontal: 4,
+        fontWeight: "600",
+    },
+    modalContainer: {
+        flex: 1,
+        backgroundColor: "white",
+        justifyContent: "flex-end",
+    },
 });
