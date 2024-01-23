@@ -22,3 +22,15 @@ export const useSearch = () => {
   }
   return context;
 };
+
+export async function getAddress(lat,lon){
+  const url='https://geocode.maps.co/reverse?lat='+lat+'&lon='+lon
+  const response= await fetch(url)
+  if(!response.ok){
+      throw new Error('Failed to fetch Address');
+  }
+  const data= await response.json()
+  console.log(data.display_name)
+  
+  return (data.display_name)
+}  

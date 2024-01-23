@@ -108,3 +108,40 @@ export const DataSet=[
             
             
             ]
+
+            export const CheckIn=[
+                {"18-01-2024":
+                [{
+                    "id":"1",
+                    "date":"",
+                    "checkInTime":"",
+                    "location":"",
+                    "remarks":"",
+                    "checkOut":"",
+                    "isCheckedIn":"",
+
+                },
+                {
+                    "id":"3",
+                    "date":"",
+                    "checkInTime":"",
+                    "location":"",
+                    "remarks":"",
+                    "checkOut":"",
+                    "isCheckedIn":"",
+
+                }],"id":"t1"},
+                {"17-01-2024":
+                {
+                    "id":"2",
+                    "date":"",
+                    "checkInTime":"",
+                    "location":"",
+                    "remarks":"",
+                    "checkOut":"",
+                    "isCheckedIn":"",
+
+                },"id":"t2"},
+                
+
+            ]

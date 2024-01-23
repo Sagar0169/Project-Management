@@ -16,6 +16,7 @@ import DashboardData from "../components/DashboardData";
 import RecentProjectFlatList from "../components/RecentProjectFlatList";
 import TasksData from "../components/TasksData";
 import { Colors } from "../Utilities/Colors";
+
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width
@@ -82,6 +83,9 @@ export default function DashBoard({ navigation }) {
       }
       if (item.title === "Assigned Tasks") {
         navigation.navigate("Assigntask");
+      }
+      if (item.title === "Check In/Out") {
+        navigation.navigate("CheckIn/Out");
       }
     }
     return (
@@ -151,6 +155,7 @@ export default function DashBoard({ navigation }) {
             keyExtractor={(item) => item.id}
           />
         </View>
+        
         <View style={{ marginBottom: w(8) }}>
           <Text
             style={{
