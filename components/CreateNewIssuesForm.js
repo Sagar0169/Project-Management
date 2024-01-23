@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -16,7 +15,6 @@ import SubmitButton from "./ui/SubmitButton";
 // import Toast from "react-native-simple-toast";
 
 import BottomSheetDesign2 from "./BottomSheetDesign2";
-import AssignedForData from "./AssignedForData";
 import DropDown from "./TimeSheet/DropDown";
 import { ProjectGroup, Status, TaskGroup, Tasks } from "./Data";
 import CustomModal from "./CustomModal";
@@ -314,43 +312,43 @@ function CreateNewIssuesForm() {
                     </View>
                 </View>
                 <View style={{ marginVertical: 8, flexDirection: "row" }}>
-                 
+
+
+                    <View
+                        style={{
+                            flex: .5,
+                            justifyContent: 'center',
+                            margin: 4,
+                            borderWidth: 2,
+                            paddingVertical: 8,
+                            paddingHorizontal: 8,
+                            borderRadius: 10,
+                            borderColor: "#eaeaea",
+                        }}
+                    >
+                        <Text style={{ color: "#666666" }}>Created by</Text>
 
                         <View
                             style={{
-                                flex:.5,
-                                justifyContent: 'center',
-                                margin: 4,
-                                borderWidth: 2,
-                                paddingVertical: 8,
-                                paddingHorizontal: 8,
-                                borderRadius: 10,
-                                borderColor: "#eaeaea",
+                                flexDirection: "row",
+                                justifyContent: "flex-start",
+                                alignItems: "center",
                             }}
                         >
-                            <Text style={{ color: "#666666" }}>Created by</Text>
-
-                            <View
+                            <Image
+                                source={require("../assets/Images/user.png")}
                                 style={{
-                                    flexDirection: "row",
-                                    justifyContent: "flex-start",
-                                    alignItems: "center",
+                                    width: 20,
+                                    height: 20,
+                                    resizeMode: "contain",
+                                    margin: 4,
                                 }}
-                            >
-                                <Image
-                                    source={require("../assets/Images/user.png")}
-                                    style={{
-                                        width: 20,
-                                        height: 20,
-                                        resizeMode: "contain",
-                                        margin: 4,
-                                    }}
-                                />
-                                <Text style={{ color: "#666666" }}>Super Admin</Text>
-                            </View>
-
+                            />
+                            <Text style={{ color: "#666666" }}>Super Admin</Text>
                         </View>
-                  
+
+                    </View>
+
 
                 </View>
 

@@ -16,7 +16,7 @@ import DashboardData from "../components/DashboardData";
 import RecentProjectFlatList from "../components/RecentProjectFlatList";
 import TasksData from "../components/TasksData";
 import { Colors } from "../Utilities/Colors";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width
@@ -38,6 +38,27 @@ function h(value) {
 }
 
 export default function DashBoard({ navigation }) {
+  const [storedProfile, setStoreProfile] = useState("");
+
+  const fetchStoredProfile = async () => {
+    try {
+      setStoreProfile(await AsyncStorage.getItem("profile"));
+
+      if (storedProfile !== null) {
+        // If the value exists in AsyncStorage
+        console.log("Stored Profile:", storedProfile);
+        // Do something with the storedProfile value, such as updating your state.
+      } else {
+        // If the value doesn't exist in AsyncStorage
+        console.log("Profile not found in AsyncStorage");
+      }
+    } catch (error) {
+      console.error("Error fetching profile from AsyncStorage:", error);
+    }
+  };
+
+  fetchStoredProfile();
+
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   const animateList = () => {
@@ -67,8 +88,13 @@ export default function DashBoard({ navigation }) {
     setSelectedPriority(priority);
   };
 
-  const CurvedGridItem = ({ navigation, item, taskNumber }) => {
-    if (item.title === "Assigned Tasks" || item.title === "Project List") {
+  const CurvedGridItem = ({ navigation, item, taskNumber, storedProfile }) => {
+    let header = item.title;
+    if (item.title === "Assigned Tasks") {
+      header = storedProfile === "Developer" ? "Your Tasks" : item.title;
+      item.count = taskNumber;
+    }
+    if (item.title === "Project List") {
       item.count = taskNumber;
     }
     function navigationHandler() {
@@ -98,7 +124,7 @@ export default function DashBoard({ navigation }) {
             <Text style={styles.text}>{item.count}</Text>
             <Ionicons size={24} name="ellipsis-horizontal-circle-outline" />
           </View>
-          <Text style={styles.text2}>{item.title}</Text>
+          <Text style={styles.text2}>{header}</Text>
           <Image
             source={item.image}
             style={{ width: "100%", height: 100, resizeMode: "cover" }}
@@ -150,6 +176,7 @@ export default function DashBoard({ navigation }) {
                 navigation={navigation}
                 item={item}
                 taskNumber={taskNumber}
+                storedProfile={storedProfile}
               />
             )}
             keyExtractor={(item) => item.id}
