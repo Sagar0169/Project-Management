@@ -1,13 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useCallback, useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Pressable,
   StyleSheet,
   Text,
   View
 } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import { assignedTasksFetch, fetchTasks } from "../store/http";
 import { useSearch } from "../store/search-redux";
 
@@ -91,7 +91,7 @@ const AssignTaskFlatList = ({ navigation }) => {
         }
 
         if (isMounted) {
-          setTask(expenses);
+          
         }
       } catch (error) {
         console.error("Error fetching tasks:", error);
