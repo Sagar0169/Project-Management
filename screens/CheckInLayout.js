@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, TouchableOpacity, StyleSheet, FlatList } from 'react-native'
+import { View, Text, Dimensions, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import BackArrowHeader from '../components/BackArrowHeader';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,6 +12,7 @@ import {
   reverseGeocodeAsync,
 } from "expo-location";
 import { getAddress } from '../store/search-redux';
+import { fetchCheckIn, storeCheckIn } from '../store/http';
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width
@@ -32,107 +33,130 @@ function h(value) {
   return height * value;
 }
 export default function CheckInLayout({navigation}) {
-//   const [location, setLocation] = useState('');
-// const [locationPermissionInformation, requestPermission] =
-//   useForegroundPermissions();
-
-//   useEffect(() => {
-//     async function verifyPermissions() {
-
-//       if (
-//         locationPermissionInformation===null
-//       ) {
-//         const permissionResponse = await requestPermission();
-//         return permissionResponse.granted;
-//       }
-//       if (
-//         locationPermissionInformation.status === PermissionStatus.UNDETERMINED
-//       ) {
-//         const permissionResponse = await requestPermission();
-//         return permissionResponse.granted;
-//       }
-//       if (locationPermissionInformation.status === PermissionStatus.DENIED) {
-//         // Alert.alert("Permissions Denied, Go Back");
-//         // return false;
-//         const permissionResponse = await requestPermission();
-//         return permissionResponse.granted;
-//       }
-//       return true;
-//     }
-
-//     async function locationHandler() {
-//       const hasPermission = await verifyPermissions();
-//       if (!hasPermission) {
-//         return;
-//       }
-//       const resultedLoc = await getCurrentPositionAsync();
-//       console.log(resultedLoc);
-//       // setLocation(resultedLoc)
-//       const response = await reverseGeocodeAsync({
-//         latitude: resultedLoc.coords.latitude,
-//         longitude: resultedLoc.coords.longitude,
-//       });
-//       console.log("data" + response[0]);
-//       // const locationFinal = getAddress(
-//       //   resultedLoc.coords.latitude,
-//       //   resultedLoc.coords.longitude
-//       // );
-//       // setLocation(locationFinal);
-//       // console.log(location._j)
-//     }
-//     locationHandler();
-//   }, []);
+  const getCurrentDate = () => {
+    const today = new Date();
+    const day = today.getDate().toString().padStart(2, '0');
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const year = today.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+  
+  // Function to get the current time in 'HH:mm' format
+  const getCurrentTime = () => {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
+  const [loading, setLoading] = useState(true);
+  const [getAdd,setAddTrue] = useState(false);
 const [address, setAddress] = useState("");
+const [state, setState] = useState("");
+const [checkedIn, setCheckedIn] = useState(true);
 
-  useEffect(() => {
-    // Get current location
-    const getCurrentLocation = async () => {
-      try {
-        const { status } = await Location.requestForegroundPermissionsAsync();
 
-        if (status !== "granted") {
-          console.error("Location permission denied");
-          return;
-        }
+function checkIn(){
+  setCheckedIn(!checkedIn)
+}
 
-        const location = await Location.getCurrentPositionAsync({});
-        const reverseGeocode = await Location.reverseGeocodeAsync({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        });
-        console.log("loc" + reverseGeocode[0]?.name);
-        // Build address from available components
-        const addressComponents = [
-          reverseGeocode[0]?.name,
+useEffect(() => {
+  // Fetch CheckIn data when the component mounts
+  // const fetchData = async () => {
+  //   const data = await fetchCheckIn();
+  //   // Handle the fetched data as needed
+  //   console.log(data)
+  // };
+  setLoading(true)
+  const getCurrentLocation = async () => {
+    
+    
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
 
-          reverseGeocode[0]?.street,
-          reverseGeocode[0]?.district,
-          reverseGeocode[0]?.city,
-          reverseGeocode[0]?.region,
-          reverseGeocode[0]?.country,
-        ];
-
-        const formattedAddress = addressComponents.filter(Boolean).join(", ");
-        setAddress(formattedAddress);
-        console.log("loc" + JSON.stringify(reverseGeocode, null, 2));
-        console.log("loc" + formattedAddress);
-      } catch (error) {
-        console.error("Error getting location:", error);
+      if (status !== "granted") {
+        console.error("Location permission denied");
+        return;
       }
-    };
-    // Verify camera permissions
 
-    // Get current location and verify camera permissions
-    getCurrentLocation();
-  }, []);
+      const location = await Location.getCurrentPositionAsync({});
+      const reverseGeocode = await Location.reverseGeocodeAsync({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+      console.log("loc" + reverseGeocode[0]?.name);
+      // Build address from available components
+      setState( reverseGeocode[0]?.city)
+      const addressComponents = [
+        reverseGeocode[0]?.name,
+
+        reverseGeocode[0]?.street,
+        reverseGeocode[0]?.district,
+        reverseGeocode[0]?.city,
+        reverseGeocode[0]?.region,
+        reverseGeocode[0]?.country,
+      ];
+
+      const formattedAddress = addressComponents.filter(Boolean).join(", ");
+      setAddress(formattedAddress);
+      setLoading(false)
+      // console.log("loc" + JSON.stringify(reverseGeocode, null, 2));
+      console.log("loc" + formattedAddress);
+    } catch (error) {
+      console.error("Error getting location:", error);
+    }
+  };
+  getCurrentLocation()
+
+  // fetchData();
+}, []);
+
+  const getCurrentLocation = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+
+      if (status !== "granted") {
+        console.error("Location permission denied");
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({});
+      const reverseGeocode = await Location.reverseGeocodeAsync({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+      console.log("loc" + reverseGeocode[0]?.name);
+      // Build address from available components
+      setState( reverseGeocode[0]?.city)
+      const addressComponents = [
+        reverseGeocode[0]?.name,
+
+        reverseGeocode[0]?.street,
+        reverseGeocode[0]?.district,
+        reverseGeocode[0]?.city,
+        reverseGeocode[0]?.region,
+        reverseGeocode[0]?.country,
+      ];
+
+      const formattedAddress = addressComponents.filter(Boolean).join(", ");
+      setAddress(formattedAddress);
+      setAddTrue(true)
+      console.log("loc" + JSON.stringify(reverseGeocode, null, 2));
+      console.log("loc" + formattedAddress);
+    } catch (error) {
+      console.error("Error getting location:", error);
+    }
+  };
 
 
 
 
   function renderMealItem(itemData){
+    const reversedCheckInList = [...itemData.item.data].reverse(); // Reverse the order
     const item=itemData.item
     const mealsDetails={
-      // id:item.id,
+      data:reversedCheckInList,
+      date:item.date,
+      id:item.id
       //  project:item.project.title,
       //  task:item.task.title,
       //  activity:item.activity.title,
@@ -152,30 +176,134 @@ const [address, setAddress] = useState("");
       return <ChecklistData  {...mealsDetails}  />
   }
 
-   function handleAddTaskPress()  {
-    getCurrentLocation();
-    // if(location._j)
-    //   console.log(location._j)
-  }
+  // const handleAddTaskPress = async () => {  
+  //   getCurrentLocation();
+  //   setCheckedIn(!checkedIn);
+
+  //   // Prepare data to be stored
+  //   const currentDate = getCurrentDate(); // Use utility function to get current date
+  //   const currentTime = getCurrentTime(); // Use utility function to get current time
+
+  //   const checkInData = {
+  //     date: currentDate,
+  //     data: [
+  //       {
+  //         id: '1',
+  //         date: '',
+  //         checkInTime: checkedIn ? currentTime : '', // Use current time for check-in, empty for check-out
+  //         location: address,
+  //         remarks: '',
+  //         checkOut: checkedIn ? '' : currentTime, // Use current time for check-out, empty for check-in
+  //         isCheckedIn: checkedIn,
+  //       },
+  //       // Add more items as needed
+  //     ],
+  //     id: 't3', // You may need to generate a unique ID or use a different logic for this
+  //   };
+
+  //   // Store the data in Firebase
+  //   setCheckInList((prevList) => [...prevList, checkInData]);
+  //   // const id = await storeCheckIn(checkInData);
+  //   // console.log('Data stored with ID:', id);
+  // }
+  const handleAddTaskPress = async () => {
+    // {!getAdd&&setLoading(true);}
+    // {!getAdd&&await getCurrentLocation();}
+    setCheckedIn(!checkedIn);
+  
+    const currentDate = getCurrentDate();
+    const currentTime = getCurrentTime();
+  
+    // Check if a check-in with the current date already exists
+    const existingCheckInIndex = checkInList.findIndex(
+      (item) => item.date === currentDate
+    );
+  
+    if (existingCheckInIndex !== -1) {
+      // If it exists, update the existing entry
+      const updatedCheckInList = [...checkInList];
+      const existingCheckIn = updatedCheckInList[existingCheckInIndex];
+  
+      existingCheckIn.data.push({
+        id: String(existingCheckIn.data.length + 1),
+        date: '',
+        checkInTime: checkedIn ? currentTime : '',
+        location: state,
+        remarks: '',
+        checkOut: checkedIn ? '' : currentTime,
+        isCheckedIn: checkedIn,
+        placeName:address
+      });
+  
+      // Update the state with the modified list
+      {getAdd&&setCheckInList(updatedCheckInList);}
+    } else {
+      // If it doesn't exist, create a new entry
+      const newCheckInData = {
+        id: `t${checkInList.length + 1}`, // Generate a unique ID based on the length of the list
+        date: currentDate,
+        data: [
+          {
+            id: '1',
+            date: '',
+            checkInTime: checkedIn ? currentTime : '',
+            location: state,
+            remarks: '',
+            checkOut: checkedIn ? '' : currentTime,
+            isCheckedIn: checkedIn,
+            placeName:address
+          },
+          // Add more items as needed
+        ],
+      };
+  
+      // Update the state with the new entry
+      setCheckInList((prevList) => [...prevList, newCheckInData]);
+    }
+  };
+
+  
+  const [checkInList, setCheckInList] = useState([]);
   return (
     <View style={styles.rootContainer}>
     <BackArrowHeader color={"black"} title={"Check In/Out"} backButton={()=>navigation.goBack()}/>
     <View style={{flex:1,backgroundColor:"white"}}>
-      <View style={{}}>
-      <FlatList data={CheckIn} keyExtractor={(item)=>item.id} renderItem={renderMealItem}/>
+      <View style={{
+    // borderWidth:1,
+    // borderColor:'black',
+    marginHorizontal:w(3),
+    marginTop:h(1),
+    borderRadius:w(5)
+    }}>
+      {/* <FlatList data={checkInList} keyExtractor={(item)=>item.id} renderItem={renderMealItem}/> */}
+       {loading ? (
+          <ActivityIndicator size="large" color="#000" style={styles.loader} />
+        ) : (
+          <FlatList data={checkInList} keyExtractor={(item) => item.id} renderItem={renderMealItem} />
+        )}
         
       
-    {address&&<Text >{address}</Text>}
+    {/* {address&&<Text >{address}</Text>} */}
 
    
   
       </View>
-      <TouchableOpacity
+      
+    { !loading&&<>{
+     checkedIn&& <TouchableOpacity
         style={[styles.addButton, { backgroundColor: "#000000" }]}
-        onPress={()=>handleAddTaskPress}
+        onPress={handleAddTaskPress}
       >
-        <MaterialCommunityIcons name="plus" size={30} color="#fff" />
-      </TouchableOpacity>
+        <Text style={{color:'white',fontSize:dynamicFontSize*0.9,fontWeight:'800'}}>Check In</Text>
+        {/* <MaterialCommunityIcons name="plus" size={30} color="#fff" /> */}
+      </TouchableOpacity>}
+      {!checkedIn&& <TouchableOpacity
+        style={[styles.addButton, { backgroundColor: "#000000" }]}
+        onPress={handleAddTaskPress}
+      >
+        <Text style={{color:'white',fontSize:dynamicFontSize*0.9,fontWeight:'800'}}>Check Out</Text>
+        {/* <MaterialCommunityIcons name="plus" size={30} color="#fff" /> */}
+      </TouchableOpacity>}</>}
     </View>
     </View>
 
@@ -190,11 +318,11 @@ const styles = StyleSheet.create({
   ,
   addButton: {
     position: "absolute",
-    bottom: 20,
+    bottom: 30,
     right: 20,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 90,
+    height: 50,
+    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
     elevation: 5,

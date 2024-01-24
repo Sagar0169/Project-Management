@@ -110,38 +110,63 @@ export const DataSet=[
             ]
 
             export const CheckIn=[
-                {"18-01-2024":
+                {"date":"19-01-2024",
+                "data":
                 [{
                     "id":"1",
                     "date":"",
                     "checkInTime":"",
-                    "location":"",
+                    "location":"RK Ashram Marg",
                     "remarks":"",
-                    "checkOut":"",
-                    "isCheckedIn":"",
+                    "checkOut":"20:30",
+                    "isCheckedIn":false,
 
                 },
                 {
                     "id":"3",
                     "date":"",
-                    "checkInTime":"",
-                    "location":"",
+                    "checkInTime":"09:30",
+                    "location":"RK Ashram Marg",
                     "remarks":"",
                     "checkOut":"",
-                    "isCheckedIn":"",
+                    "isCheckedIn":true,
 
-                }],"id":"t1"},
-                {"17-01-2024":
-                {
-                    "id":"2",
+                }],"id":"t3"},
+                {"date":"18-01-2024",
+                "data":
+                [{
+                    "id":"1",
                     "date":"",
                     "checkInTime":"",
-                    "location":"",
+                    "location":"RK Ashram Marg",
+                    "remarks":"",
+                    "checkOut":"20:30",
+                    "isCheckedIn":false,
+
+                },
+                {
+                    "id":"3",
+                    "date":"",
+                    "checkInTime":"09:30",
+                    "location":"RK Ashram Marg",
                     "remarks":"",
                     "checkOut":"",
-                    "isCheckedIn":"",
+                    "isCheckedIn":true,
 
-                },"id":"t2"},
+                }],"id":"t1"},
+                {"date":"17-01-2024",
+                "data":
+                [{
+                    "id":"2",
+                    "date":"",
+                    "checkInTime":"09:30",
+                    "location":"RK Ashram Marg",
+                    "remarks":"",
+                    "checkOut":"",
+                    "isCheckedIn":true,
+                    "placeName":"Panchkuian Road Area, Rk Ashrm Marg,New Delhi, India"
+
+                }],"id":"t2"},
                 
 
             ]
