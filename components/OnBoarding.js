@@ -20,9 +20,11 @@ export default function OnBoarding() {
   const scrollTo = () => {
     if (currentIndex < moviesData.slice(0, 3).length - 1) {
       sildesRef.current.scrollToIndex({ index: currentIndex + 1 });
+      
     } else {
       navigation.navigate("Login");
     }
+    
   };
   return (
     <View style={styles.container}>
@@ -49,6 +51,7 @@ export default function OnBoarding() {
       <NextButton
         percentage={(currentIndex + 1) * (100 / moviesData.slice(0, 3).length)}
         scrollTo={scrollTo}
+        buttonText={currentIndex !== 0 ? "Continue" : "Get Started"}
       />
     </View>
   );

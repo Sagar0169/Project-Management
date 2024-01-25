@@ -2,24 +2,24 @@ export default [
     {
       id: "0",
       title: "Low",
-      color: "#83E646",
+      color: "#5063BF",
     },
     {
       id: "1",
       title: "Medium",
-      color: "#EDDA4B",
+      color: "#5063BF",
 
     },
     {
       id: "2",
       title: "High",
-      color: "#EA8239",
+      color: "#5063BF",
    
     },
     {
       id: "3",
       title: "Critical",
-      color: "#E84A4A",
+      color: "#5063BF",
  
     },
   ];

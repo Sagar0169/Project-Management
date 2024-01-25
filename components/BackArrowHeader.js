@@ -32,9 +32,9 @@ export default function BackArrowHeader({ title, backButton, showArrow ,color}) 
               width: 40,
               height: 40,
               resizeMode: "cover",
-                tintColor: "white",
+                
             }}
-            source={require("../assets/Images/left.png")}
+            source={require("../assets/Images/leftArrow.png")}
           />
         </Pressable>
       )}
@@ -42,9 +42,10 @@ export default function BackArrowHeader({ title, backButton, showArrow ,color}) 
       <Text
         style={{
           fontSize: 24,
-          color: "white",
-          fontWeight: "bold",
+          color: "black",
+          fontWeight: "600",
           textAlign: "center",
+          
           marginHorizontal: 8,
         }}
       >
