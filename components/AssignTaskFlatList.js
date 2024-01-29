@@ -6,7 +6,7 @@ import {
   Pressable,
   StyleSheet,
   Text,
-  View
+  View,
 } from "react-native";
 import { assignedTasksFetch, fetchTasks } from "../store/http";
 import { useSearch } from "../store/search-redux";
@@ -90,7 +90,7 @@ const AssignTaskFlatList = ({ navigation }) => {
         }
 
         if (isMounted) {
-          
+          setTask(expenses);
         }
       } catch (error) {
         console.error("Error fetching tasks:", error);

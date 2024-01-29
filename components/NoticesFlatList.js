@@ -14,7 +14,7 @@ import moviesData from "./moviesData";
 const NoticesItem = ({ navigation, item }) => {
   function detailsHandler() {
     navigation.navigate("AssignedTaskDetails", { ID: item });
-  }     
+  }
   if (item.id !== "placeholder") {
     return (
       <Pressable onPress={detailsHandler} style={styles.itemContainer2}>
@@ -37,7 +37,7 @@ const NoticesItem = ({ navigation, item }) => {
               marginVertical: 6,
             }}
             // source={require("../assets/Images/profile.jpg")}
-            source={{ uri: item.image }}
+            source={item.image}
           />
           <Text numberOfLines={3} ellipsizeMode="tail" style={styles.text}>
             {item.title}

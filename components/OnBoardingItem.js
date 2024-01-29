@@ -16,6 +16,7 @@ export default function OnBoardingItem({ item }) {
  {item.id === "1" ? (
         <Image
           source={item.image }
+          
           style={styles.image}
         />
       ) : (
