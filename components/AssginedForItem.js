@@ -2,10 +2,10 @@ import { Pressable, View, Text, Touchable, Image, ImageBackground, Dimensions, S
 import { useState } from "react";
 
 function AssignedForItem({ item }){
-    const [backgroundColor, setBackgroundColor] = useState('white');
+    const [backgroundColor, setBackgroundColor] = useState('#E9EEFF');
     const handlePress = () => {
         // Change the background color to item.color on press
-        setBackgroundColor(item.color);
+        setBackgroundColor('#E9EEFF');
       };
     
     
@@ -49,11 +49,11 @@ const styles = StyleSheet.create({
 
         padding: w(3),
         margin:w(1),
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: 'black',
-        borderRadius: w(4),
+        borderRadius: w(1),
         justifyContent: 'center',
-        backgroundColor: 'white',
+        backgroundColor: '#E9EEFF',
 
     },
 })

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Image,
   Pressable,
@@ -16,10 +16,18 @@ import AssignedForData from "./AssignedForData";
 import BottomSheetDesign3 from "./BottomSheedDesign3";
 import { assignedStore, storeTask } from "../store/http";
 
+
 //CHANGE MULTIPLE SELECTION FROM BOTTOMSHEET2
 // give todays date before hand
 
 function AssignTaskForm({ taskData, setTaskData,navigation }) {
+    useEffect(() => {
+        const currentDate = new Date();
+        setSelectedDate(currentDate);
+        setEnteredDueDate(currentDate.toISOString().split("T")[0]);
+      }, []); // Empty dependency array ensures that this effect runs only once, when the component mounts
+    
+    
 const addNewTask = (newTask) => {
     // Add the new task to taskData
     setTaskData((prevTaskData) => [...prevTaskData, newTask]);
@@ -467,9 +475,9 @@ const addNewTask = (newTask) => {
                   Priority: "Medium",
                   TaskType: enteredTaskType,
                   TaskComplexity: "Task Complexity",
-                  // Add other properties based on your form fields
+                  // Add other properties based on your form fields 
                 };
-                addNewTask(newTask);
+                addNewTask(newTask);l
                 Toast.showWithGravity(
                   "Project Added Sucessfully.",
                   Toast.SHORT,

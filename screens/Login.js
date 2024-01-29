@@ -7,20 +7,37 @@ import {
   Pressable,
 } from "react-native";
 
+
 import LoginForm from "../components/LoginForm";
-import SubmitButton from "../components/ui/SubmitButton";
-import SvgSelector from "../components/SvgSelector";
+import { SvgXml } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { Colors } from "../Utilities/Colors";
 import { Strings } from "../Utilities/Strings";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { storeTask } from "../store/http";
-import TasksData from "../components/TasksData";
+import { useState } from "react";
+import { useEffect } from "react";
+import useFonts from "../hooks/useFonts";
+import { lineRightSvg } from "../components/svgs/svgs";
+
 
 function Login() {
+  const navigation = useNavigation();
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+  useEffect(() => {
+      const loadFonts = async () => {
+        await useFonts();
+        setFontsLoaded(true);
+      };
+  
+      loadFonts();
+    }, []);
+    if (!fontsLoaded) {
+      // Return a loading state or null while fonts are loading
+      return null;
+    } 
   const { width, height } = Dimensions.get("window");
 
-  const navigation = useNavigation();
+ 
 
   function dashboardHandler() {
     navigation.navigate("Dashboard");
@@ -98,16 +115,22 @@ function Login() {
     const height = Dimensions.get("window").height / 100; // now height is 1% of screen height
     return height * value;
   }
+
   return (
-    <View style={{ flex: 1, marginTop: 50, alignItems: "center" }}>
+    <View style={{ flex: 1, marginTop: 50, alignItems: "center", backgroundColor:'white' }}>
       <View>
+        <View style={{justifyContent:'center', alignItems:'center'}}>
+        <SvgXml xml={lineRightSvg} width="190" height="110" style={{ margin: 4 }} />
+        </View>
+      
         <Text
           style={{
             textAlign: "center",
-            color: Colors.loginBlue,
+            color: "#5063BF",
             marginTop: 25,
             fontSize: dynamicFontSize * 1.7,
             fontWeight: 700,
+            
           }}
         >
           {Strings.project_management_system}
@@ -117,27 +140,27 @@ function Login() {
       <View
         style={{
           marginTop: 40,
-          backgroundColor: Colors.white,
+         
           padding: 10,
           width: w(98),
-          borderRadius: 20,
-          borderColor: "black",
-          borderWidth: 3,
+        
         }}
       >
         <View>
           <Text
             style={{
-              textAlign: "center",
+              textAlign: "left",
               color: Colors.loginBlue,
               marginTop: 20,
               fontSize: dynamicFontSize * 1.7,
               fontWeight: 700,
+              fontFamily:'sanFrancisco'
             }}
           >
-            LOGIN
+            Log in
           </Text>
         </View>
+        
         <View style={{ marginTop: 20, marginHorizontal: 5 }}>
           <LoginForm onSubmit={handleLoginFormSubmit} />
           {/* change onSubmit to handlerLoginFormSubmit for validation */}

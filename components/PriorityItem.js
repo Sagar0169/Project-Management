@@ -8,12 +8,12 @@ import {
 } from "react-native";
 
 function PriorityItem({ item, onSelect, isSelected  }){
-    const [backgroundColor, setBackgroundColor] = useState('white');
+    const [backgroundColor, setBackgroundColor] = useState('#9A9A9A');
     const [textBgColor, setTextBgColor] = useState('black');
     const handlePress = () => {
         // Change the background color to item.color on press
         onSelect(item);
-        setBackgroundColor(item.color);
+        setBackgroundColor('#5063BF');
         setTextBgColor('white')
       };
       
@@ -21,8 +21,8 @@ function PriorityItem({ item, onSelect, isSelected  }){
     return(
         <Pressable onPress={handlePress}>
         {/* <View style={{...styles.borderContainer,backgroundColor}}> */}
-        <View style={[styles.borderContainer, { backgroundColor: isSelected ? item.color : 'white' }]}>
-            <Text style={{color:isSelected? textBgColor:'black'}}>
+        <View style={[styles.borderContainer, { backgroundColor: isSelected ? item.color : '#9A9A9A' }]}>
+            <Text style={{color:isSelected? textBgColor:'#FFFFFF'}}>
                 {item.title}
             </Text>
 
@@ -55,13 +55,12 @@ function h(value) {
 
 const styles = StyleSheet.create({
   borderContainer: {
-    padding: w(3),
+    padding: w(2),
     margin: w(1),
-    borderWidth: 2,
-    borderColor: "black",
-    borderRadius: w(4),
+    
+    borderRadius: w(1),
     justifyContent: "center",
-    backgroundColor: "white",
+    backgroundColor: "#9A9A9A",
   },
   text: {
     fontSize: 16,

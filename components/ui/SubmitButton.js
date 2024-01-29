@@ -24,7 +24,7 @@ function SubmitButton({ children, onPress,color }) {
   }
   return (
     <Pressable
-      style={({ pressed }) => [styles.button, pressed && styles.pressed,{width:w(35)},{backgroundColor:color}]}
+      style={({ pressed }) => [styles.button, pressed && styles.pressed,{width:w(35)}]}
       onPress={onPress}
     >
       <View>
@@ -38,10 +38,10 @@ export default SubmitButton;
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 6,
-    paddingVertical: 8,
+    borderRadius: 20,
+    paddingVertical: 15,
     paddingHorizontal: 12,
-    backgroundColor: 'black',
+    backgroundColor: '#5063BF',
     elevation: 2,
     shadowColor: 'black',
     shadowOffset: { width: 1, height: 1 },
@@ -55,6 +55,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: '500'
   },
 });

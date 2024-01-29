@@ -3,9 +3,10 @@ import React, { useEffect, useRef } from "react";
 import Svg, { G, Circle } from "react-native-svg";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "../Utilities/Colors";
+import SubmitButton from "./ui/SubmitButton";
 
 
-const NextButton = ({ percentage, scrollTo }) => {
+const NextButton = ({ percentage, scrollTo,buttonText }) => {
   const size = 128;
   const strokeWidth = 2;
   const center = size / 2;
@@ -44,36 +45,11 @@ const NextButton = ({ percentage, scrollTo }) => {
 
   return (
     <View style={styles.container}>
-      <Svg width={size} height={size}>
-        <G rotation="-90" origin={center}>
-          <Circle
-            fill="transparent"
-            stroke={Colors.strokeWhite}
-            cx={center}
-            cy={center}
-            r={radius}
-            strokeWidth={strokeWidth}
-          />
-
-          <Circle
-            ref={progressRef}
-            fill="transparent" // Add fill to make the circle transparent
-            stroke={Colors.strokeYellow}
-            cx={center}
-            cy={center}
-            r={radius}
-            strokeWidth={strokeWidth}
-            strokeDasharray={circumference}
-          />
-        </G>
-      </Svg>
-      <TouchableOpacity
-        onPress={scrollTo}
-        style={styles.button}
-        activeOpacity={0.6}
-      >
-        <Ionicons name="arrow-forward-outline" size={32} color={Colors.lightWhite} />
-      </TouchableOpacity>
+      <SubmitButton onPress={scrollTo} color={Colors.black}>
+            {buttonText}
+          </SubmitButton>
+   
+      
     </View>
   );
 };

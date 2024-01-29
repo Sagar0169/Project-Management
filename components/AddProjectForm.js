@@ -9,20 +9,20 @@ import {
     ScrollView,
     TouchableOpacity,
     Linking,
+    Image,
     ToastAndroid,
 } from "react-native";
 import { AVPlaybackStatus, Video } from 'expo-av';
 import { useNavigation } from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 import { Ionicons } from "@expo/vector-icons";
 import Input from "./Input";
 import PriorityData from "./PriorityData";
+import useFonts from "../hooks/useFonts";
 // import Toast from "react-native-simple-toast";
-import * as DocumentPicker from "expo-document-picker";
-
-
-
+import * as DocumentPicker from "expo-document-picker"
 import AssignedForData from "./AssignedForData";
 import PriorityItem from "./PriorityItem";
 import SubmitButton from "./ui/SubmitButton";
@@ -30,6 +30,8 @@ import AssignedForItem from "./AssginedForItem";
 import BottomSheetDesign2 from "./BottomSheetDesign2";
 import BackArrowHeader from "./BackArrowHeader";
 import CustomModal from "./CustomModal";
+import { Svg, SvgXml } from "react-native-svg";
+import { Svg1, Svg2, Svg3, Svg4, Svg5, Svg6 } from "./svgs/svgs";
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width
@@ -50,9 +52,21 @@ function h(value) {
     return height * value;
 }
 
+
+
 //WORK ON MULTIPLE SELECTION
 
 function AddNewProjectFrom() {
+
+
+
+    const navigation = useNavigation();
+    
+
+
+
+
+
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -63,36 +77,42 @@ function AddNewProjectFrom() {
     const [selectedDocument, setSelectedDocument] = useState(null);
 
     const handleDocumentPress = async (documentType, open) => {
-        console.log(open)
-        
-        try {
-            const result = await DocumentPicker.getDocumentAsync({
-                type: "application/pdf",
-            });
-        
-            if (!result.canceled && !open) {
-                // Handle the selected document here
-                console.log("Selected document:", result.assets);
-                setSelectedDocument(result.assets[0].name);
-            } else { 
-                if (open && result.assets[0].uri) {
-                    const source = { uri: result.assets[0].uri };
-                    // Linking.openURL(result.assets[0].uri);
-                    return (
-                        <Video
-                            source={source}
-                            resizeMode="contain"
-                            useNativeControls
-                            style={{ width: '90%', height: 300 }}
-                        />
-                    );
+
+        if (documentType === "srs") {
+            console.log("file opened")
+        }
+        else {
+
+
+            try {
+                const result = await DocumentPicker.getDocumentAsync({
+                    type: "application/pdf",
+                });
+
+                if (!result.canceled && !open) {
+                    // Handle the selected document here
+                    console.log("Selected document:", result.assets);
+                    setSelectedDocument(result.assets[0].name);
+                } else {
+                    if (open && result.assets[0].uri) {
+                        const source = { uri: result.assets[0].uri };
+                        // Linking.openURL(result.assets[0].uri);
+                        return (
+                            <Video
+                                source={source}
+                                resizeMode="contain"
+                                useNativeControls
+                                style={{ width: '90%', height: 300 }}
+                            />
+                        );
+                    }
+                    else {
+                        console.log("Document picker cancelled", result.assets);
+                    }
                 }
-                else {
-                    console.log("Document picker cancelled", result.assets);
-                }
+            } catch (err) {
+                console.error("Error picking document:", err);
             }
-        } catch (err) {
-            console.error("Error picking document:", err);
         }
     };
 
@@ -106,9 +126,9 @@ function AddNewProjectFrom() {
     };
 
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
 
     const hideDatePicker = () => {
         setDatePickerVisibility(false);
@@ -138,7 +158,7 @@ function AddNewProjectFrom() {
         toggleModal();
     };
 
-    const navigation = useNavigation();
+
 
     const [enteredProjectName, setEnteredProjectName] = useState("");
     const [enteredDueDate, setEnteredDueDate] = useState("");
@@ -166,15 +186,7 @@ function AddNewProjectFrom() {
             return false;
         }
     }
-    const addPriorityItem = () => {
-        // Add a new priority item to the state
-        const newPriorityItem = {
-            id: Math.random().toString(),
-            title: "New Priority",
-            color: "#ffffff",
-        };
-        setPriorityItems((prevItems) => [...prevItems, newPriorityItem]);
-    };
+
     const addAssignedForItem = (sport) => {
         // Check if the item already exists in the list
         sport.forEach((sport) => {
@@ -196,14 +208,29 @@ function AddNewProjectFrom() {
 
         toggleModal();
     };
+
+    const [fontsLoaded, setFontsLoaded] = useState(false);
+    useEffect(() => {
+        const loadFonts = async () => {
+            await useFonts();
+            setFontsLoaded(true);
+        };
+
+        loadFonts();
+    }, []);
+    if (!fontsLoaded) {
+        // Return a loading state or null while fonts are loading
+        return null;
+    }
     return (
         //MAIN
 
-        <View style={{ paddingTop: h(4), flex: 1, backgroundColor: "#d68eeb" }}>
+
+        <View style={{ paddingTop: h(4), flex: 1, backgroundColor: "white" }}>
             <BackArrowHeader
                 title={"Add New Project"}
                 backButton={() => navigation.goBack()}
-                color={"#d68eeb"}
+                color={"white"}
             />
             <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -212,8 +239,8 @@ function AddNewProjectFrom() {
                 <View style={styles.container}>
                     <View>
                         <View style={{ flexDirection: "row", paddingTop: 10 }}>
-                            <Ionicons name="list-circle-sharp" size={30} color="#5cd669" />
-                            <Text style={styles.textStyle}>New Project</Text>
+
+                            <Text style={[styles.textStyle,{fontFamily:'poppinsemi'}]}>New Project</Text>
                         </View>
                         <Input
                             label="Project Name"
@@ -223,45 +250,48 @@ function AddNewProjectFrom() {
                         />
                     </View>
                     <View
-                        style={{ flexDirection: "row", marginTop: w(5) }} //DUE DATE
+                        style={{ marginTop: w(1) }} //DUE DATE
                     >
                         <View
                             style={{
                                 flex: 0.3,
-                                flexDirection: "row",
+
                                 paddingTop: 10,
                                 marginTop: w(2),
                             }}
                         >
-                            <Ionicons name="calendar" size={30} color="#f5b955" />
-                            <Pressable onPress={showDatePicker}>
-                                <Text
-                                    style={[
-                                        styles.textStyle,
-                                        { maxWidth: w(30), marginEnd: w(5) },
-                                    ]}
-                                >
-                                    Due Date
-                                </Text>
-                            </Pressable>
+
+
+                            <Text
+                                style={[
+                                    styles.textStyle,
+                                    { maxWidth: w(30), marginEnd: w(5) },
+                                    {fontFamily:'poppinsemi'}
+                                ]}
+                            >
+                                Due Date
+                            </Text>
+
                         </View>
-                        <View style={{ flex: 0.7, maxWidth: w(70), marginStart: w(2) }}>
-                            <Input
-                                label="Due Date"
-                                editable={false}
-                                secure={false}
-                                onUpdateValue={onChangeText.bind(this, "dueDate")}
-                                value={enteredDueDate}
-                            />
-                        </View>
+                        <Pressable onPress={showDatePicker}>
+                            <View style={{ flex: 0.7, maxWidth: w(100), flexDirection: 'row', alignItems: 'center' }}>
+                                <Input
+                                    label="Due Date"
+                                    editable={false}
+                                    secure={false}
+                                    onUpdateValue={onChangeText.bind(this, "dueDate")}
+                                    value={enteredDueDate}
+                                />
+                                <SvgXml xml={Svg6} width="20" height="20" style={{ marginLeft: w(-5) }} />
+                            </View>
+                        </Pressable>
                     </View>
 
                     <View
                         style={{ marginTop: w(5) }} //ASSIGNED FOR
                     >
-                        <View style={{ flexDirection: "row", paddingTop: 10 }}>
-                            <Ionicons name="person-circle" size={38} color="#9d9bff" />
-                            <Text style={[styles.textStyle, { marginTop: w(1) }]}>
+                        <View style={{ paddingTop: 10 }}>
+                            <Text style={[styles.textStyle, { marginTop: w(1) }, {fontFamily:'poppinsemi'}]}>
                                 Assigned for
                             </Text>
                         </View>
@@ -279,16 +309,15 @@ function AddNewProjectFrom() {
                                 <Pressable>
                                     <View
                                         style={{
-                                            borderRadius: w(50),
-                                            borderWidth: 2,
                                             width: w(6),
                                             marginLeft: 2,
                                         }}
                                     >
-                                        <Ionicons name="people-outline" size={25} color="black" />
+                                        <SvgXml xml={Svg1} width="40" height="40" style={{ margin: 4 }} />
+
                                     </View>
                                 </Pressable>
-                                <View style={{ flex: 1 }}>
+                                <View style={{ flex: 1, marginLeft: w(3) }}>
                                     <FlatList
                                         data={AssginedForItem}
                                         horizontal
@@ -305,7 +334,7 @@ function AddNewProjectFrom() {
                                     onPress={toggleModal}
                                     style={{ marginHorizontal: w(1) }}
                                 >
-                                    <Ionicons name="add-circle" size={34} color="black" />
+                                    <SvgXml xml={Svg2} width="40" height="40" style={{ margin: 4 }} />
                                 </Pressable>
                             </View>
                         </ScrollView>
@@ -331,8 +360,8 @@ function AddNewProjectFrom() {
                         style={{ marginTop: w(5) }} //PRIORITY
                     >
                         <View style={{ flexDirection: "row", paddingTop: 10 }}>
-                            <Ionicons name="md-flag" size={28} color="#5cd669" />
-                            <Text style={styles.textStyle}>Priority</Text>
+
+                            <Text style={[styles.textStyle,{fontFamily:'poppinsemi'}]}>Priority</Text>
                         </View>
 
                         <ScrollView horizontal={true}
@@ -359,40 +388,44 @@ function AddNewProjectFrom() {
                     </View>
                     <View style={{ marginTop: w(5) }}>
                         <View style={{ flexDirection: 'row', paddingTop: 10 }}>
-                            <Ionicons name="attach-sharp" size={32} color="#ffa5a5"
-                                style={{ transform: [{ rotate: '90deg' }] }}
-                            />
-                            <Text style={styles.textStyle}>Attachments</Text>
+
+                            <Text style={[styles.textStyle,{fontFamily:'poppinsemi'}]}>Attachments</Text>
+
                         </View>
                         <TouchableOpacity
-                            style={[styles.borderContainerDocument1, { marginTop: w(5) }]}
+                            style={{ justifyContent: 'center', alignItems: 'center', marginTop: w(5) }}
                             onPress={() => handleDocumentPress("Requirements", false)}
                         >
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-
-                                <Ionicons name="document" size={30} color="#F32323" />
+                            <SvgXml xml={Svg3} width="55" height="55" />
 
 
-                                {selectedDocument && (<Text style={{ fontSize: dynamicFontSize * 1 }}>{selectedDocument}</Text>
-                                )}
-                            </View>
+                            <Text style={{ fontFamily:'poppinsemi', fontSize: dynamicFontSize * 1 }}>Browse files to upload</Text>
+
+
 
                         </TouchableOpacity>
-                   
-                           
-                     
+
+
+
                         <TouchableOpacity
                             style={[styles.borderContainerDocument2, { marginTop: w(5) }]}
-                            onPress={() => handleDocumentPress("SRS")}
+                            onPress={() => handleDocumentPress("srs")}
                         >
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Ionicons name="document" size={30} color="#236CF3" />
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <SvgXml xml={Svg4} width="30" height="30" />
                                 {selectedDocument && (<Text style={{ fontSize: dynamicFontSize * 1 }}>{selectedDocument}</Text>
                                 )}
+
+                                {!selectedDocument && (<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text >No Selected File - </Text>
+                                    <SvgXml xml={Svg5} width="30" height="30" />
+
+                                </View>)}
                             </View>
+
                         </TouchableOpacity>
 
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             style={[styles.borderContainerDocument3, { marginTop: w(5) }]}
                             onPress={() => handleDocumentPress("Documentation")}
                         >
@@ -401,12 +434,8 @@ function AddNewProjectFrom() {
                                 {selectedDocument && (<Text style={{ fontSize: dynamicFontSize * 1 }}>{selectedDocument}</Text>
                                 )}
                             </View>
-                        </TouchableOpacity>
-                        {/* {selectedDocument && (
-        <View style={{ marginTop: 10 }}>
-          <Text>Selected Document: {selectedDocument}</Text>
-        </View>
-      )} */}
+                        </TouchableOpacity> */}
+
                     </View>
                 </View>
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: w(5) }}>
@@ -455,6 +484,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     textStyle: {
+
         marginLeft: 5,
         fontSize: dynamicFontSize * 1,
         fontWeight: "500",
@@ -468,13 +498,20 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
     },
     borderContainerDocument1: {
-        padding: w(3),
+        padding: 20, // Replace with your desired padding
         borderWidth: 1,
-
-        borderColor: "black",
-        borderRadius: w(1),
+        borderColor: "transparent", // Set transparent border color
+        borderRadius: 10, // Replace with your desired border radius
         justifyContent: "center",
         backgroundColor: "#F0DFDF",
+        position: 'relative', // Required for absolute positioning
+    },
+    dashedBorder: {
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        top: 0,
+        left: 0,
     },
     borderContainerDocument2: {
         padding: w(3),
@@ -483,7 +520,7 @@ const styles = StyleSheet.create({
         borderColor: "black",
         borderRadius: w(1),
         justifyContent: "center",
-        backgroundColor: "#D4DDF0",
+        backgroundColor: "#E9EEFF",
     },
     borderContainerDocument3: {
         padding: w(3),
