@@ -97,11 +97,8 @@ export default function App() {
               }}
             />
             <Stack.Screen name="AssignNewTask" component={AssignNewTask} />
-             <Stack.Screen
-          name="CreateNewIssues"
-          component={CreateNewIssues}
-        />
-      </Stack.Navigator>
+            <Stack.Screen name="CreateNewIssues" component={CreateNewIssues} />
+          </Stack.Navigator>
         </ContextProvider>
       </SearchProvider>
     </NavigationContainer>

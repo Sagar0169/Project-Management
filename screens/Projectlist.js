@@ -13,10 +13,10 @@ export default function Projectlist() {
         searchTitle="Project List"
         filter={true}
         title="Project List"
-        color="#4ec05a"
+        color="#ffffff"
         backButton={() => navigation.goBack()}
       />
-      <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
+      <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
         <ProjectListFlatList/>
       </View>
     </View>
@@ -27,6 +27,6 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     paddingTop: 40,
-    backgroundColor: "#4ec05a",
+    backgroundColor: "#ffffff",
   },
 });
