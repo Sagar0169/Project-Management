@@ -47,7 +47,7 @@ export default function AssignTask({ navigation }) {
       </View>
       {storedProfile !== "Developer" && (
         <TouchableOpacity
-          style={[styles.addButton, { backgroundColor: "#e5af54" }]}
+          style={[styles.addButton, { backgroundColor: "#5063Bf" }]}
           onPress={handleAddTaskPress}
         >
           <MaterialCommunityIcons name="plus" size={30} color="#fff" />
