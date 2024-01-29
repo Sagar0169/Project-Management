@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Image,
   Pressable,
@@ -9,26 +9,29 @@ import {
   Modal,
   TextInput,
 } from "react-native";
+import Input from "./Input";
 import SubmitButton from "./ui/SubmitButton";
 import Toast from "react-native-simple-toast";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AssignedForData from "./AssignedForData";
 import BottomSheetDesign3 from "./BottomSheedDesign3";
 import { assignedStore, storeTask } from "../store/http";
+import useFonts from "../hooks/useFonts";
+
 
 
 //CHANGE MULTIPLE SELECTION FROM BOTTOMSHEET2
 // give todays date before hand
 
-function AssignTaskForm({ taskData, setTaskData,navigation }) {
-    useEffect(() => {
-        const currentDate = new Date();
-        setSelectedDate(currentDate);
-        setEnteredDueDate(currentDate.toISOString().split("T")[0]);
-      }, []); // Empty dependency array ensures that this effect runs only once, when the component mounts
-    
-    
-const addNewTask = (newTask) => {
+function AssignTaskForm({ taskData, setTaskData, navigation }) {
+  useEffect(() => {
+    const currentDate = new Date();
+    setSelectedDate(currentDate);
+    setEnteredDueDate(currentDate.toISOString().split("T")[0]);
+  }, []); // Empty dependency array ensures that this effect runs only once, when the component mounts
+
+
+  const addNewTask = (newTask) => {
     // Add the new task to taskData
     setTaskData((prevTaskData) => [...prevTaskData, newTask]);
     assignedStore(newTask)
@@ -137,87 +140,75 @@ const addNewTask = (newTask) => {
     setAssginedForItem(sport);
     toggleModal();
   };
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+  useEffect(() => {
+    const loadFonts = async () => {
+      await useFonts();
+      setFontsLoaded(true);
+    };
 
+    loadFonts();
+  }, []);
+  if (!fontsLoaded) {
+    // Return a loading state or null while fonts are loading
+    return null;
+  }
   return (
-    <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView style={{ flex: 1, margin: 10 }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
             margin: 8,
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Task Name</Text>
+            <Text style={styles.headingText}>Task Name</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <TextInput
-              onChangeText={onChangeText.bind(this, "taskName")}
-              placeholder="Enter TaskName"
-              style={{
-                color: "#666666",
-                fontSize: 16,
-                textAlign: "left",
-                borderRadius: 3,
-                borderWidth: 1,
-                padding: 5,
-                borderColor: "#666666",
-              }}
-            ></TextInput>
+            <Input
+              label="Enter TaskName"
+              secure={false}
+              onUpdateValue={onChangeText.bind(this, "taskName")}
+
+            />
           </View>
         </View>
 
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
+
             margin: 8,
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Task Phase</Text>
+            <Text style={styles.headingText}>Task Phase</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <TextInput
+            <Input
+              label="Enter Phase"
+              secure={false}
               onChangeText={onChangeText.bind(this, "taskPhase")}
-              placeholder="Enter Phase"
-              style={{
-                color: "#666666",
-                fontSize: 16,
-                textAlign: "left",
-                borderRadius: 3,
-                borderWidth: 1,
-                padding: 5,
-                borderColor: "#666666",
-              }}
-            ></TextInput>
+
+            />
+
           </View>
         </View>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
+       
             margin: 8,
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Task Type</Text>
+            <Text style={styles.headingText}>Task Type</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <TextInput
+          <Input
+              label="Enter Type"
+              secure={false}
               onChangeText={onChangeText.bind(this, "taskType")}
-              placeholder="Enter Type"
-              style={{
-                color: "#666666",
-                fontSize: 16,
-                textAlign: "left",
-                borderRadius: 3,
-                borderWidth: 1,
-                padding: 5,
-                borderColor: "#666666",
-              }}
-            ></TextInput>
+
+            />
           </View>
         </View>
 
@@ -477,7 +468,7 @@ const addNewTask = (newTask) => {
                   TaskComplexity: "Task Complexity",
                   // Add other properties based on your form fields 
                 };
-                addNewTask(newTask);l
+                addNewTask(newTask); l
                 Toast.showWithGravity(
                   "Project Added Sucessfully.",
                   Toast.SHORT,
@@ -545,6 +536,9 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     backgroundColor: "white",
-    justifyContent: "flex-end",
+    Content: "flex-end",
   },
+  headingText: {
+    color: "black", fontSize: 18, fontFamily: 'poppinsemi',
+  }
 });

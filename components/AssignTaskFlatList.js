@@ -91,7 +91,7 @@ const AssignTaskFlatList = ({ navigation }) => {
         }
 
         if (isMounted) {
-          
+          setTask(expenses)
         }
       } catch (error) {
         console.error("Error fetching tasks:", error);

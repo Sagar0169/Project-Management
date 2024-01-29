@@ -53,8 +53,8 @@ export default function BackArrowHeaderWhite({
         <Text
           style={{
             fontSize: 24,
-            color: "white",
-            fontWeight: "bold",
+            color: "black",
+            fontWeight: "600",
             textAlign: "center",
             marginHorizontal: 8,
           }}
