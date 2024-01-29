@@ -19,7 +19,6 @@ const ProjectDetails = ({ item }) => {
             flexDirection: "row",
             flex: 1,
             alignItems: "center",
-            borderColor: "#4ec05a",
           }}
         >
           <View
@@ -101,17 +100,15 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   itemContainer2: {
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#E9EEFF",
     flex: 1,
     elevation: 6,
     marginHorizontal: 20,
     marginVertical: 12,
     paddingVertical: 4,
-    borderWidth: 1,
-    borderColor: "#98C09C",
   },
   viewBox: {
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#5063BF",
     elevation: 2,
     paddingVertical: 8,
     paddingHorizontal: 8,
@@ -150,7 +147,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   viewText: {
-    color: "#98C09C",
+    color: "#FAFAFA",
     fontSize: 16,
     marginHorizontal: 4,
     fontWeight: "600",

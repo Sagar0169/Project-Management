@@ -31,7 +31,6 @@ export async function fetchTasks() {
     const titles = response.data[key];
 
     for (const titleKey in titles) {
-      console.log(titleKey)
       const taskObj = {
         id: titleKey, // Use titleKey as the data
         Assigned: titles[titleKey].Assigned, // Access the 'title' property
@@ -60,6 +59,8 @@ export async function assignedTasksFetch() {
 
   for (const key in response.data) {
     // Access the 'title' property within each array
+
+    
     const titles = response.data;
     const taskObj = {
       id: key, // Use titleKey as the data
@@ -67,7 +68,7 @@ export async function assignedTasksFetch() {
       title: titles[key].title,
       Created: titles[key].Created,
       FormTitle: titles[key].FormTitle,
-      Status: titles[key].Status,
+      Status: titles[key].Status,                                                                                                                    
       TaskPhase: titles[key].TaskPhase,
       StartDate: titles[key].StartDate,
       time: titles[key].time,
@@ -79,7 +80,7 @@ export async function assignedTasksFetch() {
     assigned.push(taskObj);
     
   }
-  return assigned;
+  return assigned; 
 }
 
 export function updateTask(id, taskData) {

@@ -2,7 +2,7 @@ import { View, Text, Pressable, Image } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 
-export default function BackArrowHeader({ title, backButton, showArrow ,color}) {
+export default function BackArrowHeader({ title, backButton, showArrow ,color,textColor}) {
   return (
     <LinearGradient
       style={{
@@ -32,7 +32,7 @@ export default function BackArrowHeader({ title, backButton, showArrow ,color}) 
               width: 40,
               height: 40,
               resizeMode: "cover",
-                tintColor: "white",
+              tintColor: "#5063BF",
             }}
             source={require("../assets/Images/left.png")}
           />
@@ -42,7 +42,7 @@ export default function BackArrowHeader({ title, backButton, showArrow ,color}) 
       <Text
         style={{
           fontSize: 24,
-          color: "white",
+          color: textColor,
           fontWeight: "bold",
           textAlign: "center",
           marginHorizontal: 8,

@@ -42,7 +42,7 @@ export default function BackArrowHeaderWhite({
                   width: 40,
                   height: 40,
                   resizeMode: "cover",
-                  tintColor: "white",
+                  tintColor: "#5063BF",
                 }}
                 source={require("../assets/Images/left.png")}
               />
@@ -53,7 +53,7 @@ export default function BackArrowHeaderWhite({
         <Text
           style={{
             fontSize: 24,
-            color: "white",
+            color: "#2D2C2E",
             fontWeight: "bold",
             textAlign: "center",
             marginHorizontal: 8,
@@ -67,7 +67,7 @@ export default function BackArrowHeaderWhite({
           style={{
             flexDirection: "row",
             marginHorizontal: "3%",
-            backgroundColor: "#FFFFFF5E",
+            backgroundColor: "#B6C0F1",
             marginBottom: 2,
             borderRadius: 30,
             padding: 8,
@@ -79,7 +79,7 @@ export default function BackArrowHeaderWhite({
         >
           <TextInput
             placeholder={`Search The ${searchTitle} Name`}
-            placeholderTextColor="black"
+            placeholderTextColor="white"
             style={{ flex: 1, marginHorizontal: 6 }}
             value={searchQuery}
             onChangeText={(text) => setSearchQuery(text)}

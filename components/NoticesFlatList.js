@@ -75,13 +75,10 @@ const styles = StyleSheet.create({
   itemContainer2: {
     backgroundColor: "#f5f5f5",
     flex: 1,
-    elevation: 6,
-    marginHorizontal: 8,
+    marginHorizontal: 12,
     marginVertical: 12,
-    paddingVertical: 4,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: "#B3B2EC",
+    paddingVertical: 2,
+    borderRadius: 8,
   },
   gradient: {
     flex: 1,

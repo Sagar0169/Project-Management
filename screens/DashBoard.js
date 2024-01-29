@@ -6,6 +6,7 @@ import {
   Dimensions,
   FlatList,
   Image,
+  ImageBackground,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -17,6 +18,7 @@ import RecentProjectFlatList from "../components/RecentProjectFlatList";
 import TasksData from "../components/TasksData";
 import { Colors } from "../Utilities/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SvgUri, SvgXml } from "react-native-svg";
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width
@@ -38,6 +40,26 @@ function h(value) {
 }
 
 export default function DashBoard({ navigation }) {
+  const lineRightSvg = `
+  <svg
+    width="26"
+    height="11"
+    viewBox="0 0 26 11"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M0 11H26V7.33333H0V11ZM0 3.66667H16.25V0H0V3.66667Z"
+      fill="#6980D1"
+    />
+  </svg>
+`;
+  const bellIcon = `
+  <svg width="20" height="25" viewBox="0 0 20 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M10 25C11.375 25 12.5 23.8462 12.5 22.4359H7.5C7.5 23.8462 8.625 25 10 25ZM17.5 17.3077V10.8974C17.5 6.96154 15.4625 3.66667 11.875 2.79487V1.92308C11.875 0.858974 11.0375 0 10 0C8.9625 0 8.125 0.858974 8.125 1.92308V2.79487C4.55 3.66667 2.5 6.94872 2.5 10.8974V17.3077L0 19.8718V21.1538H20V19.8718L17.5 17.3077ZM15 18.5897H5V10.8974C5 7.71795 6.8875 5.12821 10 5.12821C13.1125 5.12821 15 7.71795 15 10.8974V18.5897Z" fill="#6980D1"/>
+  </svg>
+`;
+
   const [storedProfile, setStoreProfile] = useState("");
 
   const fetchStoredProfile = async () => {
@@ -117,15 +139,51 @@ export default function DashBoard({ navigation }) {
           colors={[item.color, item.color]} // Change colors as per your preference
           style={styles.gradient}
         >
-          <View style={styles.textContainer}>
-            <Text style={styles.text}>{item.count}</Text>
-            <Ionicons size={24} name="ellipsis-horizontal-circle-outline" />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: w(4),
+            }}
+          >
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                paddingHorizontal: w(4),
+                backgroundColor: "white",
+                borderRadius: w(20),
+                marginVertical: 4,
+                paddingVertical: w(4),
+              }}
+            >
+              <SvgXml xml={item.lineRightSvg} width="40" height="40" />
+            </View>
+            <View
+              style={{ borderRadius: 8, marginTop: w(6), marginStart: w(2) }}
+            >
+              <Text
+                style={{
+                  color: item.textColor,
+                  fontSize: 20,
+                  fontWeight: "bold",
+                }}
+              >
+                {item.count}
+              </Text>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  width: w(20),
+                }}
+              >
+                {item.title}
+              </Text>
+            </View>
           </View>
-          <Text style={styles.text2}>{header}</Text>
-          <Image
-            source={item.image}
-            style={{ width: "100%", height: 100, resizeMode: "cover" }}
-          />
         </LinearGradient>
       </Pressable>
     );
@@ -139,26 +197,44 @@ export default function DashBoard({ navigation }) {
           justifyContent: "space-between",
           alignItems: "center",
           marginHorizontal: 14,
-          marginVertical: 8,
+          marginVertical: 10,
         }}
       >
+        <View
+          style={{
+            backgroundColor: "#E9EEFF",
+            borderRadius: w(8),
+            padding: w(2),
+          }}
+        >
+          <SvgXml
+            xml={lineRightSvg}
+            width="20"
+            height="20"
+            style={{ margin: 4 }}
+          />
+        </View>
+        <SvgXml xml={bellIcon} width="20" height="20" style={{ margin: 4 }} />
+      </View>
+      <View style={{ flex: 1, marginHorizontal: 8, marginVertical: 2 }}>
         <Text
           style={{
             fontWeight: "bold",
             fontSize: 24,
+            color: "#2D2C2E",
+            marginHorizontal: 8,
+            marginVertical: 8,
           }}
         >
           Dashboard
         </Text>
-        <Ionicons size={20} name="notifications-outline" />
-      </View>
-      <View style={{ flex: 1, marginHorizontal: 8, marginVertical: 8 }}>
         <Text
           style={{
             fontSize: 18,
-            color: Colors.black,
+            color: "#878787",
             fontWeight: "600",
-            margin: 8,
+            marginHorizontal: 8,
+            marginVertical: 2,
           }}
         >
           Project Summary
@@ -183,7 +259,7 @@ export default function DashBoard({ navigation }) {
           <Text
             style={{
               fontSize: 18,
-              color: Colors.black,
+              color: "grey",
               fontWeight: "600",
               margin: 8,
             }}
@@ -204,7 +280,7 @@ export default function DashBoard({ navigation }) {
             // Set the following props to allow vertical scrolling
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ flexGrow: 1 }}
-          />
+          />                                            
         </View>
       </View>
     </ScrollView>
@@ -217,8 +293,13 @@ const styles = StyleSheet.create({
     margin: 8,
     borderRadius: 15,
     overflow: "hidden",
-    borderColor: Colors.black,
-    borderWidth: 2, // Set the border width to the desired value
+    elevation: 8, //This all down four used to give shadow in IOS
+    shadowColor: "grey",
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    shadowOpacity: 0.25,
+    borderWidth: 2,
+    borderColor: "grey",
   },
   textContainer: {
     flexDirection: "row", // Arrange items in a column

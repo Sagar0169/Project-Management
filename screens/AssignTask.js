@@ -39,10 +39,10 @@ export default function AssignTask({ navigation }) {
         searchTitle="Assigned Tasks"
         filter={true}
         title="Assigned Tasks"
-        color="#e5af54"
+        color="#ffffff"
         backButton={() => navigation.goBack()}
       />
-      <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
+      <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
         <AssignTaskFlatList navigation={navigation} storedProfile={storedProfile}/>
       </View>
       {storedProfile !== "Developer" && (
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     paddingTop: 40,
-    backgroundColor: "#e5af54",
+    backgroundColor: "#ffffff",
   },
   addButton: {
     position: "absolute",
