@@ -6,7 +6,7 @@ import {
   Pressable,
   StyleSheet,
   Text,
-  View
+  View,
 } from "react-native";
 import { assignedTasksFetch, fetchTasks } from "../store/http";
 import { useSearch } from "../store/search-redux";
@@ -25,7 +25,6 @@ const ProjectDetails = ({ item, navigation, storedProfile }) => {
             flexDirection: "row",
             flex: 1,
             alignItems: "center",
-            borderColor: "#000000",
           }}
         >
           <View
@@ -91,7 +90,7 @@ const AssignTaskFlatList = ({ navigation }) => {
         }
 
         if (isMounted) {
-          
+          setTask(expenses)
         }
       } catch (error) {
         console.error("Error fetching tasks:", error);
@@ -126,7 +125,7 @@ const AssignTaskFlatList = ({ navigation }) => {
       keyExtractor={(item, index) => `${item.id}-${index}`}
       ListEmptyComponent={() => (
         <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color="#e5af54" />
+          <ActivityIndicator size="large" color="#5063BF" />
         </View>
       )}
     />
@@ -155,17 +154,15 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   itemContainer2: {
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#E9EEFF",
     flex: 1,
     elevation: 6,
     marginHorizontal: 20,
     marginVertical: 12,
     paddingVertical: 4,
-    borderWidth: 1,
-    borderColor: "#e5af54",
   },
   viewBox: {
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#5063BF",
     elevation: 2,
     paddingVertical: 8,
     paddingHorizontal: 8,
@@ -204,7 +201,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   viewText: {
-    color: "#E6CCA1",
+    color: "#FAFAFA",
     fontSize: 16,
     marginHorizontal: 4,
     fontWeight: "600",

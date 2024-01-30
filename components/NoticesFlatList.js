@@ -14,7 +14,7 @@ import moviesData from "./moviesData";
 const NoticesItem = ({ navigation, item }) => {
   function detailsHandler() {
     navigation.navigate("AssignedTaskDetails", { ID: item });
-  }     
+  }
   if (item.id !== "placeholder") {
     return (
       <Pressable onPress={detailsHandler} style={styles.itemContainer2}>
@@ -37,7 +37,7 @@ const NoticesItem = ({ navigation, item }) => {
               marginVertical: 6,
             }}
             // source={require("../assets/Images/profile.jpg")}
-            source={{ uri: item.image }}
+            source={ item.image }
           />
           <Text numberOfLines={3} ellipsizeMode="tail" style={styles.text}>
             {item.title}
@@ -75,13 +75,10 @@ const styles = StyleSheet.create({
   itemContainer2: {
     backgroundColor: "#f5f5f5",
     flex: 1,
-    elevation: 6,
-    marginHorizontal: 8,
+    marginHorizontal: 12,
     marginVertical: 12,
-    paddingVertical: 4,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: "#B3B2EC",
+    paddingVertical: 2,
+    borderRadius: 8,
   },
   gradient: {
     flex: 1,

@@ -47,11 +47,11 @@ export default Input;
 
 const styles = StyleSheet.create({
   inputContainer: {
-    borderWidth:2,
-    borderColor:'black',
-    borderRadius:10,
+    borderWidth:1,
+    borderColor:'#8A96D3',
+    borderRadius:1,
     marginVertical: 8,
-    backgroundColor:'white',
+    backgroundColor:'#E9EEFF',
     flexDirection: 'row', // Add this line to align items horizontally
     alignItems: 'center', 
   },
@@ -64,14 +64,14 @@ const styles = StyleSheet.create({
   },
   input: {
     
-    borderRadius:10,
+    
     paddingVertical: 10,
     paddingHorizontal: 8,
-    backgroundColor: 'white',
+    backgroundColor: '#E9EEFF',
     borderBottomColor:'#DCDCDC',
     fontSize: 16,
     color:'black',
-    width:'90%'
+    width:'100%'
   },
   inputInvalid: {
     backgroundColor: 'red',

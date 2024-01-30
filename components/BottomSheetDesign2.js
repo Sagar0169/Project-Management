@@ -3,16 +3,15 @@ import {
   View,
   Text,
   FlatList,
-  Image,
   StyleSheet,
   Pressable,
 } from "react-native";
 import SubmitButton from "./ui/SubmitButton";
-import DashboardData from "./DashboardData";
+
 
 
 const ProjectDetails = ({ item,handleSportSelection,isSelected }) => {
-  const backgroundColor = isSelected ? "#D58EEB91" : "#f5f5f5";
+  const backgroundColor = isSelected ? "#E9EEFF" : "#f5f5f5";
  
     return (
       <Pressable
@@ -25,11 +24,11 @@ const ProjectDetails = ({ item,handleSportSelection,isSelected }) => {
           flex: 1,
           alignItems: "center",
           
-          borderColor: isSelected ? "#4ec05a" : "#d68eeb",
+          borderColor: isSelected ? "#E9EEFF" : "#E9EEFF",
           backgroundColor 
         }]}
       >
-        <View
+        <View 
           style={{
             flex: 1,
             marginStart: 8,
@@ -103,29 +102,18 @@ const BottomSheetDesign2 = ({handleSportSelection}) => {
 };
 
 const styles = StyleSheet.create({
-  itemContainer: {
-    flex: 1,
-    margin: 8,
-    borderRadius: 15,
-    overflow: "hidden",
-  },
+
   itemContainer2: {
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#E9EEFF",
     flex: 1,
     elevation: 6,
     marginHorizontal: 20,
     marginVertical: 12,
     
-    borderWidth: 1,
-    borderColor:'#d68eeb'
+   
+    borderColor:'#E9EEFF'
   },
-  gradient: {
-    flex: 1,
-    borderRadius: 15,
-    alignItems: "center",
-    paddingVertical: 20,
-    justifyContent: "center",
-  },
+  
   image: {
     width: 55,
     height: 55,
