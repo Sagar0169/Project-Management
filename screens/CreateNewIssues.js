@@ -25,11 +25,11 @@ function h(value) {
 
 function CreateNewIssues({navigation}){
     
-return(<View style={{ paddingTop: h(4), flex: 1, backgroundColor: "#8e8cf3" }}>
+return(<View style={{ paddingTop: h(4), flex: 1, backgroundColor: "white" }}>
 <BackArrowHeader
 backButton={()=>{navigation.goBack()}}
   title="Create Issue"
-  color={"#8e8cf3"}
+  color={"white"}
 />
 <View style={{flex:1, backgroundColor:'white'}}>
     

@@ -16,6 +16,7 @@ import Toast from "react-native-simple-toast";
 import BottomSheetDesign2 from "./BottomSheetDesign2";
 import DropDown from "./TimeSheet/DropDown";
 import { ProjectGroup, Status, TaskGroup, Tasks } from "./Data";
+import Input from "./Input";
 
 
 
@@ -147,7 +148,7 @@ function CreateNewIssuesForm() {
 
 
     return (
-        <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
+        <View style={{ flex: 1, backgroundColor: "white" }}>
 
 
 
@@ -156,15 +157,15 @@ function CreateNewIssuesForm() {
             <ScrollView style={{ flex: 1, margin: 10 }}>
                 <View
                     style={{
-                        flexDirection: "row",
-                        alignItems: "center",
+                        
+                        
                         margin: 8,
                     }}
                 >
-                    <View style={{ flex: 1 }}>
+                    <View >
                         <Text style={{ color: "#666666", fontSize: 26 }}>Project </Text>
                     </View>
-                    <View style={{ flex: 1 }}>
+                    <View style={{ alignItems:'stretch' }}>
                         <DropDown
                             data={ProjectGroup}
                             selectValue={selectedProject}
@@ -176,15 +177,14 @@ function CreateNewIssuesForm() {
                 </View>
                 <View
                     style={{
-                        flexDirection: "row",
-                        alignItems: "center",
+                        
                         margin: 8,
                     }}
                 >
-                    <View style={{ flex: 1 }}>
+                    <View >
                         <Text style={{ color: "#666666", fontSize: 26 }}>Project Task</Text>
                     </View>
-                    <View style={{ flex: 1 }}>
+                    <View >
                         <DropDown
                             data={Tasks}
                             selectValue={selectedTask}
@@ -196,8 +196,7 @@ function CreateNewIssuesForm() {
                 </View>
                 <View
                     style={{
-                        flexDirection: "row",
-                        alignItems: "center",
+                        
                         margin: 8,
                     }}
                 >
@@ -205,20 +204,12 @@ function CreateNewIssuesForm() {
                         <Text style={{ color: "#666666", fontSize: 26 }}>Title</Text>
                     </View>
                     <View style={{ flex: 1 }}>
-                        <TextInput
-                            onChangeText={onChangeText.bind(this, "taskName")}
-                            placeholder="Enter Title"
-                            style={{
-                                color: "#666666",
-                                fontSize: 16,
-                                textAlign: "left",
-                                borderRadius: 3,
-                                borderWidth: 1,
-                                padding: 5,
-                                borderColor: '#666666'
-                            }}
-                        >
-                        </TextInput>
+                    <Input
+                            label="Enter Title"
+                            secure={false}
+                            onUpdateValue={onChangeText.bind(this, "taskName")}
+                            value={enteredTaskName}
+                        />
                     </View>
                 </View>
 
