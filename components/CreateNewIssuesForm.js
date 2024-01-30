@@ -12,10 +12,12 @@ import {
     Dimensions,
 } from "react-native";
 import SubmitButton from "./ui/SubmitButton";
-import Toast from "react-native-simple-toast";
+// import Toast from "react-native-simple-toast";
+
 import BottomSheetDesign2 from "./BottomSheetDesign2";
 import DropDown from "./TimeSheet/DropDown";
 import { ProjectGroup, Status, TaskGroup, Tasks } from "./Data";
+import CustomModal from "./CustomModal";
 import Input from "./Input";
 
 
@@ -43,6 +45,8 @@ function h(value) {
 }
 
 function CreateNewIssuesForm() {
+    const [isModalVisible2, setModalVisible2] = useState(false);
+    const [isModalVisible3, setModalVisible3] = useState(false);
 
     function validateForm() {
         // Check if enteredProjectName, enteredDueDate, and AssginedForItem have values
@@ -144,6 +148,10 @@ function CreateNewIssuesForm() {
     const handleSportSelection = (sport) => {
         setAssginedForItem(sport);
         toggleModal();
+    };
+    const hideModal = () => {
+        setModalVisible2(false);
+        setModalVisible3(false);
     };
 
 
@@ -514,19 +522,35 @@ function CreateNewIssuesForm() {
                 <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 40 }}>
                     <SubmitButton onPress={() => {
                         if (validateForm()) {
-                            Toast.showWithGravity(
-                                "Project Added Sucessfully.",
-                                Toast.SHORT,
-                                Toast.BOTTOM
-                            );
+                            // Toast.showWithGravity(
+                            //     "Project Added Sucessfully.",
+                            //     Toast.SHORT,
+                            //     Toast.BOTTOM
+                            // );
+                            setModalVisible(true)
                         } else {
-                            Toast.showWithGravity(
-                                "Please fill all details.",
-                                Toast.SHORT,
-                                Toast.BOTTOM
-                            );
+                            // Toast.showWithGravity(
+                            //     "Please fill all details.",
+                            //     Toast.SHORT,
+                            //     Toast.BOTTOM
+                            // );
+                            setModalVisible3(true)
                         }
                     }} color={"#8e8cf3"}> Add Issue</SubmitButton></View>
+
+                    {/* Toast */}
+                    {isModalVisible2 && <CustomModal
+                    visible={isModalVisible2}
+                    message="New Issue Created."
+                    onHide={hideModal}
+                />}
+                {isModalVisible3 && <CustomModal
+                    visible={isModalVisible3}
+                    message="Please fill all details."
+                    onHide={hideModal}
+                />}
+
+
             </ScrollView>
         </View>
     )

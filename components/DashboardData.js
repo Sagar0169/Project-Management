@@ -90,4 +90,11 @@ export default [
 `,
     // image:require('../assets/Images/dashGreen.png')
   },
+  {
+    id: "4",
+    title: "Check In/Out",
+    color: "#6073C9C0",
+    count: "",
+    image:require('../assets/Images/dashBlue.png')
+  },
 ];

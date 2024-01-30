@@ -73,3 +73,104 @@ export const DataSet=[
     {id:1,date:"10/09/2023",project:"Udid",taskGroup:"UI",task:"Correcting UI",issue:"UI",activity:"Done Correction in ui",fromTime:"09:00",toTime:"20:00",workingHours:"12:00",billingHours:"12:00",description:"testing",taskStatus:"In Progress"}
     ,{id:2,date:"10/09/2023",project:"BharatEmart",taskGroup:"UI",task:"Correcting UI",issue:"UI",activity:"Done Correction in ui",fromTime:"09:00",toTime:"20:00",workingHours:"12:00",billingHours:"12:00",description:"testing",taskStatus:"In Progress"}
    , {id:3,date:"10/09/2023",project:"Udid",taskGroup:"UI",task:"Correcting UI",issue:"UI",activity:"Done Correction in ui",fromTime:"09:00",toTime:"20:00",workingHours:"12:00",billingHours:"12:00",description:"testing",taskStatus:"In Progress"}]
+
+
+   export const DataTimeSheet=
+    [
+        {"activity": {"id": 1, "title": "Break"}, 
+        "description": "G",
+         "formattedTime": "09:40", 
+         "formattedTime2": "14:40",
+          "formattedWorkingHours": "05:00",
+           "id": "id_i8cmlcsa0_1705471834462", 
+           "issue": {"id": 2, "title": "Login Api Issue"},
+            "project": {"id": 1, "title": "Khel Sathi"},
+             "selectedDate": "22-07-0017", 
+             "status": {"id": 1, "title": "In Progress"},
+              "task": {"id": 1, "title": "Design HomePagee"},
+               "taskGroup": {"id": 2, "title": "Development"}},
+               {"activity": {"id": 1, "title": "Break"}, 
+               "description": "G",
+                "formattedTime": "09:40", 
+                "formattedTime2": "14:40",
+                 "formattedWorkingHours": "05:00",
+                  "id": "id_i9cmlcsa0_1705471834462", 
+                  "issue": {"id": 2, "title": "Login Api Issue"},
+                   "project": {"id": 1, "title": "Khel Sathi"},
+                    "selectedDate": "22-07-0017", 
+                    "status": {"id": 1, "title": "In Progress"},
+                     "task": {"id": 1, "title": "Design HomePagee"},
+                      "taskGroup": {"id": 2, "title": "Development"}}
+            
+            
+            
+            
+            
+            
+            ]
+
+            export const CheckIn=[
+                {"date":"19-01-2024",
+                "data":
+                [{
+                    "id":"1",
+                    "date":"",
+                    "checkInTime":"",
+                    "location":"RK Ashram Marg",
+                    "remarks":"",
+                    "checkOut":"20:30",
+                    "isCheckedIn":false,
+                    "placeName":"Panchkuian Road Area, Rk Ashrm Marg,New Delhi, India"
+
+                },
+                {
+                    "id":"3",
+                    "date":"",
+                    "checkInTime":"09:30",
+                    "location":"RK Ashram Marg",
+                    "remarks":"",
+                    "checkOut":"",
+                    "isCheckedIn":true,
+                    "placeName":"Panchkuian Road Area, Rk Ashrm Marg,New Delhi, India"
+
+                }],"id":"t3"},
+                {"date":"18-01-2024",
+                "data":
+                [{
+                    "id":"1",
+                    "date":"",
+                    "checkInTime":"",
+                    "location":"RK Ashram Marg",
+                    "remarks":"",
+                    "checkOut":"20:30",
+                    "isCheckedIn":false,
+                    "placeName":"Panchkuian Road Area, Rk Ashrm Marg,New Delhi, India"
+
+                },
+                {
+                    "id":"3",
+                    "date":"",
+                    "checkInTime":"09:30",
+                    "location":"RK Ashram Marg",
+                    "remarks":"",
+                    "checkOut":"",
+                    "isCheckedIn":true,
+                    "placeName":"Panchkuian Road Area, Rk Ashrm Marg,New Delhi, India"
+
+                }],"id":"t1"},
+                {"date":"17-01-2024",
+                "data":
+                [{
+                    "id":"2",
+                    "date":"",
+                    "checkInTime":"09:30",
+                    "location":"RK Ashram Marg",
+                    "remarks":"",
+                    "checkOut":"",
+                    "isCheckedIn":true,
+                    "placeName":"Panchkuian Road Area, Rk Ashrm Marg,New Delhi, India"
+
+                }],"id":"t2"},
+                
+
+            ]

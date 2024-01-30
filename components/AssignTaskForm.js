@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import Input from "./Input";
 import SubmitButton from "./ui/SubmitButton";
-import Toast from "react-native-simple-toast";
+// import Toast from "react-native-simple-toast";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import BottomSheetDesign3 from "./BottomSheedDesign3";
 import { assignedStore, storeTask } from "../store/http";
@@ -496,18 +496,18 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
                   TaskComplexity: "Task Complexity",
                   // Add other properties based on your form fields 
                 };
-                addNewTask(newTask); l
-                Toast.showWithGravity(
-                  "Project Added Sucessfully.",
-                  Toast.SHORT,
-                  Toast.BOTTOM
-                );
+                addNewTask(newTask);l
+                // Toast.showWithGravity(
+                //   "Project Added Sucessfully.",
+                //   Toast.SHORT,
+                //   Toast.BOTTOM
+                // );
               } else {
-                Toast.showWithGravity(
-                  "Please fill all details.",
-                  Toast.SHORT,
-                  Toast.BOTTOM
-                );
+                // Toast.showWithGravity(
+                //   "Please fill all details.",
+                //   Toast.SHORT,
+                //   Toast.BOTTOM
+                // );
               }
             }}
             color={"#e5af54"}

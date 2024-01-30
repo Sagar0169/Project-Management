@@ -26,6 +26,7 @@ import { format, differenceInMinutes } from "date-fns";
 import SubmitButton from "../components/ui/SubmitButton";
 import { Context } from "../store/context";
 import TimeSheetList from "./TimeSheetList";
+import { Colors } from "../Utilities/Colors";
 
 export default function TimeSheet({ navigation }) {
   // context
@@ -103,17 +104,21 @@ export default function TimeSheet({ navigation }) {
 
   const formattedBillingHours = format(selectedTime2, "HH:mm");
   const workingHoursMinutes = differenceInMinutes(selectedTime2, selectedTime);
-  // Convert working hours from minutes to hours
-  const workingHoursHours = workingHoursMinutes / 60;
-  const formattedWorkingHours = isNaN(workingHoursHours)
-    ? "Invalid Time"
-    : `${workingHoursHours.toFixed(2)}`;
+
+// Convert working hours from minutes to hours
+const workingHoursHours = workingHoursMinutes / 60;
+
+// Format working hours in hours and minutes
+const formattedWorkingHours = isNaN(workingHoursHours)
+  ? 'Invalid Time'
+  : format(new Date().setHours(0, workingHoursMinutes), 'HH:mm');
 
   useEffect(() => {
     // This block of code will be executed when selectedDate changes
     console.log(selectedDate);
-    const today = new Date();
-    setSelectedDate(today);
+    // const today = new Date();
+    formattedSelectedDate = format(new Date(selectedDate), 'dd-MM-yyyy');
+    setSelectedDate(formattedSelectedDate);
 
     console.log(formattedTime);
     console.log(formattedTime2);
@@ -150,11 +155,12 @@ export default function TimeSheet({ navigation }) {
     navigation.goBack();
   }
 
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const onDayPress = (day) => {
     // Handle the selected date
     setSelectedDate(day.dateString);
   };
+  const today=format(new Date(), 'yyyy-MM-dd')
 
   const [project, setSelectedproject] = useState(null);
   const [taskGroup, setSelectedtaskGroup] = useState(null);
@@ -187,7 +193,7 @@ export default function TimeSheet({ navigation }) {
   const handleSelectActivity = (category) => {
     setSelectedActivity(category);
     // Add any additional logic you want when a category is selected
-    scrollViewRef.current.scrollTo({ y: 600, animated: true });
+    scrollViewRef.current.scrollTo({ y: 800, animated: true });
   };
   const handleSelectStatus = (category) => {
     setSelectedstatus(category);
@@ -218,21 +224,23 @@ export default function TimeSheet({ navigation }) {
         <Calendar
           onDayPress={onDayPress}
           markedDates={{ [selectedDate]: { selected: true } }}
+          maxDate={today.toString().split('T')[0]} // Set minDate to the current dat
         />
-        <Text style={{ alignSelf: "center", fontSize: dynamicFontSize * 1.3 }}>
+        <Text style={{ alignSelf: "flex-start", fontSize: dynamicFontSize * 1.5 ,marginStart:w(3),marginTop:h(1),color:"#5063BF"}}>
           Fill All Details
         </Text>
         {/* Project */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Project:
@@ -247,15 +255,15 @@ export default function TimeSheet({ navigation }) {
         </View>
         {/* Task Group */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Task Group:
@@ -271,15 +279,15 @@ export default function TimeSheet({ navigation }) {
         {/* Task */}
 
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Task:
@@ -298,15 +306,15 @@ export default function TimeSheet({ navigation }) {
 
         {/* Issue */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Issue:
@@ -321,15 +329,15 @@ export default function TimeSheet({ navigation }) {
         </View>
         {/* Activity */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Activity:
@@ -344,15 +352,15 @@ export default function TimeSheet({ navigation }) {
         </View>
         {/* From time */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             From Time:
@@ -362,14 +370,14 @@ export default function TimeSheet({ navigation }) {
               marginHorizontal: w(5),
               marginVertical: h(1),
               flex: 1,
-              backgroundColor: "#8e8cf3",
+              backgroundColor: Colors.timesheet,
               padding: w(4),
             }}
             onPress={showTimepickerr}
           >
             <TextInput
               placeholder="(hh:mm)"
-              style={{ fontSize: dynamicFontSize * 0.8, color: "white" }}
+              style={{ fontSize: dynamicFontSize * 0.8, color: Colors.timesheetHint }}
               keyboardType="number-pad"
               value={formattedTime}
               editable={false}
@@ -388,15 +396,15 @@ export default function TimeSheet({ navigation }) {
         </View>
         {/* To time */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             To Time:
@@ -406,14 +414,14 @@ export default function TimeSheet({ navigation }) {
               marginHorizontal: w(5),
               marginVertical: h(1),
               flex: 1,
-              backgroundColor: "#8e8cf3",
+              backgroundColor: Colors.timesheet,
               padding: w(4),
             }}
             onPress={showTimepickerr2}
           >
             <TextInput
               placeholder="(hh:mm)"
-              style={{ fontSize: dynamicFontSize * 0.8, color: "white" }}
+              style={{ fontSize: dynamicFontSize * 0.8, color:Colors.timesheetHint  }}
               keyboardType="number-pad"
               value={formattedTime2}
               editable={false}
@@ -432,15 +440,15 @@ export default function TimeSheet({ navigation }) {
         </View>
         {/* Working Hours */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Working Hours:
@@ -450,13 +458,13 @@ export default function TimeSheet({ navigation }) {
               marginHorizontal: w(5),
               marginVertical: h(1),
               flex: 1,
-              backgroundColor: "#8e8cf3",
+              backgroundColor: Colors.timesheet,
               padding: w(4),
             }}
           >
             <TextInput
               placeholder="(hh:mm)"
-              style={{ fontSize: dynamicFontSize * 0.8, color: "white" }}
+              style={{ fontSize: dynamicFontSize * 0.8, color: Colors.timesheetHint }}
               keyboardType="number-pad"
               value={formattedWorkingHours}
               editable={false}
@@ -475,15 +483,15 @@ export default function TimeSheet({ navigation }) {
         </View>
         {/*Billing Hour */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Billing Hours:
@@ -493,13 +501,13 @@ export default function TimeSheet({ navigation }) {
               marginHorizontal: w(5),
               marginVertical: h(1),
               flex: 1,
-              backgroundColor: "#8e8cf3",
+              backgroundColor: Colors.timesheet,
               padding: w(4),
             }}
           >
             <TextInput
               placeholder="(hh:mm)"
-              style={{ fontSize: dynamicFontSize * 0.8, color: "white" }}
+              style={{ fontSize: dynamicFontSize * 0.8, color: Colors.timesheetHint }}
               keyboardType="number-pad"
               value={formattedWorkingHours}
               editable={false}
@@ -518,15 +526,15 @@ export default function TimeSheet({ navigation }) {
         </View>
         {/*Description */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Description:
@@ -535,21 +543,23 @@ export default function TimeSheet({ navigation }) {
             style={{
               marginHorizontal: w(5),
               marginVertical: h(1),
+              padding: w(4),
               flex: 1,
-              backgroundColor: "#8e8cf3",
+              backgroundColor: Colors.timesheet,
             }}
           >
             <TextInput
               placeholder=""
               style={{
                 fontSize: dynamicFontSize * 0.8,
-                color: "white",
-                padding: w(4),
+                color: Colors.timesheetHint,
+                maxHeight:h(10),
                 flex: 1,
-                maxHeight: h(10),
+                
               }}
               numberOfLines={3}
               multiline={true}
+              
               onChangeText={handleSelectDesciption}
               value={description}
             />
@@ -557,15 +567,15 @@ export default function TimeSheet({ navigation }) {
         </View>
         {/* Task Status */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Task Status:
@@ -586,23 +596,25 @@ export default function TimeSheet({ navigation }) {
             marginTop: h(5),
           }}
         >
-          <SubmitButton color={"#8e8cf3"} onPress={addTimeSheetHandler}>
+          <SubmitButton color={"#5063BF"} onPress={addTimeSheetHandler}>
             Add TimeSheet
           </SubmitButton>
-          <SubmitButton color={"#8e8cf3"}>Cancel</SubmitButton>
+          <SubmitButton color={"#5063BF"}>Cancel</SubmitButton>
         </View>
         <Text
           style={{
-            alignSelf: "center",
+            // alignSelf: "center",
             fontSize: dynamicFontSize * 1.2,
             marginTop: h(2),
+            marginStart:w(2),
             fontWeight: "600",
+            color:"rgba(80, 99, 191, 1)"
           }}
         >
           Daily Work
         </Text>
 
-        <TimeSheetList />
+        <TimeSheetList selectedDate={selectedDate}/>
       </ScrollView>
     </>
   );
