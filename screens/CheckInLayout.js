@@ -1,6 +1,6 @@
 import { View, Text, Dimensions, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import BackArrowHeader from '../components/BackArrowHeader';
+import BackArrowHeaderCopy from '../components/BackArrowHeader copy';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CheckIn } from '../components/Data';
 import ChecklistData from '../components/ChecklistData';
@@ -259,19 +259,22 @@ useEffect(() => {
   
       // Update the state with the new entry
       setCheckInList((prevList) => [...prevList, newCheckInData]);
+       
     }
+    // const id = await storeCheckIn(checkInList)
+    //    console.log('Data stored with ID:', id);
   };
 
   
   const [checkInList, setCheckInList] = useState([]);
   return (
     <View style={styles.rootContainer}>
-    <BackArrowHeader color={"black"} title={"Check In/Out"} backButton={()=>navigation.goBack()}/>
-    <View style={{flex:1,backgroundColor:"white"}}>
+    <BackArrowHeaderCopy color={"white"} title={"Check In/Out"} backButton={()=>navigation.goBack()}/>
+    <View style={{flex:1,backgroundColor:"#FDFDFD"}}>
       <View style={{
     // borderWidth:1,
     // borderColor:'black',
-    marginHorizontal:w(3),
+    marginHorizontal:w(1),
     marginTop:h(1),
     borderRadius:w(5)
     }}>
@@ -291,14 +294,14 @@ useEffect(() => {
       
     { !loading&&<>{
      checkedIn&& <TouchableOpacity
-        style={[styles.addButton, { backgroundColor: "#000000" }]}
+        style={[styles.addButton, { backgroundColor: "#5063BF" }]}
         onPress={handleAddTaskPress}
       >
         <Text style={{color:'white',fontSize:dynamicFontSize*0.9,fontWeight:'800'}}>Check In</Text>
         {/* <MaterialCommunityIcons name="plus" size={30} color="#fff" /> */}
       </TouchableOpacity>}
       {!checkedIn&& <TouchableOpacity
-        style={[styles.addButton, { backgroundColor: "#000000" }]}
+        style={[styles.addButton, { backgroundColor: "#5063BF" }]}
         onPress={handleAddTaskPress}
       >
         <Text style={{color:'white',fontSize:dynamicFontSize*0.9,fontWeight:'800'}}>Check Out</Text>
@@ -313,14 +316,14 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     paddingTop: 40,
-    backgroundColor: "#000",
+    backgroundColor: "white",
   }
   ,
   addButton: {
     position: "absolute",
     bottom: 30,
     right: 20,
-    width: 90,
+    width: 120,
     height: 50,
     borderRadius: 10,
     alignItems: "center",

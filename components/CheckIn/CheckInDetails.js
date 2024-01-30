@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import React from "react";
+import SvgSelector from "../SvgSelector";
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width
@@ -32,24 +33,25 @@ export default function CheckInDetails({
 }) {
   console.log("cc" + isCheckedIn);
   return (
-    <View style={{borderWidth:w(0.2),backgroundColor:"#ccc",marginHorizontal:w(5),marginTop:h(1),borderRadius:w(2),padding:w(3)}}>
+    <View style={{borderWidth:w(0.2),backgroundColor:"rgba(80, 99, 191, 0.21)",marginHorizontal:w(3.4),marginTop:h(0.1),borderRadius:w(2),padding:w(3)}}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={{ flexDirection: "row" }}>
           {isCheckedIn && (
             <>
-              <Text style={styles.heading}>Check In:</Text>
+              <Text style={{fontWeight: "700",color:"#45BE27"}}>Check In:</Text>
               <Text style={{ marginStart: 5 }}>{checkInTime}</Text>
             </>
           )}
           {!isCheckedIn && (
             <>
-              <Text style={styles.heading}>Check Out:</Text>
+              <Text style={{fontWeight: "700",color:"#DC1010"}}>Check Out:</Text>
               <Text style={{ marginStart: 5 }}>{checkOut}</Text>
             </>
           )}
         </View>
         <View style={{ flexDirection: "row" }}>
-          <Text style={styles.heading}>Location:</Text>
+          {/* <Text style={styles.heading}>Location:</Text> */}
+          <SvgSelector h={15} w={15}name={"location2"}/>
           <Text style={{ marginStart: 5 }}>{location}</Text>
         </View>
       </View>

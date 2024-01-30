@@ -50,7 +50,7 @@ export default function ChecklistData({id,data,date}) {
   }
   return (
     <View style={styles.rootContainer}>
-<Text style={{marginTop:h(1),paddingStart:w(3),fontSize:dynamicFontSize}}>{date}</Text>
+<Text style={{marginVertical:h(0.5),paddingStart:w(3),fontSize:dynamicFontSize}}>{date}</Text>
       <View style={{}}>
       <FlatList data={data} keyExtractor={(item)=>item.id} renderItem={renderMealItem}/>
 
@@ -63,7 +63,7 @@ export default function ChecklistData({id,data,date}) {
 const styles=StyleSheet.create({
   rootContainer:{
     flex:1,
-    marginVertical:h(1)
+    marginVertical:h(0.2)
     // borderWidth:1,
     // borderColor:'black'
   }

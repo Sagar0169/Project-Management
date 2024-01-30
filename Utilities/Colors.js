@@ -13,4 +13,6 @@ export const Colors = {
   lowComplexity: "#e9a5ff",
   highComplexity: "#9d9bff",
   mediumComplexity: "#f6bb54",
+  timesheet:"rgba(80, 99, 191, 0.21)",
+  timesheetHint:"rgba(64, 64, 64, 1)"
 };

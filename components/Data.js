@@ -120,6 +120,7 @@ export const DataSet=[
                     "remarks":"",
                     "checkOut":"20:30",
                     "isCheckedIn":false,
+                    "placeName":"Panchkuian Road Area, Rk Ashrm Marg,New Delhi, India"
 
                 },
                 {
@@ -130,6 +131,7 @@ export const DataSet=[
                     "remarks":"",
                     "checkOut":"",
                     "isCheckedIn":true,
+                    "placeName":"Panchkuian Road Area, Rk Ashrm Marg,New Delhi, India"
 
                 }],"id":"t3"},
                 {"date":"18-01-2024",
@@ -142,6 +144,7 @@ export const DataSet=[
                     "remarks":"",
                     "checkOut":"20:30",
                     "isCheckedIn":false,
+                    "placeName":"Panchkuian Road Area, Rk Ashrm Marg,New Delhi, India"
 
                 },
                 {
@@ -152,6 +155,7 @@ export const DataSet=[
                     "remarks":"",
                     "checkOut":"",
                     "isCheckedIn":true,
+                    "placeName":"Panchkuian Road Area, Rk Ashrm Marg,New Delhi, India"
 
                 }],"id":"t1"},
                 {"date":"17-01-2024",

@@ -26,6 +26,7 @@ import { format, differenceInMinutes } from "date-fns";
 import SubmitButton from "../components/ui/SubmitButton";
 import { Context } from "../store/context";
 import TimeSheetList from "./TimeSheetList";
+import { Colors } from "../Utilities/Colors";
 
 export default function TimeSheet({ navigation }) {
   // context
@@ -192,7 +193,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
   const handleSelectActivity = (category) => {
     setSelectedActivity(category);
     // Add any additional logic you want when a category is selected
-    scrollViewRef.current.scrollTo({ y: 600, animated: true });
+    scrollViewRef.current.scrollTo({ y: 800, animated: true });
   };
   const handleSelectStatus = (category) => {
     setSelectedstatus(category);
@@ -225,20 +226,21 @@ const formattedWorkingHours = isNaN(workingHoursHours)
           markedDates={{ [selectedDate]: { selected: true } }}
           maxDate={today.toString().split('T')[0]} // Set minDate to the current dat
         />
-        <Text style={{ alignSelf: "center", fontSize: dynamicFontSize * 1.3 }}>
+        <Text style={{ alignSelf: "flex-start", fontSize: dynamicFontSize * 1.5 ,marginStart:w(3),marginTop:h(1),color:"#5063BF"}}>
           Fill All Details
         </Text>
         {/* Project */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Project:
@@ -253,15 +255,15 @@ const formattedWorkingHours = isNaN(workingHoursHours)
         </View>
         {/* Task Group */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Task Group:
@@ -277,15 +279,15 @@ const formattedWorkingHours = isNaN(workingHoursHours)
         {/* Task */}
 
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Task:
@@ -304,15 +306,15 @@ const formattedWorkingHours = isNaN(workingHoursHours)
 
         {/* Issue */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Issue:
@@ -327,15 +329,15 @@ const formattedWorkingHours = isNaN(workingHoursHours)
         </View>
         {/* Activity */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Activity:
@@ -350,15 +352,15 @@ const formattedWorkingHours = isNaN(workingHoursHours)
         </View>
         {/* From time */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             From Time:
@@ -368,14 +370,14 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               marginHorizontal: w(5),
               marginVertical: h(1),
               flex: 1,
-              backgroundColor: "#8e8cf3",
+              backgroundColor: Colors.timesheet,
               padding: w(4),
             }}
             onPress={showTimepickerr}
           >
             <TextInput
               placeholder="(hh:mm)"
-              style={{ fontSize: dynamicFontSize * 0.8, color: "white" }}
+              style={{ fontSize: dynamicFontSize * 0.8, color: Colors.timesheetHint }}
               keyboardType="number-pad"
               value={formattedTime}
               editable={false}
@@ -394,15 +396,15 @@ const formattedWorkingHours = isNaN(workingHoursHours)
         </View>
         {/* To time */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             To Time:
@@ -412,14 +414,14 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               marginHorizontal: w(5),
               marginVertical: h(1),
               flex: 1,
-              backgroundColor: "#8e8cf3",
+              backgroundColor: Colors.timesheet,
               padding: w(4),
             }}
             onPress={showTimepickerr2}
           >
             <TextInput
               placeholder="(hh:mm)"
-              style={{ fontSize: dynamicFontSize * 0.8, color: "white" }}
+              style={{ fontSize: dynamicFontSize * 0.8, color:Colors.timesheetHint  }}
               keyboardType="number-pad"
               value={formattedTime2}
               editable={false}
@@ -438,15 +440,15 @@ const formattedWorkingHours = isNaN(workingHoursHours)
         </View>
         {/* Working Hours */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Working Hours:
@@ -456,13 +458,13 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               marginHorizontal: w(5),
               marginVertical: h(1),
               flex: 1,
-              backgroundColor: "#8e8cf3",
+              backgroundColor: Colors.timesheet,
               padding: w(4),
             }}
           >
             <TextInput
               placeholder="(hh:mm)"
-              style={{ fontSize: dynamicFontSize * 0.8, color: "white" }}
+              style={{ fontSize: dynamicFontSize * 0.8, color: Colors.timesheetHint }}
               keyboardType="number-pad"
               value={formattedWorkingHours}
               editable={false}
@@ -481,15 +483,15 @@ const formattedWorkingHours = isNaN(workingHoursHours)
         </View>
         {/*Billing Hour */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Billing Hours:
@@ -499,13 +501,13 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               marginHorizontal: w(5),
               marginVertical: h(1),
               flex: 1,
-              backgroundColor: "#8e8cf3",
+              backgroundColor: Colors.timesheet,
               padding: w(4),
             }}
           >
             <TextInput
               placeholder="(hh:mm)"
-              style={{ fontSize: dynamicFontSize * 0.8, color: "white" }}
+              style={{ fontSize: dynamicFontSize * 0.8, color: Colors.timesheetHint }}
               keyboardType="number-pad"
               value={formattedWorkingHours}
               editable={false}
@@ -524,15 +526,15 @@ const formattedWorkingHours = isNaN(workingHoursHours)
         </View>
         {/*Description */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Description:
@@ -541,21 +543,23 @@ const formattedWorkingHours = isNaN(workingHoursHours)
             style={{
               marginHorizontal: w(5),
               marginVertical: h(1),
+              padding: w(4),
               flex: 1,
-              backgroundColor: "#8e8cf3",
+              backgroundColor: Colors.timesheet,
             }}
           >
             <TextInput
               placeholder=""
               style={{
                 fontSize: dynamicFontSize * 0.8,
-                color: "white",
-                padding: w(4),
+                color: Colors.timesheetHint,
+                maxHeight:h(10),
                 flex: 1,
-                maxHeight: h(10),
+                
               }}
               numberOfLines={3}
               multiline={true}
+              
               onChangeText={handleSelectDesciption}
               value={description}
             />
@@ -563,15 +567,15 @@ const formattedWorkingHours = isNaN(workingHoursHours)
         </View>
         {/* Task Status */}
         <View
-          style={{ flexDirection: "row", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
         >
           <Text
             style={{
-              fontSize: dynamicFontSize * 0.9,
+              fontSize: dynamicFontSize ,
               marginTop: w(5),
-              marginStart: w(1),
-              width: w(20),
-              textAlign: "right",
+              marginStart: w(5),
+              // width: w(20),
+              // textAlign: "right",
             }}
           >
             Task Status:
@@ -592,17 +596,19 @@ const formattedWorkingHours = isNaN(workingHoursHours)
             marginTop: h(5),
           }}
         >
-          <SubmitButton color={"#8e8cf3"} onPress={addTimeSheetHandler}>
+          <SubmitButton color={"#5063BF"} onPress={addTimeSheetHandler}>
             Add TimeSheet
           </SubmitButton>
-          <SubmitButton color={"#8e8cf3"}>Cancel</SubmitButton>
+          <SubmitButton color={"#5063BF"}>Cancel</SubmitButton>
         </View>
         <Text
           style={{
-            alignSelf: "center",
+            // alignSelf: "center",
             fontSize: dynamicFontSize * 1.2,
             marginTop: h(2),
+            marginStart:w(2),
             fontWeight: "600",
+            color:"rgba(80, 99, 191, 1)"
           }}
         >
           Daily Work
