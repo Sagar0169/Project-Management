@@ -23,19 +23,18 @@ function h(value) {
   return height * value;
 }
 
-function CreateNewIssues({ navigation }) {
-  return (
-    <View style={{ paddingTop: h(4), flex: 1, backgroundColor: "#8e8cf3" }}>
-      <BackArrowHeader
-        backButton={() => {
-          navigation.goBack();
-        }}
-        title="Create Issue"
-        color={"#8e8cf3"}
-      />
-      <View style={{ flex: 1, backgroundColor: "white" }}>
-        <CreateNewIssuesForm />
-      </View>
+function CreateNewIssues({navigation}){
+    
+return(<View style={{ paddingTop: h(4), flex: 1, backgroundColor: "white" }}>
+<BackArrowHeader
+backButton={()=>{navigation.goBack()}}
+  title="Create Issue"
+  color={"white"}
+/>
+<View style={{flex:1, backgroundColor:'white'}}>
+    
+    <CreateNewIssuesForm/>
+    
     </View>
   );
 }

@@ -134,6 +134,9 @@ export default function DashBoard({ navigation }) {
       if (item.title === "Assigned Tasks") {
         navigation.navigate("Assigntask");
       }
+      if (item.title === "Check In/Out") {
+        navigation.navigate("CheckIn/Out");
+      }
     }
     return (
       <Pressable onPress={navigationHandler} style={styles.itemContainer}>
@@ -257,6 +260,7 @@ export default function DashBoard({ navigation }) {
             keyExtractor={(item) => item.id}
           />
         </View>
+        
         <View style={{ marginBottom: w(8) }}>
           <Text
             style={{

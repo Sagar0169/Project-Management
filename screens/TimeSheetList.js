@@ -6,11 +6,15 @@ import { DataSet } from '../components/Data';
 import { Context } from '../store/context';
 import CustomModal from '../components/CustomModal';
 
-export default function TimeSheetList() {
+export default function TimeSheetList({selectedDate}) {
 
   const context=useContext(Context)
   const List=context.items
-  console.log(List)
+  const filteredList = List.filter(item => {
+    // Assuming item.selectedDate is in the format 'yyyy-MM-dd'
+    return item.selectedDate === selectedDate;
+  });
+  console.log("fl"+filteredList)
   const [isModalVisible, setModalVisible] = useState(false);
 
   const showModal = () => {
@@ -86,7 +90,7 @@ export default function TimeSheetList() {
         message="Deleted Successfully"
         onHide={hideModal}
       />}
-       <FlatList data={List} keyExtractor={(item)=>item.id} renderItem={renderMealItem} scrollEnabled={false} />
+       <FlatList data={filteredList} keyExtractor={(item)=>item.id} renderItem={renderMealItem} scrollEnabled={false} />
     </View>
   )
 }

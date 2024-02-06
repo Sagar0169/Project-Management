@@ -41,7 +41,7 @@ const IssuesProject = ({ navigation }) => {
     <View style={{ flex: 1, backgroundColor: Colors.white }}>
       <NoticesFlatList navigation={navigation} />
       <Pressable
-        style={[styles.addButton, { backgroundColor: "#B3B2EC" }]}
+        style={[styles.addButton, { backgroundColor: "#5063BF" }]}
         onPress={handleAddTaskPress}
       >
         <MaterialCommunityIcons name="plus" size={30} color="#fff" />

@@ -20,11 +20,14 @@ import { SearchProvider } from "./store/search-redux";
 import IssuesProject from "./screens/IssuesProject";
 import Music from "./screens/Music";
 import CreateNewIssues from "./screens/CreateNewIssues";
-import PdfViewerScreen from "./components/PdfFile";
+import CheckInLayout from "./screens/CheckInLayout";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
+    <>
+    <StatusBar  backgroundColor='transparent'/>
+      <ContextProvider>
     <NavigationContainer>
       <SearchProvider>
         <ContextProvider>
@@ -98,12 +101,36 @@ export default function App() {
                 animation: "slide_from_right",
               }}
             />
-            <Stack.Screen name="AssignNewTask" component={AssignNewTask} />
-            <Stack.Screen name="CreateNewIssues" component={CreateNewIssues} />
-          </Stack.Navigator>
+            <Stack.Screen name="AssignNewTask" component={AssignNewTask}  options={{
+                headerShown: false,
+                presentation: "modal",
+                animation: "slide_from_right",
+              }}/>
+             <Stack.Screen
+          name="CreateNewIssues"
+          component={CreateNewIssues}
+          options={{
+            headerShown: false,
+            presentation: "modal",
+            animation: "slide_from_right",
+          }}
+        />
+             <Stack.Screen
+          name="CheckIn/Out"
+          component={CheckInLayout}
+          options={{
+            headerShown: false,
+            presentation: "modal",
+            animation: "slide_from_right",
+          }}
+        />
+      </Stack.Navigator>
         </ContextProvider>
       </SearchProvider>
     </NavigationContainer>
+      </ContextProvider>
+    </>
+
   );
 }
 

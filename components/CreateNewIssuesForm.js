@@ -12,10 +12,15 @@ import {
   Dimensions,
 } from "react-native";
 import SubmitButton from "./ui/SubmitButton";
-import Toast from "react-native-simple-toast";
+// import Toast from "react-native-simple-toast";
+
 import BottomSheetDesign2 from "./BottomSheetDesign2";
 import DropDown from "./TimeSheet/DropDown";
 import { ProjectGroup, Status, TaskGroup, Tasks } from "./Data";
+import CustomModal from "./CustomModal";
+import Input from "./Input";
+
+
 
 //CHANGE MULTIPLE SELECTION FROM BOTTOMSHEET2
 
@@ -40,23 +45,27 @@ function h(value) {
 }
 
 function CreateNewIssuesForm() {
-  function validateForm() {
-    // Check if enteredProjectName, enteredDueDate, and AssginedForItem have values
-    if (
-      enteredTaskName.trim() !== "" &&
-      enteredDueDate.trim() !== "" &&
-      enteredTaskPhase.trim() !== "" &&
-      enteredTaskType.trim() !== "" &&
-      enteredEstimatedTime.trim() !== "" &&
-      selectedOption !== null &&
-      selectedPriority !== null &&
-      AssginedForItem.length > 0
-    ) {
-      return true;
-    } else {
-      return false;
+    const [isModalVisible2, setModalVisible2] = useState(false);
+    const [isModalVisible3, setModalVisible3] = useState(false);
+
+    function validateForm() {
+        // Check if enteredProjectName, enteredDueDate, and AssginedForItem have values
+        if (
+            enteredTaskName.trim() !== "" &&
+            enteredDueDate.trim() !== "" &&
+            enteredTaskPhase.trim() !== "" &&
+            enteredTaskType.trim() !== "" &&
+            enteredEstimatedTime.trim() !== "" &&
+            selectedOption !== null &&
+            selectedPriority !== null &&
+            AssginedForItem.length > 0
+        ) {
+            return true;
+        } else {
+            return false;
+        }
     }
-  }
+
 
   function ModalHandler() {
     return (
@@ -136,80 +145,82 @@ function CreateNewIssuesForm() {
     setModalVisible(!isModalVisible);
   };
 
-  const handleSportSelection = (sport) => {
-    setAssginedForItem(sport);
-    toggleModal();
-  };
+    const handleSportSelection = (sport) => {
+        setAssginedForItem(sport);
+        toggleModal();
+    };
+    const hideModal = () => {
+        setModalVisible2(false);
+        setModalVisible3(false);
+    };
 
-  return (
-    <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-      <ScrollView style={{ flex: 1, margin: 10 }}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            margin: 8,
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Project </Text>
-          </View>
-          <View style={{ flex: 1 ,borderWidth:2}}>
-            <DropDown
-              data={ProjectGroup}
-              selectValue={selectedProject}
-              oneSelect={handleSelectProject}
-              hi={h(2)}
-              wi={w(2)}
-            />
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            margin: 8,
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Project Task</Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <DropDown
-              data={Tasks}
-              selectValue={selectedTask}
-              oneSelect={handleSelectTask}
-              hi={h(2)}
-              wi={w(2)}
-            />
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            margin: 8,
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Title</Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <TextInput
-              onChangeText={onChangeText.bind(this, "taskName")}
-              placeholder="Enter Title"
-              style={{
-                color: "#666666",
-                fontSize: 16,
-                textAlign: "left",
-                borderRadius: 3,
-                borderWidth: 1,
-                padding: 5,
-                borderColor: "#666666",
-              }}
-            ></TextInput>
-          </View>
-        </View>
+
+    return (
+        <View style={{ flex: 1, backgroundColor: "white" }}>
+
+
+
+
+
+            <ScrollView style={{ flex: 1, margin: 10 }}>
+                <View
+                    style={{
+                        
+                        
+                        margin: 8,
+                    }}
+                >
+                    <View >
+                        <Text style={{ color: "#666666", fontSize: 26 }}>Project </Text>
+                    </View>
+                    <View style={{ alignItems:'stretch' }}>
+                        <DropDown
+                            data={ProjectGroup}
+                            selectValue={selectedProject}
+                            oneSelect={handleSelectProject}
+                            hi={h(2)}
+                            wi={w(2)}
+                        />
+                    </View>
+                </View>
+                <View
+                    style={{
+                        
+                        margin: 8,
+                    }}
+                >
+                    <View >
+                        <Text style={{ color: "#666666", fontSize: 26 }}>Project Task</Text>
+                    </View>
+                    <View >
+                        <DropDown
+                            data={Tasks}
+                            selectValue={selectedTask}
+                            oneSelect={handleSelectTask}
+                            hi={h(2)}
+                            wi={w(2)}
+                        />
+                    </View>
+                </View>
+                <View
+                    style={{
+                        
+                        margin: 8,
+                    }}
+                >
+                    <View style={{ flex: 1 }}>
+                        <Text style={{ color: "#666666", fontSize: 26 }}>Title</Text>
+                    </View>
+                    <View style={{ flex: 1 }}>
+                    <Input
+                            label="Enter Title"
+                            secure={false}
+                            onUpdateValue={onChangeText.bind(this, "taskName")}
+                            value={enteredTaskName}
+                        />
+                    </View>
+                </View>
+
 
         <View
           style={{
@@ -475,56 +486,65 @@ function CreateNewIssuesForm() {
           </View>
         </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            margin: 8,
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 22 }}>Severity</Text>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "flex-start",
-            }}
-          >
-            <View style={styles.viewBox}>
-              <Text style={styles.viewText}>Severity</Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            marginVertical: 40,
-          }}
-        >
-          <SubmitButton
-            onPress={() => {
-              if (validateForm()) {
-                Toast.showWithGravity(
-                  "Project Added Sucessfully.",
-                  Toast.SHORT,
-                  Toast.BOTTOM
-                );
-              } else {
-                Toast.showWithGravity(
-                  "Please fill all details.",
-                  Toast.SHORT,
-                  Toast.BOTTOM
-                );
-              }
-            }}
-            color={"#8e8cf3"}
-          >
-            Add Issue
-          </SubmitButton>
+                <View
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        margin: 8,
+                    }}
+                >
+                    <View style={{ flex: 1 }}>
+                        <Text style={{ color: "#666666", fontSize: 22 }}>
+                            Severity
+                        </Text>
+                    </View>
+                    <View
+                        style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "flex-start",
+                        }}
+                    >
+                        <View style={styles.viewBox}>
+                            <Text style={styles.viewText}>
+                                Severity</Text>
+                        </View>
+                    </View>
+                </View>
+                <View style={{ justifyContent: 'center', alignItems: 'center', marginVertical: 40 }}>
+                    <SubmitButton onPress={() => {
+                        if (validateForm()) {
+                            // Toast.showWithGravity(
+                            //     "Project Added Sucessfully.",
+                            //     Toast.SHORT,
+                            //     Toast.BOTTOM
+                            // );
+                            setModalVisible(true)
+                        } else {
+                            // Toast.showWithGravity(
+                            //     "Please fill all details.",
+                            //     Toast.SHORT,
+                            //     Toast.BOTTOM
+                            // );
+                            setModalVisible3(true)
+                        }
+                    }} color={"#8e8cf3"}> Add Issue</SubmitButton></View>
+
+                    {/* Toast */}
+                    {isModalVisible2 && <CustomModal
+                    visible={isModalVisible2}
+                    message="New Issue Created."
+                    onHide={hideModal}
+                />}
+                {isModalVisible3 && <CustomModal
+                    visible={isModalVisible3}
+                    message="Please fill all details."
+                    onHide={hideModal}
+                />}
+
+
+            </ScrollView>
         </View>
       </ScrollView>
     </View>

@@ -92,14 +92,84 @@ export function deleteTask(id) {
   return axios.delete(BACKEND_URL + `/tasks/${id}.json`);
 }
 
+export async function fetchCheckIn() {
+  const response = await axios.get(BACKEND_URL + '/checkIn.json');
 
-// Add a new API endpoint for updating task status
-// Add a new API endpoint for updating assigned task status
-export async function updateAssignedTaskStatus(id, newStatus) {
-  const response = await axios.patch(
-    BACKEND_URL + `/tasks/assigned/${id}/.json`,
-    { Status: newStatus }
-  );
-  return response.data;
+  const checkIn = [];
+
+  for (const entry of response.data) {
+    const dateEntry = {
+      date: entry.date,
+      data: [],
+      id: entry.id,
+    };
+
+    for (const dataEntry of entry.data) {
+      const taskObj = {
+        id: dataEntry.id,
+        date: dataEntry.date,
+        checkInTime: dataEntry.checkInTime,
+        location: dataEntry.location,
+        remarks: dataEntry.remarks,
+        checkOut: dataEntry.checkOut,
+        isCheckedIn: dataEntry.isCheckedIn,
+        placeName: dataEntry.placeName,
+      };
+
+      dateEntry.data.push(taskObj);
+    }
+
+    checkIn.push(dateEntry);
+  }
+
+  return checkIn;
 }
 
+
+// export async function storeCheckIn(checkInData) {
+//   const response = await axios.post(BACKEND_URL + '/checkIn.json', checkInData);
+//   const id = response.data.name;
+//   return id;
+// }
+export async function storeCheckIn(checkInData) {
+  const currentDate = checkInData.date;
+  console.log("dte"+currentDate)
+
+  // Check if data for the current date already exists
+  const existingDataResponse = await axios.get(`${BACKEND_URL}/checkIn.json?orderBy="date"&equalTo="${currentDate}"`);
+  console.log("edr"+existingDataResponse)
+  
+  const existingData = existingDataResponse.data;
+  console.log("ed"+existingData)
+
+
+  if (existingData) {
+    // Date exists, update the existing entry with the new data
+    const existingEntryKey = Object.keys(existingData)[0];
+    const existingEntry = existingData[existingEntryKey];
+
+    // Ensure the 'data' property is an array
+    const newDataArray = Array.isArray(existingEntry.data) ? existingEntry.data : [];
+
+    // Check if the entry already exists in the array based on some unique identifier like 'id'
+    const existingIndex = newDataArray.findIndex((entry) => entry.id === checkInData.data[0].id);
+
+    if (existingIndex !== -1) {
+      // Entry already exists, update it
+      newDataArray[existingIndex] = checkInData.data[0];
+    } else {
+      // Entry doesn't exist, add it to the array
+      newDataArray.push(checkInData.data[0]);
+    }
+
+    // Update the existing data with the new array
+    await axios.put(`${BACKEND_URL}/checkIn/${existingEntryKey}.json`, { ...existingEntry, data: newDataArray });
+
+    return existingEntryKey;
+  } else {
+    // Date doesn't exist, add a new entry with the provided data
+    const response = await axios.post(`${BACKEND_URL}/checkIn.json`, checkInData);
+    const id = response.data.name;
+    return id;
+  }
+}

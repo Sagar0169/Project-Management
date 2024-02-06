@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Colors } from "../../Utilities/Colors";
 
 const { width, height } = Dimensions.get("window");
 
@@ -46,9 +40,7 @@ const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
   return (
     <View style={{ marginHorizontal: w(5), marginVertical: h(1), flex: 1 }}>
       <TouchableOpacity style={styles.dropDownStyle} onPress={selectOption}>
-        <Text style={{ color: "white" }}>
-          {!!selectValue ? selectValue.title : "Select Category"}
-        </Text>
+        <Text style={{color:Colors.timesheetHint}}>{!!selectValue ? selectValue.title : "Select Category"}</Text>
         <Image
           source={require("../../assets/Images/left.png")}
           style={{
@@ -89,7 +81,7 @@ const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
 
 const styles = StyleSheet.create({
   dropDownStyle: {
-    backgroundColor: "#8e8cf3",
+    backgroundColor: "rgba(80, 99, 191, 0.21)",
     minHeight: 40,
     borderTopEndRadius: w(1),
     borderTopStartRadius: w(1),

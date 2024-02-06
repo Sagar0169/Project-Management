@@ -7,10 +7,12 @@ export const Colors = {
   loginBlue: "#171716",
   white: "white",
   black: "black",
-  lowPriority: "#62963AF2",
-  highPriority: "#DC372C",
-  mediumPriority: "#FF9B12",
-  lowComplexity: "#62963AF2",
-  highComplexity: "#DC372C",
-  mediumComplexity: "#FF9B12",
+  lowPriority: "#5cd669",
+  highPriority: "#ffb1b1",
+  mediumPriority: "#f6bb54",
+  lowComplexity: "#e9a5ff",
+  highComplexity: "#9d9bff",
+  mediumComplexity: "#f6bb54",
+  timesheet:"rgba(80, 99, 191, 0.21)",
+  timesheetHint:"rgba(64, 64, 64, 1)"
 };
