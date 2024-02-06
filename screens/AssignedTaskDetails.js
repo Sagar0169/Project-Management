@@ -1,25 +1,70 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import BackArrowHeader from "../components/BackArrowHeader";
+import { updateAssignedTaskStatus } from "../store/http";
 
 export default function AssignedTaskDetails({ route }) {
   const item = route.params.ID;
-  console.log(item);
+  const storedProfile = route.params.storedProfile;
+  const [isEditing, setEditing] = useState(false);
+  const [editedStatus, setEditedStatus] = useState(route.params.ID.Status);
+  console.log(storedProfile);
+  const navigation = useNavigation();
+  const isDeveloper = storedProfile === "Developer";
+
+  const startEditing = () => {
+    setEditing(true);
+  };
+
+  const statusChangeHandler = () => {
+    // Only allow developers to change the status
+    if (isDeveloper) {
+      startEditing();
+    } else {
+      // Show a message or perform some action indicating that the user doesn't have permission
+    }
+  };
+
+  const finishEditing = async () => {
+    try {
+      // Update the status in Firebase
+      await updateAssignedTaskStatus(item.id, editedStatus);
+
+      // End editing
+      setEditing(false);
+    } catch (error) {
+      console.error("Error updating status in Firebase:", error);
+      // Handle error
+    }
+  };
+
+  const cancelEditing = () => {
+    // Cancel editing and revert to the original status
+    setEditing(false);
+    setEditedStatus(item.Status);
+  };
+
+  const handleStatusChange = (text) => {
+    setEditedStatus(text);
+  };
+
   const color =
-    item.Status === "Completed"
+    editedStatus === "Completed"
       ? "#f6bb54"
-      : item.Status === "In Progress"
+      : editedStatus === "In Progress"
       ? "#9d9bff"
       : "#f5f5f5";
-  const navigation = useNavigation();
+
   return (
     <View style={styles.rootContainer}>
       <BackArrowHeader
@@ -145,21 +190,56 @@ export default function AssignedTaskDetails({ route }) {
             <View style={{ flex: 1 }}>
               <Text style={{ color: "#666666", fontSize: 26 }}>Status</Text>
             </View>
-            <View style={{ flex: 1, backgroundColor: color, borderRadius: 20 }}>
-              <Text
-                style={{
-                  color: "#666666",
-                  fontSize: 22,
-                  borderRadius: 20,
-                  borderWidth: 1,
-                  paddingVertical: 4,
-                  paddingHorizontal: 8,
-                  textAlign: "center",
-                }}
+            {isEditing ? (
+              <View style={{ flex: 1 }}>
+                <TextInput
+                  style={{
+                    backgroundColor: color,
+                    borderRadius: 20,
+                    fontSize: 22,
+                    borderWidth: 1,
+                    paddingVertical: 4,
+                    paddingHorizontal: 8,
+                    textAlign: "center",
+                  }}
+                  value={editedStatus}
+                  onChangeText={handleStatusChange}
+                />
+                <View style={{ flexDirection: "row", marginTop: 8 }}>
+                  <TouchableOpacity
+                    style={styles.editButton}
+                    onPress={finishEditing}
+                  >
+                    <Text style={styles.editButtonText}>Done</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.editButton}
+                    onPress={cancelEditing}
+                  >
+                    <Text style={styles.editButtonText}>Cancel</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ) : (
+              <Pressable
+                onPress={statusChangeHandler}
+                style={{ flex: 1, backgroundColor: color, borderRadius: 20 }}
               >
-                {item.Status}
-              </Text>
-            </View>
+                <Text
+                  style={{
+                    color: "#666666",
+                    fontSize: 22,
+                    borderRadius: 20,
+                    borderWidth: 1,
+                    paddingVertical: 4,
+                    paddingHorizontal: 8,
+                    textAlign: "center",
+                  }}
+                >
+                  {editedStatus}
+                </Text>
+              </Pressable>
+            )}
           </View>
 
           <View
@@ -296,7 +376,6 @@ export default function AssignedTaskDetails({ route }) {
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "flex-start",
-                
               }}
             >
               <View style={styles.viewBoxBorder}>
@@ -371,7 +450,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 8,
     marginHorizontal: 8,
-  
   },
   viewBoxBorder: {
     backgroundColor: "#f5f5f5",
@@ -379,8 +457,8 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 8,
     marginHorizontal: 8,
-    borderWidth:1,
-    borderColor:'black'
+    borderWidth: 1,
+    borderColor: "black",
   },
 
   viewText: {

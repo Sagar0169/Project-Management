@@ -35,6 +35,7 @@ export default function App() {
             <Stack.Screen name="Onboarding" component={OnBoarding} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Dashboard" component={DashBoard} />
+            <Stack.Screen name="Pdf" component={PdfViewerScreen} />
             <Stack.Screen
               name="AssignedProject"
               component={AssignedProject}

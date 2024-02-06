@@ -19,6 +19,8 @@ import TasksData from "../components/TasksData";
 import { Colors } from "../Utilities/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SvgUri, SvgXml } from "react-native-svg";
+import { RFValue } from "react-native-responsive-fontsize";
+import PdfViewerScreen from "../components/PdfFile";
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width
@@ -139,7 +141,7 @@ export default function DashBoard({ navigation }) {
     return (
       <Pressable onPress={navigationHandler} style={styles.itemContainer}>
         <LinearGradient
-          colors={[item.color, item.color]} // Change colors as per your preference
+          colors={[item.color, item.color]}
           style={styles.gradient}
         >
           <View
@@ -284,7 +286,7 @@ export default function DashBoard({ navigation }) {
             // Set the following props to allow vertical scrolling
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ flexGrow: 1 }}
-          />                                            
+          />
         </View>
       </View>
     </ScrollView>

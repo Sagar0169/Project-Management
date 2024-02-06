@@ -1,4 +1,4 @@
-import { View,Dimensions } from "react-native"
+import { View, Dimensions } from "react-native";
 import BackArrowHeader from "../components/BackArrowHeader";
 import { useNavigation } from "@react-navigation/native";
 import CreateNewIssuesForm from "../components/CreateNewIssuesForm";
@@ -36,6 +36,6 @@ backButton={()=>{navigation.goBack()}}
     <CreateNewIssuesForm/>
     
     </View>
-</View>)
+  );
 }
-export default CreateNewIssues
+export default CreateNewIssues;

@@ -1,15 +1,15 @@
 import React from "react";
 import { useState, useRef, useEffect } from "react";
 import {
-    Image,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
-    Modal,
-    TextInput,
-    Dimensions,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Modal,
+  TextInput,
+  Dimensions,
 } from "react-native";
 import SubmitButton from "./ui/SubmitButton";
 // import Toast from "react-native-simple-toast";
@@ -38,12 +38,12 @@ const baseFontSize = 16;
 const dynamicFontSize = baseFontSize * scaleFactor;
 // const fontSize=FontSize font={16}
 function w(value) {
-    const width = Dimensions.get("window").width / 100; // now width is 1% of screen width
-    return width * value;
+  const width = Dimensions.get("window").width / 100; // now width is 1% of screen width
+  return width * value;
 }
 function h(value) {
-    const height = Dimensions.get("window").height / 100; // now height is 1% of screen height
-    return height * value;
+  const height = Dimensions.get("window").height / 100; // now height is 1% of screen height
+  return height * value;
 }
 
 function CreateNewIssuesForm() {
@@ -69,83 +69,83 @@ function CreateNewIssuesForm() {
     }
 
 
-    function ModalHandler() {
-        return (
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={isModalVisible}
-                onRequestClose={() => {
-                    toggleModal();
-                }}
-            >
-                <View style={[styles.modalContainer]}>
-                    {/* <BottomSheet sports={['Shreyash Jain (Android)', 'Nimish Sharma(Android)', 'Akshat Bansal (Android)', 'Sagar (Android)', 'Rohit (Java)', 'Aman pandey(Java)', 'Atul (Java)', 'Shubhra srivastava (php)', 'Yashika gupta (php)', 'Abhay sahani (Designer)', 'Jitendar singh (Designer)']} handleSportSelection={handleSportSelection} /> */}
-                    <BottomSheetDesign2 handleSportSelection={handleSportSelection} />
-                </View>
-            </Modal>)
-    }
-    const [enteredTaskName, setEnteredTaskName] = useState("");
-    const [enteredTaskPhase, setEnteredTaskPhase] = useState("");
-    const [enteredTaskType, setEnteredTaskType] = useState("");
-    const [enteredDueDate, setEnteredDueDate] = useState("");
-    const [enteredEstimatedTime, setEnteredEstimatedTime] = useState("");
-    const [selectedProject, setSelectedproject] = useState(null);
-    const [selectedTask, setSelectedTask] = useState(null);
-    const [selectedStatus, setSelectedStatus] = useState(null);
+  function ModalHandler() {
+    return (
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={() => {
+          toggleModal();
+        }}
+      >
+        <View style={[styles.modalContainer]}>
+          {/* <BottomSheet sports={['Shreyash Jain (Android)', 'Nimish Sharma(Android)', 'Akshat Bansal (Android)', 'Sagar (Android)', 'Rohit (Java)', 'Aman pandey(Java)', 'Atul (Java)', 'Shubhra srivastava (php)', 'Yashika gupta (php)', 'Abhay sahani (Designer)', 'Jitendar singh (Designer)']} handleSportSelection={handleSportSelection} /> */}
+          <BottomSheetDesign2 handleSportSelection={handleSportSelection} />
+        </View>
+      </Modal>
+    );
+  }
+  const [enteredTaskName, setEnteredTaskName] = useState("");
+  const [enteredTaskPhase, setEnteredTaskPhase] = useState("");
+  const [enteredTaskType, setEnteredTaskType] = useState("");
+  const [enteredDueDate, setEnteredDueDate] = useState("");
+  const [enteredEstimatedTime, setEnteredEstimatedTime] = useState("");
+  const [selectedProject, setSelectedproject] = useState(null);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState(null);
 
-
-    const handleSelectProject = (category) => {
-        setSelectedproject(category);
-        // Add any additional logic you want when a category is selected
-    };
-    const handleSelectTask = (category) => {
-        setSelectedTask(category);
-        // Add any additional logic you want when a category is selected
-    };
-    const handleSelectStatus = (category) => {
-        setSelectedStatus(category);
-        // Add any additional logic you want when a category is selected
-    };
-    function onChangeText(inputType, enteredValue) {
-        switch (inputType) {
-            case "taskName":
-                setEnteredTaskName(enteredValue);
-                break;
-            case "dueDate":
-                setEnteredDueDate(enteredValue);
-                break;
-            case "taskPhase":
-                setEnteredTaskPhase(enteredValue);
-                break;
-            case "taskType":
-                setEnteredTaskType(enteredValue);
-                break;
-            case "estimatedTime":
-                setEnteredEstimatedTime(enteredValue);
-                break;
-        }
+  const handleSelectProject = (category) => {
+    setSelectedproject(category);
+    // Add any additional logic you want when a category is selected
+  };
+  const handleSelectTask = (category) => {
+    setSelectedTask(category);
+    // Add any additional logic you want when a category is selected
+  };
+  const handleSelectStatus = (category) => {
+    setSelectedStatus(category);
+    // Add any additional logic you want when a category is selected
+  };
+  function onChangeText(inputType, enteredValue) {
+    switch (inputType) {
+      case "taskName":
+        setEnteredTaskName(enteredValue);
+        break;
+      case "dueDate":
+        setEnteredDueDate(enteredValue);
+        break;
+      case "taskPhase":
+        setEnteredTaskPhase(enteredValue);
+        break;
+      case "taskType":
+        setEnteredTaskType(enteredValue);
+        break;
+      case "estimatedTime":
+        setEnteredEstimatedTime(enteredValue);
+        break;
     }
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [AssginedForItem, setAssginedForItem] = useState('');
-    const [selectedOption, setSelectedOption] = useState(null);
-    const [selectedPriority, setSelectedPriority] = useState(null);
-    const handleOptionPress = (option) => {
-        setSelectedOption(option);
-    };
-    const handleOptionPressPriority = (option) => {
-        setSelectedPriority(option);
-    };
-    const getOptionStyle = (option) => {
-        if (selectedOption === option || selectedPriority === option) {
-            return styles.viewBoxBorder;
-        } else {
-            return styles.viewBox;
-        }
-    };
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
+  }
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [AssginedForItem, setAssginedForItem] = useState("");
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedPriority, setSelectedPriority] = useState(null);
+  const handleOptionPress = (option) => {
+    setSelectedOption(option);
+  };
+  const handleOptionPressPriority = (option) => {
+    setSelectedPriority(option);
+  };
+  const getOptionStyle = (option) => {
+    if (selectedOption === option || selectedPriority === option) {
+      return styles.viewBoxBorder;
+    } else {
+      return styles.viewBox;
+    }
+  };
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
     const handleSportSelection = (sport) => {
         setAssginedForItem(sport);
@@ -409,86 +409,83 @@ function CreateNewIssuesForm() {
 
                 </View>
 
-                {/* Yes BUtton */}
-                <View
-                    style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        margin: 8,
-                    }}
-                >
-                    <View style={{ flex: 1 }}>
-                        <Text style={{ color: "#666666", fontSize: 22 }}>
-                            Issue Test Phase
-                        </Text>
-                    </View>
-                    <View
-                        style={{
-                            flex: 1,
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "flex-start",
-                        }}
-                    >
-                        <Pressable onPress={() => handleOptionPress("Yes")}>
-                            <View style={getOptionStyle("Yes")}>
-                                <Text style={styles.viewText}>Review</Text>
-                            </View>
-                        </Pressable>
-                        <Pressable onPress={() => handleOptionPress("No")}>
-                            <View style={getOptionStyle("No")}>
-                                <Text style={styles.viewText}>Testing</Text>
-                            </View>
-                        </Pressable>
-                    </View>
+        {/* Yes BUtton */}
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            margin: 8,
+          }}
+        >
+          <View style={{ flex: 1 }}>
+            <Text style={{ color: "#666666", fontSize: 22 }}>
+              Issue Test Phase
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-start",
+            }}
+          >
+            <Pressable onPress={() => handleOptionPress("Yes")}>
+              <View style={getOptionStyle("Yes")}>
+                <Text style={styles.viewText}>Review</Text>
+              </View>
+            </Pressable>
+            <Pressable onPress={() => handleOptionPress("No")}>
+              <View style={getOptionStyle("No")}>
+                <Text style={styles.viewText}>Testing</Text>
+              </View>
+            </Pressable>
+          </View>
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            margin: 8,
+          }}
+        >
+          <View style={{ flex: 1 }}>
+            <Text style={{ color: "#666666", fontSize: 22 }}>Priority</Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              alignItems: "center",
+              padding: 3,
+              justifyContent: "flex-start",
+            }}
+          >
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <Pressable onPress={() => handleOptionPressPriority("Low")}>
+                <View style={getOptionStyle("Low")}>
+                  <Text style={styles.viewText}>Low</Text>
                 </View>
-
-                <View
-                    style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        margin: 8,
-                    }}
-                >
-                    <View style={{ flex: 1 }}>
-                        <Text style={{ color: "#666666", fontSize: 22 }}>Priority</Text>
-                    </View>
-                    <View
-                        style={{
-                            flex: 1,
-                            flexDirection: "row",
-                            alignItems: "center",
-                            padding: 3,
-                            justifyContent: "flex-start",
-
-                        }}
-                    >
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false} >
-                            <Pressable onPress={() => handleOptionPressPriority("Low")} >
-                                <View style={getOptionStyle("Low")}>
-                                    <Text style={styles.viewText}>Low</Text>
-                                </View>
-                            </Pressable>
-                            <Pressable onPress={() => handleOptionPressPriority("Medium")}>
-                                <View style={getOptionStyle("Medium")}>
-                                    <Text style={styles.viewText}>Medium</Text>
-                                </View>
-                            </Pressable>
-                            <Pressable onPress={() => handleOptionPressPriority("High")}>
-                                <View style={getOptionStyle("High")}>
-                                    <Text style={styles.viewText}>High</Text>
-                                </View>
-                            </Pressable>
-                            <Pressable onPress={() => handleOptionPressPriority("Critical")}>
-                                <View style={getOptionStyle("Critical")}>
-                                    <Text style={styles.viewText}>Critical</Text>
-                                </View>
-                            </Pressable>
-                        </ScrollView>
-                    </View>
+              </Pressable>
+              <Pressable onPress={() => handleOptionPressPriority("Medium")}>
+                <View style={getOptionStyle("Medium")}>
+                  <Text style={styles.viewText}>Medium</Text>
                 </View>
-
-
+              </Pressable>
+              <Pressable onPress={() => handleOptionPressPriority("High")}>
+                <View style={getOptionStyle("High")}>
+                  <Text style={styles.viewText}>High</Text>
+                </View>
+              </Pressable>
+              <Pressable onPress={() => handleOptionPressPriority("Critical")}>
+                <View style={getOptionStyle("Critical")}>
+                  <Text style={styles.viewText}>Critical</Text>
+                </View>
+              </Pressable>
+            </ScrollView>
+          </View>
+        </View>
 
                 <View
                     style={{
@@ -549,43 +546,45 @@ function CreateNewIssuesForm() {
 
             </ScrollView>
         </View>
-    )
+      </ScrollView>
+    </View>
+  );
 }
 export default CreateNewIssuesForm;
 
 const styles = StyleSheet.create({
-    rootContainer: {
-        flex: 1,
-        paddingTop: 40,
-        backgroundColor: "#e5af54",
-    },
-    viewBox: {
-        backgroundColor: "#f5f5f5",
-        elevation: 2,
-        paddingVertical: 8,
-        paddingHorizontal: 8,
-        marginHorizontal: 8,
-        marginVertical: 8,
-    },
-    viewBoxBorder: {
-        backgroundColor: "#f5f5f5",
-        elevation: 2,
-        paddingVertical: 8,
-        paddingHorizontal: 8,
-        marginHorizontal: 8,
-        borderWidth: 1,
-        borderColor: "black",
-    },
+  rootContainer: {
+    flex: 1,
+    paddingTop: 40,
+    backgroundColor: "#e5af54",
+  },
+  viewBox: {
+    backgroundColor: "#f5f5f5",
+    elevation: 2,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    marginHorizontal: 8,
+    marginVertical: 8,
+  },
+  viewBoxBorder: {
+    backgroundColor: "#f5f5f5",
+    elevation: 2,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    marginHorizontal: 8,
+    borderWidth: 1,
+    borderColor: "black",
+  },
 
-    viewText: {
-        color: "#8e8cf3",
-        fontSize: 20,
-        marginHorizontal: 4,
-        fontWeight: "600",
-    },
-    modalContainer: {
-        flex: 1,
-        backgroundColor: "white",
-        justifyContent: "flex-end",
-    },
+  viewText: {
+    color: "#8e8cf3",
+    fontSize: 20,
+    marginHorizontal: 4,
+    fontWeight: "600",
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "white",
+    justifyContent: "flex-end",
+  },
 });

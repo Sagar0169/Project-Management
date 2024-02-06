@@ -9,11 +9,17 @@ import {
 } from "react-native";
 import TasksData from "./TasksData";
 import { useSearch } from "../store/search-redux";
+import { useNavigation } from "@react-navigation/native";
 
 const ProjectDetails = ({ item }) => {
+  const navigation = useNavigation()
+  function navigationPdf(){
+    navigation.navigate('Pdf')
+  }
   if (item.id !== "placeholder") {
     return (
-      <Pressable style={styles.itemContainer2}>
+      <Pressable  onPress={navigationPdf}
+      style={styles.itemContainer2}>
         <View
           style={{
             flexDirection: "row",
