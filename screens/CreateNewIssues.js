@@ -36,6 +36,7 @@ backButton={()=>{navigation.goBack()}}
     <CreateNewIssuesForm/>
     
     </View>
+    </View>
   );
 }
 export default CreateNewIssues;

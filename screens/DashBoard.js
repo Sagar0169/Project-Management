@@ -19,8 +19,7 @@ import TasksData from "../components/TasksData";
 import { Colors } from "../Utilities/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SvgUri, SvgXml } from "react-native-svg";
-import { RFValue } from "react-native-responsive-fontsize";
-import PdfViewerScreen from "../components/PdfFile";
+
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width

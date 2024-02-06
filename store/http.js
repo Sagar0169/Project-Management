@@ -14,10 +14,10 @@ async function authenticate( email, password) {
     });
     
     const data = response.data._result;
-    const user_type=response.data._result.usertype;
+    const _resultflag=response.data._resultflag;
   
     await AsyncStorage.setItem("user",JSON.stringify(data));
-    return user_type;
+    return _resultflag;
   } catch (error) {
     console.error("Error in authenticate:", error);
     throw error;

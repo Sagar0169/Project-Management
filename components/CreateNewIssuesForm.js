@@ -546,8 +546,7 @@ function CreateNewIssuesForm() {
 
             </ScrollView>
         </View>
-      </ScrollView>
-    </View>
+   
   );
 }
 export default CreateNewIssuesForm;
