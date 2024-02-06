@@ -91,3 +91,15 @@ export function updateTask(id, taskData) {
 export function deleteTask(id) {
   return axios.delete(BACKEND_URL + `/tasks/${id}.json`);
 }
+
+
+// Add a new API endpoint for updating task status
+// Add a new API endpoint for updating assigned task status
+export async function updateAssignedTaskStatus(id, newStatus) {
+  const response = await axios.patch(
+    BACKEND_URL + `/tasks/assigned/${id}/.json`,
+    { Status: newStatus }
+  );
+  return response.data;
+}
+

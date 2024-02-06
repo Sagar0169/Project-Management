@@ -1,14 +1,11 @@
 import React from "react";
 import {
   FlatList,
-  Image,
   Pressable,
   StyleSheet,
   Text,
-  View,
+  View
 } from "react-native";
-import DashboardData from "./DashboardData";
-import { Colors } from "../Utilities/Colors";
 import moviesData from "./moviesData";
 
 const NoticesItem = ({ navigation, item }) => {
@@ -18,34 +15,12 @@ const NoticesItem = ({ navigation, item }) => {
   if (item.id !== "placeholder") {
     return (
       <Pressable onPress={detailsHandler} style={styles.itemContainer2}>
-        <View
-          style={{
-            flexDirection: "row",
-            flex: 1,
-            justifyContent: "space-around",
-            alignItems: "center",
-          }}
-        >
-          <Image
-            style={{
-              width: "15%",
-              height: 60,
-              resizeMode: "contain",
-              overflow: "hidden",
-              borderRadius: 80,
-              marginHorizontal: 8,
-              marginVertical: 6,
-            }}
-            // source={require("../assets/Images/profile.jpg")}
-            source={ item.image }
-          />
-          <Text numberOfLines={3} ellipsizeMode="tail" style={styles.text}>
-            {item.title}
-          </Text>
-          <Pressable onPress={detailsHandler} style={styles.viewBox}>
-            <Text style={styles.viewText}>View</Text>
-          </Pressable>
-        </View>
+        <Text numberOfLines={3} ellipsizeMode="tail" style={styles.text}>
+          {item.title} 
+        </Text>
+        <Pressable onPress={detailsHandler} style={styles.viewBox}>
+          <Text style={styles.viewText}>View</Text>
+        </Pressable>
       </Pressable>
     );
   } else {
@@ -54,7 +29,7 @@ const NoticesItem = ({ navigation, item }) => {
 };
 
 const NoticesFlatList = ({ navigation, state, data, image }) => {
-  return (
+  return (                 
     <FlatList
       data={moviesData}
       renderItem={({ item }) => (
@@ -74,12 +49,15 @@ const styles = StyleSheet.create({
   },
   itemContainer2: {
     backgroundColor: "#f5f5f5",
-    flex: 1,
-    marginHorizontal: 12,
+    flexDirection: "row", // Updated
+    justifyContent: "space-between", // Updated
+    alignItems: "center",
+    marginHorizontal: 10,
     marginVertical: 12,
     paddingVertical: 2,
     borderRadius: 8,
   },
+
   gradient: {
     flex: 1,
     borderRadius: 15,
@@ -101,9 +79,11 @@ const styles = StyleSheet.create({
   },
   text: {
     width: "60%",
-    color: "black",
+    color: "#5164BFA6",
     fontSize: 16,
     fontWeight: "bold",
+    marginHorizontal: 8,
+    paddingVertical: 20,
   },
   text2: {
     color: "black",

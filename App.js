@@ -20,6 +20,7 @@ import { SearchProvider } from "./store/search-redux";
 import IssuesProject from "./screens/IssuesProject";
 import Music from "./screens/Music";
 import CreateNewIssues from "./screens/CreateNewIssues";
+import PdfViewerScreen from "./components/PdfFile";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
             <Stack.Screen name="Onboarding" component={OnBoarding} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Dashboard" component={DashBoard} />
+            <Stack.Screen name="Pdf" component={PdfViewerScreen} />
             <Stack.Screen
               name="AssignedProject"
               component={AssignedProject}

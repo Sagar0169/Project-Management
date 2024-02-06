@@ -1,4 +1,4 @@
-import { View,Dimensions } from "react-native"
+import { View, Dimensions } from "react-native";
 import BackArrowHeader from "../components/BackArrowHeader";
 import { useNavigation } from "@react-navigation/native";
 import CreateNewIssuesForm from "../components/CreateNewIssuesForm";
@@ -23,19 +23,20 @@ function h(value) {
   return height * value;
 }
 
-function CreateNewIssues({navigation}){
-    
-return(<View style={{ paddingTop: h(4), flex: 1, backgroundColor: "#8e8cf3" }}>
-<BackArrowHeader
-backButton={()=>{navigation.goBack()}}
-  title="Create Issue"
-  color={"#8e8cf3"}
-/>
-<View style={{flex:1, backgroundColor:'white'}}>
-    
-    <CreateNewIssuesForm/>
-    
+function CreateNewIssues({ navigation }) {
+  return (
+    <View style={{ paddingTop: h(4), flex: 1, backgroundColor: "#8e8cf3" }}>
+      <BackArrowHeader
+        backButton={() => {
+          navigation.goBack();
+        }}
+        title="Create Issue"
+        color={"#8e8cf3"}
+      />
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <CreateNewIssuesForm />
+      </View>
     </View>
-</View>)
+  );
 }
-export default CreateNewIssues
+export default CreateNewIssues;
