@@ -157,7 +157,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
     }
   };
   const getOptionStyle2 = (option) => {
-    if (selectedComplexity === option ) {
+    if (selectedComplexity === option) {
       return styles.viewBoxBorder;
     } else {
       return styles.viewBox;
@@ -243,7 +243,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
           </View>
         </View>
 
-        <View style={{ flexDirection: "row", justifyContent:'space-between',margin: 8 }}>
+        <View style={{ flexDirection: "row", justifyContent: 'space-between', margin: 8 }}>
           <View
             style={{ flex: 1, marginTop: w(1) }} //DUE DATE
           >
@@ -282,7 +282,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
             </Pressable>
           </View>
           <View
-            style={{ flex: 1, marginLeft:w(3), marginTop: w(1) }} 
+            style={{ flex: 1, marginLeft: w(3), marginTop: w(1) }}
           >
             <View
               style={{
@@ -314,43 +314,43 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
                   onUpdateValue={onChangeText.bind(this, "estimatedTime")}
                   value={enteredEstimatedTime}
                 />
-              
+
               </View>
             </Pressable>
           </View>
-    
+
         </View>
         <View
           style={{
             margin: 8,
           }}
         >
-           <Pressable
+          <Pressable
             style={{
               flex: 1,
             }}
             onPress={toggleModal}
           >
-          <View style={{ flex: 1 }}>
-         
-            <Text style={styles.headingText}>Assign Task To</Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Input
-              label="Assgin to"
-              editable={false}
-              value={AssginedForItem.toString()}
-              secure={false}
-              onUpdateValue={onChangeText.bind(this, "taskName")}
+            <View style={{ flex: 1 }}>
 
-            />
-            
-          </View>
+              <Text style={styles.headingText}>Assign Task To</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Input
+                label="Assgin to"
+                editable={false}
+                value={AssginedForItem.toString()}
+                secure={false}
+                onUpdateValue={onChangeText.bind(this, "taskName")}
+
+              />
+
+            </View>
 
           </Pressable>
           <ModalHandler />
         </View>
-     
+
         {/* Yes BUtton */}
         <View
           style={{
@@ -361,28 +361,28 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
             <Text style={styles.headingText}>QC Documents Mandatory</Text>
           </View>
           <View style={{ flex: 1 }}>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "flex-start",
-            }}
-          >
-            <Pressable onPress={() => handleOptionPress("Yes")}>
-              <View style={getOptionStyle("Yes")}>
-                <Text style={styles.viewText}>Yes</Text>
-              </View>
-            </Pressable>
-            <Pressable onPress={() => handleOptionPress("No")}>
-              <View style={getOptionStyle("No")}>
-                <Text style={styles.viewText}>NO</Text>
-              </View>
-            </Pressable>
-          </View>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "flex-start",
+              }}
+            >
+              <Pressable onPress={() => handleOptionPress("Yes")}>
+                <View style={getOptionStyle("Yes")}>
+                  <Text style={styles.viewText}>Yes</Text>
+                </View>
+              </Pressable>
+              <Pressable onPress={() => handleOptionPress("No")}>
+                <View style={getOptionStyle("No")}>
+                  <Text style={styles.viewText}>NO</Text>
+                </View>
+              </Pressable>
+            </View>
           </View>
         </View>
-   
+
         <View
           style={{
             margin: 8,
@@ -392,38 +392,38 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
             <Text style={styles.headingText}>Priority</Text>
           </View>
           <View style={{ flex: 1 }}>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              alignItems: "center",
-              padding: 3,
-              justifyContent: "flex-start",
-            }}
-          >
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <Pressable onPress={() => handleOptionPressPriority("Low")}>
-                <View style={getOptionStyle("Low")}>
-                  <Text style={styles.viewText}>Low</Text>
-                </View>
-              </Pressable>
-              <Pressable onPress={() => handleOptionPressPriority("Medium")}>
-                <View style={getOptionStyle("Medium")}>
-                  <Text style={styles.viewText}>Medium</Text>
-                </View>
-              </Pressable>
-              <Pressable onPress={() => handleOptionPressPriority("High")}>
-                <View style={getOptionStyle("High")}>
-                  <Text style={styles.viewText}>High</Text>
-                </View>
-              </Pressable>
-              {/* <Pressable onPress={() => handleOptionPressPriority("Critical")}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                alignItems: "center",
+                padding: 3,
+                justifyContent: "flex-start",
+              }}
+            >
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <Pressable onPress={() => handleOptionPressPriority("Low")}>
+                  <View style={getOptionStyle("Low")}>
+                    <Text style={styles.viewText}>Low</Text>
+                  </View>
+                </Pressable>
+                <Pressable onPress={() => handleOptionPressPriority("Medium")}>
+                  <View style={getOptionStyle("Medium")}>
+                    <Text style={styles.viewText}>Medium</Text>
+                  </View>
+                </Pressable>
+                <Pressable onPress={() => handleOptionPressPriority("High")}>
+                  <View style={getOptionStyle("High")}>
+                    <Text style={styles.viewText}>High</Text>
+                  </View>
+                </Pressable>
+                {/* <Pressable onPress={() => handleOptionPressPriority("Critical")}>
                 <View style={getOptionStyle("Critical")}>
                   <Text style={styles.viewText}>Critical</Text>
                 </View>
               </Pressable> */}
-            </ScrollView>
-          </View>
+              </ScrollView>
+            </View>
           </View>
         </View>
         <View
@@ -435,41 +435,41 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
             <Text style={styles.headingText}>Task Complexity</Text>
           </View>
           <View style={{ flex: 1 }}>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              alignItems: "center",
-              padding: 3,
-              justifyContent: "flex-start",
-            }}
-          >
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <Pressable onPress={() => handleOptionPressPriority2("Low")}>
-                <View style={getOptionStyle2("Low")}>
-                  <Text style={styles.viewText}>Low</Text>
-                </View>
-              </Pressable>
-              <Pressable onPress={() => handleOptionPressPriority2("Medium")}>
-                <View style={getOptionStyle2("Medium")}>
-                  <Text style={styles.viewText}>Medium</Text>
-                </View>
-              </Pressable>
-              <Pressable onPress={() => handleOptionPressPriority2("High")}>
-                <View style={getOptionStyle2("High")}>
-                  <Text style={styles.viewText}>High</Text>
-                </View>
-              </Pressable>
-              {/* <Pressable onPress={() => handleOptionPressPriority("Critical")}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                alignItems: "center",
+                padding: 3,
+                justifyContent: "flex-start",
+              }}
+            >
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <Pressable onPress={() => handleOptionPressPriority2("Low")}>
+                  <View style={getOptionStyle2("Low")}>
+                    <Text style={styles.viewText}>Low</Text>
+                  </View>
+                </Pressable>
+                <Pressable onPress={() => handleOptionPressPriority2("Medium")}>
+                  <View style={getOptionStyle2("Medium")}>
+                    <Text style={styles.viewText}>Medium</Text>
+                  </View>
+                </Pressable>
+                <Pressable onPress={() => handleOptionPressPriority2("High")}>
+                  <View style={getOptionStyle2("High")}>
+                    <Text style={styles.viewText}>High</Text>
+                  </View>
+                </Pressable>
+                {/* <Pressable onPress={() => handleOptionPressPriority("Critical")}>
                 <View style={getOptionStyle("Critical")}>
                   <Text style={styles.viewText}>Critical</Text>
                 </View>
               </Pressable> */}
-            </ScrollView>
-          </View>
+              </ScrollView>
+            </View>
           </View>
         </View>
-     
+
         <View
           style={{
             justifyContent: "center",
@@ -496,7 +496,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
                   TaskComplexity: "Task Complexity",
                   // Add other properties based on your form fields 
                 };
-                addNewTask(newTask);l
+                addNewTask(newTask); l
                 // Toast.showWithGravity(
                 //   "Project Added Sucessfully.",
                 //   Toast.SHORT,
@@ -513,10 +513,11 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
             color={"#e5af54"}
           >
             {" "}
-            Add Project
+            Add Task
           </SubmitButton>
         </View>
       </ScrollView>
+      
       {isDatePickerVisible && (
         <DateTimePicker
           value={selectedDate}
@@ -525,6 +526,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
           display="default"
           onChange={handleDateChange}
         />
+
       )}
     </View>
   );
@@ -542,7 +544,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     paddingVertical: 8,
     paddingHorizontal: 8,
-    borderRadius:3,
+    borderRadius: 3,
     marginHorizontal: 8,
     marginVertical: 8,
   },
@@ -551,10 +553,10 @@ const styles = StyleSheet.create({
     elevation: 2,
     paddingVertical: 8,
     paddingHorizontal: 8,
-    borderRadius:3,
+    borderRadius: 3,
     marginHorizontal: 8,
     marginVertical: 8,
- 
+
   },
 
   viewText: {

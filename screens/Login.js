@@ -14,15 +14,20 @@ import { useNavigation } from "@react-navigation/native";
 import { Colors } from "../Utilities/Colors";
 import { Strings } from "../Utilities/Strings";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import { useEffect } from "react";
 import useFonts from "../hooks/useFonts";
 import { lineRightSvg } from "../components/svgs/svgs";
+import { AuthContext } from "../store/auth-context";
+import { login } from "../store/http";
 
 
 function Login() {
+  const authCtx = useContext(AuthContext);
   const navigation = useNavigation();
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const[storedProfile,setStoreProfile]=useState("");
+  const[user_type,setuser_type]=useState("");
   useEffect(() => {
       const loadFonts = async () => {
         await useFonts();
@@ -75,12 +80,25 @@ function Login() {
   const handleLoginFormSubmit = async (email, password) => {
     if (handleLoginValidation(email, password)) {
       // Your login logic here
-
+      try {
+        const user_type = await login(email, password);
+        setuser_type(user_type)
+        authCtx.authenticate(user_type);
+        
+      } catch (error) {
+        Alert.alert(
+          'Authentication failed!',
+          'Could not log you in. Please check your credentials or try again later!'
+        );
+        setIsAuthenticating(false);
+      }
+      
       // Store the profile information in AsyncStorage
-      if (email === "sagarpathak8826@gmail.com") {
+      if (user_type === "Admin") {
         try {
           await AsyncStorage.setItem("profile", "super admin");
-          console.log("Profile stored successfully");
+          setStoreProfile(await AsyncStorage.getItem("user"))
+         
         } catch (error) {
           console.error("Error storing profile:", error);
         }
@@ -88,7 +106,7 @@ function Login() {
       else{
         try {
           await AsyncStorage.setItem("profile", "Developer");
-          console.log("Profile stored successfully");
+          // console.log("Profile stored successfully");
         } catch (error) {
           console.error("Error storing profile:", error);
         }

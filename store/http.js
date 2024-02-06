@@ -1,6 +1,32 @@
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const BACKEND_URL = "https://projectmanagement-84b7c-default-rtdb.firebaseio.com";
+const BASE_URl="http://167.172.152.167:81/pm_tool_app_old/api/rest/";
+
+async function authenticate( email, password) {
+  // const url = `https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${API_KEY}`;
+
+  try {
+    const response = await axios.post("http://167.172.152.167:81/pm_tool_app_old/api/rest/login", {
+      email: email,
+      password: password,
+    });
+    
+    const data = response.data._result;
+    const user_type=response.data._result.usertype;
+  
+    await AsyncStorage.setItem("user",JSON.stringify(data));
+    return user_type;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
+
+export function login(email, password) {
+  return authenticate(email, password);
+}
 
 export async function storeTask(taskData) {
   const response = await axios.post(

@@ -169,7 +169,7 @@ export default function DashBoard({ navigation }) {
               <Text
                 style={{
                   color: item.textColor,
-                  fontSize: 20,
+                  fontSize:  dynamicFontSize * 1,
                   fontWeight: "bold",
                 }}
               >
@@ -178,7 +178,7 @@ export default function DashBoard({ navigation }) {
               <Text
                 style={{
                   color: "black",
-                  fontSize: 20,
+                  fontSize:  dynamicFontSize * 1,
                   fontWeight: "bold",
                   width: w(20),
                 }}
