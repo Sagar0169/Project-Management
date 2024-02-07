@@ -93,8 +93,14 @@ export default [
   {
     id: "4",
     title: "Check In/Out",
-    color: "#6073C9C0",
+    color: "#CCD0E2C0",
     count: "",
-    image:require('../assets/Images/dashBlue.png')
+    image: require("../assets/Images/dashBlue.png"),
+    lineRightSvg: `
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="12" r="10" stroke="#2D2C2E" stroke-width="2"/>
+  <path d="M12 5V12L16 16" stroke="#2D2C2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`,
   },
 ];

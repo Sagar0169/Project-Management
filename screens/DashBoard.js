@@ -138,60 +138,77 @@ export default function DashBoard({ navigation }) {
         navigation.navigate("CheckIn/Out");
       }
     }
-    return (
-      <Pressable onPress={navigationHandler} style={styles.itemContainer}>
-        <LinearGradient
-          colors={[item.color, item.color]}
-          style={styles.gradient}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: w(4),
-            }}
+    if (item.id !== "placeholder") {
+      return (
+        <Pressable onPress={navigationHandler} style={styles.itemContainer}>
+          <LinearGradient
+            colors={[item.color, item.color]}
+            style={styles.gradient}
           >
             <View
               style={{
-                alignItems: "center",
+                flexDirection: "row",
                 justifyContent: "center",
-                paddingHorizontal: w(4),
-                backgroundColor: "white",
-                borderRadius: w(20),
-                marginVertical: 4,
-                paddingVertical: w(4),
+                alignItems: "center",
+                marginTop: w(4),
               }}
             >
-              <SvgXml xml={item.lineRightSvg} width="40" height="40" />
-            </View>
-            <View
-              style={{ borderRadius: 8, marginTop: w(6), marginStart: w(2) }}
-            >
-              <Text
+              <View
                 style={{
-                  color: item.textColor,
-                  fontSize: RFValue(15), // Use RFValue for dynamic font size
-                  fontWeight: "bold",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingHorizontal: w(4),
+                  backgroundColor: "white",
+                  borderRadius: w(20),
+                  marginVertical: 4,
+                  paddingVertical: w(4),
                 }}
               >
-                {item.count}
-              </Text>
-              <Text
-                style={{
-                  color: "black",
-                  fontSize: RFValue(16), // Use RFValue for dynamic font size
-                  fontWeight: "bold",
-                  width: w(20),
-                }}
+                <SvgXml xml={item.lineRightSvg} width="40" height="40" />
+              </View>
+              <View
+                style={{ borderRadius: 8, marginTop: w(6), marginStart: w(2) }}
               >
-                {item.title}
-              </Text>
+                <Text
+                  style={{
+                    color: item.textColor,
+                    fontSize: dynamicFontSize * 1, // Use RFValue for dynamic font size
+                    fontWeight: "bold",
+                  }}
+                >
+                  {item.count}
+                </Text>
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: dynamicFontSize * 1, // Use RFValue for dynamic font size
+                    fontWeight: "bold",
+                    width: w(20),
+                  }}
+                >
+                  {item.title}
+                </Text>
+              </View>
             </View>
-          </View>
-        </LinearGradient>
-      </Pressable>
-    );
+          </LinearGradient>
+        </Pressable>
+      );
+    } else {
+      return <View style={styles.hiddenItem}></View>;
+    }
+  };
+
+  const duplicateLastItemIfNeeded = () => {
+    const itemCount = DashboardData.length;
+    const lastItem = DashboardData[itemCount - 1];
+
+    if (itemCount % 2 === 1) {
+      // Duplicate the last item
+      const duplicatedItem = { ...lastItem, id: "placeholder" };
+      return [...DashboardData, duplicatedItem];
+    }
+
+    return DashboardData;
   };
 
   return (
@@ -225,7 +242,7 @@ export default function DashBoard({ navigation }) {
         <Text
           style={{
             fontWeight: "bold",
-            fontSize: 24,
+            fontSize: dynamicFontSize * 1.2,
             color: "#2D2C2E",
             marginHorizontal: 8,
             marginVertical: 8,
@@ -235,7 +252,7 @@ export default function DashBoard({ navigation }) {
         </Text>
         <Text
           style={{
-            fontSize: 18,
+            fontSize: dynamicFontSize,
             color: "#878787",
             fontWeight: "600",
             marginHorizontal: 8,
@@ -246,7 +263,7 @@ export default function DashBoard({ navigation }) {
         </Text>
         <View>
           <FlatList
-            data={DashboardData}
+            data={duplicateLastItemIfNeeded()}
             scrollEnabled={false}
             numColumns={2}
             renderItem={({ item }) => (
@@ -260,11 +277,11 @@ export default function DashBoard({ navigation }) {
             keyExtractor={(item) => item.id}
           />
         </View>
-        
+
         <View style={{ marginBottom: w(8) }}>
           <Text
             style={{
-              fontSize: 18,
+              fontSize: dynamicFontSize,
               color: "grey",
               fontWeight: "600",
               margin: 8,
@@ -294,6 +311,12 @@ export default function DashBoard({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  hiddenItem: {
+    flex: 1,
+    margin: 8,
+    borderRadius: 15,
+    overflow: "hidden",
+  },
   itemContainer: {
     flex: 1,
     margin: 8,
