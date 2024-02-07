@@ -19,6 +19,10 @@ import DropDown from "./TimeSheet/DropDown";
 import { ProjectGroup, Status, TaskGroup, Tasks } from "./Data";
 import CustomModal from "./CustomModal";
 import Input from "./Input";
+import { Svg, SvgXml } from "react-native-svg";
+import { Svg6 } from "./svgs/svgs";
+
+
 
 //CHANGE MULTIPLE SELECTION FROM BOTTOMSHEET2
 
@@ -151,248 +155,257 @@ function CreateNewIssuesForm() {
     setModalVisible3(false);
   };
 
-  return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
-      <ScrollView style={{ flex: 1, margin: 10 }}>
-        <View
-          style={{
-            margin: 8,
-          }}
-        >
-          <View>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Project </Text>
-          </View>
-          <View style={{ alignItems: "stretch" }}>
-            <DropDown
-              data={ProjectGroup}
-              selectValue={selectedProject}
-              oneSelect={handleSelectProject}
-              hi={h(2)}
-              wi={w(2)}
-            />
-          </View>
-        </View>
-        <View
-          style={{
-            margin: 8,
-          }}
-        >
-          <View>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Project Task</Text>
-          </View>
-          <View>
-            <DropDown
-              data={Tasks}
-              selectValue={selectedTask}
-              oneSelect={handleSelectTask}
-              hi={h(2)}
-              wi={w(2)}
-            />
-          </View>
-        </View>
-        <View
-          style={{
-            margin: 8,
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Title</Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Input
-              label="Enter Title"
-              secure={false}
-              onUpdateValue={onChangeText.bind(this, "taskName")}
-              value={enteredTaskName}
-            />
-          </View>
-        </View>
+    return (
+        <View style={{ flex: 1, backgroundColor: "white" }}>
 
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            margin: 8,
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Description</Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <TextInput
-              multiline={true}
-              onChangeText={onChangeText.bind(this, "taskPhase")}
-              placeholder="Enter Phase"
-              numberOfLines={4}
-              style={{
-                color: "#666666",
-                fontSize: 16,
-                textAlign: "left",
-                borderRadius: 3,
-                borderWidth: 1,
-                padding: 5,
-                borderColor: "#666666",
-                paddingVertical: w(1),
-                flex: 1,
-                maxHeight: h(10),
-              }}
-            ></TextInput>
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            margin: 8,
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Task Type</Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <TextInput
-              onChangeText={onChangeText.bind(this, "taskType")}
-              placeholder="Enter Type"
-              style={{
-                color: "#666666",
-                fontSize: 16,
-                textAlign: "left",
-                borderRadius: 3,
-                borderWidth: 1,
-                padding: 5,
-                borderColor: "#666666",
-              }}
-            ></TextInput>
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            margin: 8,
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Status</Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <DropDown
-              data={Status}
-              selectValue={selectedStatus}
-              oneSelect={handleSelectStatus}
-              hi={h(2)}
-              wi={w(2)}
-            />
-          </View>
-        </View>
-        <View style={{ marginVertical: 8, flexDirection: "row" }}>
-          <View
-            style={{
-              flex: 0.5,
-              justifyContent: "center",
-              margin: 4,
-              borderWidth: 2,
-              paddingVertical: 8,
-              paddingHorizontal: 8,
-              borderRadius: 10,
-              borderColor: "#eaeaea",
-            }}
-          >
-            <Text style={{ color: "#666666" }}>Created by</Text>
 
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <Image
-                source={require("../assets/Images/user.png")}
-                style={{
-                  width: 20,
-                  height: 20,
-                  resizeMode: "contain",
-                  margin: 4,
-                }}
-              />
-              <Text style={{ color: "#666666" }}>Super Admin</Text>
-            </View>
-          </View>
-        </View>
 
-        <View style={{ flexDirection: "row", marginVertical: 8 }}>
-          <View
-            style={{
-              flex: 1,
-              margin: 4,
-              borderWidth: 2,
-              paddingVertical: 8,
-              paddingHorizontal: 8,
-              borderRadius: 10,
-              borderColor: "#eaeaea",
-            }}
-          >
-            <Text style={{ color: "#666666" }}>Date Created</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <Image
-                source={require("../assets/Images/calendar.png")}
-                style={{
-                  width: 20,
-                  height: 20,
-                  resizeMode: "contain",
-                  margin: 4,
-                }}
-              />
-              <TextInput
-                onChangeText={onChangeText.bind(this, "dueDate")}
-                placeholder="enter Due Date"
-                style={{ marginHorizontal: 6, color: "#181818" }}
-              ></TextInput>
-            </View>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              margin: 4,
-              borderWidth: 2,
-              paddingVertical: 8,
-              paddingHorizontal: 8,
-              borderRadius: 10,
-              borderColor: "#eaeaea",
-            }}
-          >
-            <Text style={{ color: "#666666" }}>Time Created</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <Image
-                source={require("../assets/Images/watch.png")}
-                style={{
-                  width: 20,
-                  height: 20,
-                  resizeMode: "contain",
-                  margin: 4,
-                }}
-              />
-              <TextInput
-                onChangeText={onChangeText.bind(this, "estimatedTime")}
-                placeholder="Time"
-                style={{ marginHorizontal: 6, color: "#181818" }}
-              ></TextInput>
-            </View>
-          </View>
-        </View>
+
+
+            <ScrollView style={{ flex: 1, margin: 10 }}>
+                <View
+                    style={{
+
+
+                        margin: 8,
+                    }}
+                >
+                    <View >
+                        <Text style={{ color: "black", fontSize: 26 }}>Project </Text>
+                        <View >
+                            <DropDown
+                                data={ProjectGroup}
+                                selectValue={selectedProject}
+                                oneSelect={handleSelectProject}
+                                hi={h(2)}
+                                wi={w(2)}
+                            />
+                        </View>
+                    </View>
+
+                </View>
+                <View
+                    style={{
+
+                        margin: 8,
+                    }}
+                >
+                    <View >
+                        <Text style={{ color: "black", fontSize: 26 }}>Project Task</Text>
+                    </View>
+                    <View >
+                        <DropDown
+                            data={Tasks}
+                            selectValue={selectedTask}
+                            oneSelect={handleSelectTask}
+                            hi={h(2)}
+                            wi={w(2)}
+                        />
+                    </View>
+                </View>
+                <View
+                    style={{
+
+                        margin: 8,
+                    }}
+                >
+                    <View style={{ flex: 1 }}>
+                        <Text style={{ color: "black", fontSize: 26 }}>Title</Text>
+                    </View>
+                    <View style={{ marginHorizontal: w(1) }}>
+                        <Input
+                            label="Enter Title"
+                            secure={false}
+                            onUpdateValue={onChangeText.bind(this, "taskName")}
+                            value={enteredTaskName}
+                        />
+                    </View>
+                </View>
+
+
+                <View
+                    style={{
+
+                        margin: 8,
+                    }}
+                >
+                    <View style={{ flex: 1 }}>
+                        <Text style={{ color: "black", fontSize: 26 }}>Description</Text>
+                        <View style={{ marginHorizontal: w(1) }}>
+                            <TextInput
+                                multiline={true}
+                                onChangeText={onChangeText.bind(this, "taskPhase")}
+                                numberOfLines={4}
+                                style={{
+                                    borderWidth: 1,
+                                    borderColor: '#8A96D3',
+                                    borderRadius: 1,
+                                    marginVertical: 8,
+                                    backgroundColor: '#E9EEFF',
+                                    flexDirection: 'row', // Add this line to align items horizontally
+                                    alignItems: 'center',
+                                    fontSize: dynamicFontSize * .8,
+                                    textAlign: "left",
+                                    paddingVertical: w(1),
+                                    flex: 1,
+                                    maxHeight: h(10),
+                                }}
+                            >
+                            </TextInput>
+
+                        </View>
+                    </View>
+
+                </View>
+                <View
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        margin: 8,
+                    }}
+                >
+                    <View style={{ flex: 1 }}>
+                        <Text style={{ color: "#666666", fontSize: 26 }}>Task Type</Text>
+                        <View style={{ marginHorizontal: w(1) }}>
+                            <Input
+                                label="Enter Type"
+                                secure={false}
+                                onUpdateValue={onChangeText.bind(this, "taskType")}
+                                value={enteredTaskType}
+                            />
+                        </View>
+                    </View>
+
+                </View>
+                <View
+                    style={{
+
+                        margin: 8,
+                    }}
+                >
+                    <View style={{ flex: 1 }}>
+                        <Text style={{ color: "#666666", fontSize: 26 }}>Status</Text>
+                    </View>
+                    <View style={{ flex: 1 }}>
+                        <DropDown
+                            data={Status}
+                            selectValue={selectedStatus}
+                            oneSelect={handleSelectStatus}
+                            hi={h(2)}
+                            wi={w(2)}
+                        />
+                    </View>
+                </View>
+                <View style={{ margin: 8 }}>
+
+
+
+                    <Text style={{ color: "#5063BF", fontSize: dynamicFontSize * 1 }}>Created by</Text>
+
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            justifyContent: "flex-start",
+                            alignItems: "center",
+                            borderWidth: 1,
+                            borderColor: '#8A96D3',
+                            borderRadius: 1,
+                            paddingVertical: 10,
+                            paddingHorizontal: 8,
+                            marginVertical: 8,
+                            backgroundColor: '#E9EEFF',
+                            flexDirection: 'row', // Add this line to align items horizontally
+                            alignItems: 'center',
+                        }}
+                    >
+
+                        <Text style={{ color: "#666666", fontSize: dynamicFontSize * .8 }}>Super Admin</Text>
+                    </View>
+
+
+
+
+                </View>
+
+
+
+                <View style={{ flexDirection: "row", justifyContent: 'space-between', margin: 8 }}>
+                    <View
+                        style={{ flex: 1, marginTop: w(1) }} //DUE DATE
+                    >
+                        <View
+                            style={{
+                                flex: 0.3,
+
+                                paddingTop: 10,
+                                marginTop: w(2),
+                            }}
+                        >
+
+
+                            <Text
+                                style={[
+
+                                    { maxWidth: w(30), marginEnd: w(5) },
+
+                                ]}
+                            >
+                                Date Created
+                            </Text>
+
+                        </View>
+                        <Pressable >
+                            <View style={{ flex: 0.7, flexDirection: 'row', alignItems: 'center' }}>
+                                <Input
+                                    label="Due Date"
+                                    editable={false}
+                                    secure={false}
+                                    onUpdateValue={onChangeText.bind(this, "dueDate")}
+                                    value={enteredDueDate}
+                                />
+                                <SvgXml xml={Svg6} width="20" height="20" style={{ marginLeft: w(-5) }} />
+                            </View>
+                        </Pressable>
+                    </View>
+                    <View
+                        style={{ flex: 1, marginLeft: w(3), marginTop: w(1) }}
+                    >
+                        <View
+                            style={{
+                                flex: 0.3,
+
+                                paddingTop: 10,
+                                marginTop: w(2),
+                            }}
+                        >
+
+
+                            <Text
+                                style={[
+
+                                    { maxWidth: w(30), marginEnd: w(5) },
+
+                                ]}
+                            >
+                                Time Created
+                            </Text>
+
+                        </View>
+                        <Pressable >
+                            <View style={{ flex: 0.7, flexDirection: 'row', alignItems: 'center' }}>
+                                <Input
+                                    label="00:00"
+                                    editable={true}
+                                    secure={false}
+                                    onUpdateValue={onChangeText.bind(this, "estimatedTime")}
+                                    value={enteredEstimatedTime}
+                                />
+
+                            </View>
+                        </Pressable>
+                    </View>
+
+                </View>
 
         {/* Yes BUtton */}
         <View
@@ -527,23 +540,21 @@ function CreateNewIssuesForm() {
           </SubmitButton>
         </View>
 
-        {/* Toast */}
-        {isModalVisible2 && (
-          <CustomModal
-            visible={isModalVisible2}
-            message="New Issue Created."
-            onHide={hideModal}
-          />
-        )}
-        {isModalVisible3 && (
-          <CustomModal
-            visible={isModalVisible3}
-            message="Please fill all details."
-            onHide={hideModal}
-          />
-        )}
-      </ScrollView>
-    </View>
+                {/* Toast */}
+                {isModalVisible2 && <CustomModal
+                    visible={isModalVisible2}
+                    message="New Issue Created."
+                    onHide={hideModal}
+                />}
+                {isModalVisible3 && <CustomModal
+                    visible={isModalVisible3}
+                    message="Please fill all details."
+                    onHide={hideModal}
+                />}
+
+            </ScrollView>
+        </View>
+   
   );
 }
 export default CreateNewIssuesForm;

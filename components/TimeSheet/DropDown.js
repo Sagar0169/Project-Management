@@ -38,7 +38,7 @@ const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
   };
 
   return (
-    <View style={{ marginHorizontal: w(5), marginVertical: h(1), flex: 1 }}>
+    <View style={{  marginVertical: h(1),flex:1 }}>
       <TouchableOpacity style={styles.dropDownStyle} onPress={selectOption}>
         <Text style={{color:Colors.timesheetHint}}>{!!selectValue ? selectValue.title : "Select Category"}</Text>
         <Image
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     padding: w(4),
-    elevation: 8,
+    
     width: "100%",
   },
   openDropDown: {
