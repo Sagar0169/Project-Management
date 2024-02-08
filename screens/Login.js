@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Dimensions,
   Pressable,
+  Alert
 } from "react-native";
 
 
@@ -14,15 +15,22 @@ import { useNavigation } from "@react-navigation/native";
 import { Colors } from "../Utilities/Colors";
 import { Strings } from "../Utilities/Strings";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import { useEffect } from "react";
+
 import useFonts from "../hooks/useFonts";
 import { lineRightSvg } from "../components/svgs/svgs";
+import { AuthContext } from "../store/auth-context";
+import { login } from "../store/http";
 
 
 function Login() {
+  const authCtx = useContext(AuthContext);
   const navigation = useNavigation();
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [isAuthenticating,setIsAuthenticating]=useState(false)
+  const[storedProfile,setStoreProfile]=useState("");
+  // const[user_type,setuser_type]=useState("");
   useEffect(() => {
       const loadFonts = async () => {
         await useFonts();
@@ -75,27 +83,72 @@ function Login() {
   const handleLoginFormSubmit = async (email, password) => {
     if (handleLoginValidation(email, password)) {
       // Your login logic here
+      try {
+        const _resultflag = await login(email, password);
+        if (_resultflag === 0) {
+          // User type is null, indicating invalid credentials
+          Alert.alert(
+            'Invalid Credentials!',
+            'The email or password you entered is incorrect. Please try again.'
+          );
+          return;
+        }
+        const loginRespone=await AsyncStorage.getItem("user")
+        const response = JSON.parse(loginRespone);
 
+        
+
+      
+        // authCtx.authenticate(user_type);
+
+        if (response.usertype === "Admin") {
+          try {
+            await AsyncStorage.setItem("profile", "super admin");
+            setStoreProfile(await AsyncStorage.getItem("user"))
+           
+          } catch (error) {
+            console.error("Error storing profile:", error);
+          }
+        }
+        else{
+          if(response.usertype==="TeamLead"){
+          try {
+            await AsyncStorage.setItem("profile", "TeamLead");
+            // console.log("Profile stored successfully");
+          } catch (error) {
+            console.error("Error storing profile:", error);
+          }
+        }
+        else{
+          if(response.usertype==="Developer"){
+          try {
+            await AsyncStorage.setItem("profile", "Developer");
+            // console.log("Profile stored successfully");
+          } catch (error) {
+            console.error("Error storing profile:", error);
+          }
+        }
+  
+        
+      
+      }
+       
+        }
+        
+  
+        alert("Login successful!");
+        dashboardHandler();
+        
+      } catch (error) {
+        Alert.alert(
+          'Authentication failed!',
+          'Could not log you in. Please check your credentials or try again later!'
+        );
+        setIsAuthenticating(false);
+      }
+      
       // Store the profile information in AsyncStorage
-      if (email === "sagarpathak8826@gmail.com") {
-        try {
-          await AsyncStorage.setItem("profile", "super admin");
-          console.log("Profile stored successfully");
-        } catch (error) {
-          console.error("Error storing profile:", error);
-        }
-      }
-      else{
-        try {
-          await AsyncStorage.setItem("profile", "Developer");
-          console.log("Profile stored successfully");
-        } catch (error) {
-          console.error("Error storing profile:", error);
-        }
-      }
-
-      alert("Login successful!");
-      dashboardHandler();
+     
     }
   };
   // Calculate a scaling factor based on the screen width

@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
 import SubmitButton from "./ui/SubmitButton";
 
 const ProjectDetails = ({ item, handleSportSelection, isSelected }) => {
-  const backgroundColor = isSelected ? "#e5af54" : "#f5f5f5";
+  const backgroundColor = isSelected ? "#E9EEFF" : "#f5f5f5";
 
   return (
     <Pressable
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 12,
     borderWidth: 1,
-    borderColor: "#e5af54",
+    borderColor: "#E9EEFF",
   },
   itemContainer2Content: {
     flex: 1,

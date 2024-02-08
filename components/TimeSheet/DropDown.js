@@ -4,30 +4,27 @@ import { Colors } from "../../Utilities/Colors";
 
 const { width, height } = Dimensions.get("window");
 
-    // Calculate a scaling factor based on the screen width
-    const scaleFactor = width / 375; // Adjust 375 based on your design reference width
-  
-    // Define the base font size for your design
-    const baseFontSize = 16;
-  
-    // Calculate the dynamic font size
-    const dynamicFontSize = baseFontSize * scaleFactor;
-    // const fontSize=FontSize font={16}
-    function w(value) {
-      const width = Dimensions.get("window").width / 100; // now width is 1% of screen width
-      return width*value
-    }
-    function h(value) {
-      const height = Dimensions.get("window").height / 100; // now height is 1% of screen height
-      return height*value
-    }
-const DropDown = ({ data, selectValue, oneSelect,hi,wi ,onPresss}) => {
-    
-  
-      function handlerBack() {
-          navigation.goBack();
-        }
-  
+// Calculate a scaling factor based on the screen width
+const scaleFactor = width / 375; // Adjust 375 based on your design reference width
+
+// Define the base font size for your design
+const baseFontSize = 16;
+
+// Calculate the dynamic font size
+const dynamicFontSize = baseFontSize * scaleFactor;
+// const fontSize=FontSize font={16}
+function w(value) {
+  const width = Dimensions.get("window").width / 100; // now width is 1% of screen width
+  return width * value;
+}
+function h(value) {
+  const height = Dimensions.get("window").height / 100; // now height is 1% of screen height
+  return height * value;
+}
+const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
+  function handlerBack() {
+    navigation.goBack();
+  }
 
   const [option, setOption] = React.useState(false);
 
@@ -41,14 +38,15 @@ const DropDown = ({ data, selectValue, oneSelect,hi,wi ,onPresss}) => {
   };
 
   return (
-    <View style={{ marginHorizontal: w(5), marginVertical: h(1),flex:1 }}>
+    <View style={{  marginVertical: h(1),flex:1 }}>
       <TouchableOpacity style={styles.dropDownStyle} onPress={selectOption}>
         <Text style={{color:Colors.timesheetHint}}>{!!selectValue ? selectValue.title : "Select Category"}</Text>
         <Image
           source={require("../../assets/Images/left.png")}
           style={{
             transform: [{ rotate: option ? "90deg" : "270deg" }],
-            height:hi,width:wi
+            height: hi,
+            width: wi,
           }}
         ></Image>
       </TouchableOpacity>
@@ -62,8 +60,8 @@ const DropDown = ({ data, selectValue, oneSelect,hi,wi ,onPresss}) => {
                 onPress={() => oneSelectItem(val)}
                 style={{
                   ...styles.optionContainer,
-                //   backgroundColor:
-                //     val &&val.id === selectValue.id ? "pink" : "white",
+                  //   backgroundColor:
+                  //     val &&val.id === selectValue.id ? "pink" : "white",
                 }}
               >
                 {/* <Image
@@ -93,21 +91,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     padding: w(4),
-    // elevation: 8,
+    
     width: "100%",
   },
   openDropDown: {
     backgroundColor: "white",
     padding: w(2),
-    borderBottomEndRadius:  w(2),
-    borderBottomStartRadius:  w(2),
+    borderBottomEndRadius: w(2),
+    borderBottomStartRadius: w(2),
   },
   optionContainer: {
-    padding:  w(2),
-    borderRadius:  w(2),
+    padding: w(2),
+    borderRadius: w(2),
     flexDirection: "row",
     alignItems: "center",
-    borderBottomWidth:  w(0.1),
+    borderBottomWidth: w(0.1),
   },
   optionImage: {
     width: w(20),

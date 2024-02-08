@@ -1,26 +1,24 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import Login from "./screens/Login";
-import OnBoarding from "./components/OnBoarding";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { Header } from "react-native/Libraries/NewAppScreen";
-import DashBoard from "./screens/DashBoard";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet } from "react-native";
+import OnBoarding from "./components/OnBoarding";
 import AddNewProjects from "./screens/AddNewProjects";
-import AssignedProject from "./screens/AssignedProject";
-import Projectlist from "./screens/Projectlist";
-import AssignTask from "./screens/AssignTask";
-import TimeSheet from "./screens/TimeSheet";
-import TaskList from "./screens/TaskList";
-import AssignedTaskDetails from "./screens/AssignedTaskDetails";
 import AssignNewTask from "./screens/AssignNewTasks";
+import AssignTask from "./screens/AssignTask";
+import AssignedProject from "./screens/AssignedProject";
+import AssignedTaskDetails from "./screens/AssignedTaskDetails";
+import DashBoard from "./screens/DashBoard";
+import Login from "./screens/Login";
+import Projectlist from "./screens/Projectlist";
+import TaskList from "./screens/TaskList";
 
-import ContextProvider from "./store/context";
-import { SearchProvider } from "./store/search-redux";
+import CheckInLayout from "./screens/CheckInLayout";
+import CreateNewIssues from "./screens/CreateNewIssues";
 import IssuesProject from "./screens/IssuesProject";
 import Music from "./screens/Music";
-import CreateNewIssues from "./screens/CreateNewIssues";
-import CheckInLayout from "./screens/CheckInLayout";
+import ContextProvider from "./store/context";
+import { SearchProvider } from "./store/search-redux";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -35,6 +33,7 @@ export default function App() {
             <Stack.Screen name="Onboarding" component={OnBoarding} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Dashboard" component={DashBoard} />
+         
             <Stack.Screen
               name="AssignedProject"
               component={AssignedProject}

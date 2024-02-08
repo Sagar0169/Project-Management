@@ -8,17 +8,37 @@ import {
   View,
   Modal,
   TextInput,
+  Dimensions
 } from "react-native";
 import Input from "./Input";
 import SubmitButton from "./ui/SubmitButton";
 // import Toast from "react-native-simple-toast";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import AssignedForData from "./AssignedForData";
 import BottomSheetDesign3 from "./BottomSheedDesign3";
 import { assignedStore, storeTask } from "../store/http";
 import useFonts from "../hooks/useFonts";
+import { Svg, SvgXml } from "react-native-svg";
+import { Svg6 } from "./svgs/svgs";
 
+const { width, height } = Dimensions.get("window");
 
+// Calculate a scaling factor based on the screen width
+const scaleFactor = width / 375; // Adjust 375 based on your design reference width
+
+// Define the base font size for your design
+const baseFontSize = 16;
+
+// Calculate the dynamic font size
+const dynamicFontSize = baseFontSize * scaleFactor;
+// const fontSize=FontSize font={16}
+function w(value) {
+  const width = Dimensions.get("window").width / 100; // now width is 1% of screen width
+  return width * value;
+}
+function h(value) {
+  const height = Dimensions.get("window").height / 100; // now height is 1% of screen height
+  return height * value;
+}
 
 //CHANGE MULTIPLE SELECTION FROM BOTTOMSHEET2
 // give todays date before hand
@@ -119,14 +139,25 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
   const [AssginedForItem, setAssginedForItem] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedPriority, setSelectedPriority] = useState(null);
+  const [selectedComplexity, setselectedComplexity] = useState(null);
   const handleOptionPress = (option) => {
     setSelectedOption(option);
   };
   const handleOptionPressPriority = (option) => {
     setSelectedPriority(option);
   };
+  const handleOptionPressPriority2 = (option) => {
+    setselectedComplexity(option);
+  };
   const getOptionStyle = (option) => {
     if (selectedOption === option || selectedPriority === option) {
+      return styles.viewBoxBorder;
+    } else {
+      return styles.viewBox;
+    }
+  };
+  const getOptionStyle2 = (option) => {
+    if (selectedComplexity === option) {
       return styles.viewBoxBorder;
     } else {
       return styles.viewBox;
@@ -195,7 +226,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
         </View>
         <View
           style={{
-       
+
             margin: 8,
           }}
         >
@@ -203,7 +234,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
             <Text style={styles.headingText}>Task Type</Text>
           </View>
           <View style={{ flex: 1 }}>
-          <Input
+            <Input
               label="Enter Type"
               secure={false}
               onChangeText={onChangeText.bind(this, "taskType")}
@@ -212,241 +243,238 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
           </View>
         </View>
 
-        <View style={{ flexDirection: "row", marginVertical: 8 }}>
-          <Pressable onPress={showDatePicker}>
-            <View
-              style={{
-                flex: 1,
-                margin: 4,
-                borderWidth: 2,
-                paddingVertical: 8,
-                paddingHorizontal: 8,
-                borderRadius: 10,
-                borderColor: "#eaeaea",
-              }}
-            >
-              <Text style={{ color: "#666666" }}>Due Date</Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                }}
-              >
-                <Image
-                  source={require("../assets/Images/calendar.png")}
-                  style={{
-                    width: 20,
-                    height: 20,
-                    resizeMode: "contain",
-                    margin: 4,
-                  }}
-                />
-                <TextInput
-                  editable={false}
-                  value={enteredDueDate}
-                  onChangeText={onChangeText.bind(this, "dueDate")}
-                  placeholder="enter Due Date"
-                  style={{ marginHorizontal: 6, color: "#181818" }}
-                ></TextInput>
-              </View>
-            </View>
-          </Pressable>
+        <View style={{ flexDirection: "row", justifyContent: 'space-between', margin: 8 }}>
           <View
-            style={{
-              flex: 1,
-              margin: 4,
-              borderWidth: 2,
-              paddingVertical: 8,
-              paddingHorizontal: 8,
-              borderRadius: 10,
-              borderColor: "#eaeaea",
-            }}
+            style={{ flex: 1, marginTop: w(1) }} //DUE DATE
           >
-            <Text style={{ color: "#666666" }}>Estimated Hours</Text>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
+                flex: 0.3,
+
+                paddingTop: 10,
+                marginTop: w(2),
               }}
             >
-              <Image
-                source={require("../assets/Images/watch.png")}
-                style={{
-                  width: 20,
-                  height: 20,
-                  resizeMode: "contain",
-                  margin: 4,
-                }}
-              />
-              <TextInput
-                onChangeText={onChangeText.bind(this, "estimatedTime")}
-                placeholder="Time"
-                style={{ marginHorizontal: 6, color: "#181818" }}
-              ></TextInput>
+
+
+              <Text
+                style={[
+                  styles.headingText,
+                  { maxWidth: w(30), marginEnd: w(5) },
+                  { fontFamily: 'poppinsemi' }
+                ]}
+              >
+                Date Created
+              </Text>
+
             </View>
+            <Pressable onPress={showDatePicker}>
+              <View style={{ flex: 0.7, flexDirection: 'row', alignItems: 'center' }}>
+                <Input
+                  label="Due Date"
+                  editable={false}
+                  secure={false}
+                  onUpdateValue={onChangeText.bind(this, "dueDate")}
+                  value={enteredDueDate}
+                />
+                <SvgXml xml={Svg6} width="20" height="20" style={{ marginLeft: w(-5) }} />
+              </View>
+            </Pressable>
           </View>
+          <View
+            style={{ flex: 1, marginLeft: w(3), marginTop: w(1) }}
+          >
+            <View
+              style={{
+                flex: 0.3,
+
+                paddingTop: 10,
+                marginTop: w(2),
+              }}
+            >
+
+
+              <Text
+                style={[
+                  styles.headingText,
+                  { maxWidth: w(30), marginEnd: w(5) },
+                  { fontFamily: 'poppinsemi' }
+                ]}
+              >
+                Time Created
+              </Text>
+
+            </View>
+            <Pressable >
+              <View style={{ flex: 0.7, flexDirection: 'row', alignItems: 'center' }}>
+                <Input
+                  label="00:00"
+                  editable={true}
+                  secure={false}
+                  onUpdateValue={onChangeText.bind(this, "estimatedTime")}
+                  value={enteredEstimatedTime}
+                />
+
+              </View>
+            </Pressable>
+          </View>
+
         </View>
-        <View style={{ marginVertical: 8, flexDirection: "row" }}>
+        <View
+          style={{
+            margin: 8,
+          }}
+        >
           <Pressable
             style={{
               flex: 1,
             }}
             onPress={toggleModal}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                margin: 4,
-                borderWidth: 2,
-                paddingVertical: 8,
-                paddingHorizontal: 8,
-                borderRadius: 10,
-                borderColor: "#eaeaea",
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                }}
-              >
-                <Image
-                  source={require("../assets/Images/user.png")}
-                  style={{
-                    width: 20,
-                    height: 20,
-                    resizeMode: "contain",
-                    margin: 4,
-                  }}
-                />
-              </View>
-              <Text style={{ color: "#666666" }}>Assign Task To</Text>
+            <View style={{ flex: 1 }}>
+
+              <Text style={styles.headingText}>Assign Task To</Text>
             </View>
+            <View style={{ flex: 1 }}>
+              <Input
+                label="Assgin to"
+                editable={false}
+                value={AssginedForItem.toString()}
+                secure={false}
+                onUpdateValue={onChangeText.bind(this, "taskName")}
+
+              />
+
+            </View>
+
           </Pressable>
           <ModalHandler />
-          <TextInput
-            placeholder={AssginedForItem.toString()}
-            style={{
-              marginHorizontal: 6,
-              color: "#181818",
-              fontSize: 16,
-              flex: 1,
-            }}
-          />
         </View>
+
         {/* Yes BUtton */}
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
             margin: 8,
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 22 }}>
-              QC Documents Mandatory
-            </Text>
+            <Text style={styles.headingText}>QC Documents Mandatory</Text>
           </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "flex-start",
-            }}
-          >
-            <Pressable onPress={() => handleOptionPress("Yes")}>
-              <View style={getOptionStyle("Yes")}>
-                <Text style={styles.viewText}>Yes</Text>
-              </View>
-            </Pressable>
-            <Pressable onPress={() => handleOptionPress("No")}>
-              <View style={getOptionStyle("No")}>
-                <Text style={styles.viewText}>NO</Text>
-              </View>
-            </Pressable>
-          </View>
-        </View>
-
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            margin: 8,
-          }}
-        >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 22 }}>Priority</Text>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              alignItems: "center",
-              padding: 3,
-              justifyContent: "flex-start",
-            }}
-          >
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <Pressable onPress={() => handleOptionPressPriority("Low")}>
-                <View style={getOptionStyle("Low")}>
-                  <Text style={styles.viewText}>Low</Text>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "flex-start",
+              }}
+            >
+              <Pressable onPress={() => handleOptionPress("Yes")}>
+                <View style={getOptionStyle("Yes")}>
+                  <Text style={styles.viewText}>Yes</Text>
                 </View>
               </Pressable>
-              <Pressable onPress={() => handleOptionPressPriority("Medium")}>
-                <View style={getOptionStyle("Medium")}>
-                  <Text style={styles.viewText}>Medium</Text>
+              <Pressable onPress={() => handleOptionPress("No")}>
+                <View style={getOptionStyle("No")}>
+                  <Text style={styles.viewText}>NO</Text>
                 </View>
               </Pressable>
-              <Pressable onPress={() => handleOptionPressPriority("High")}>
-                <View style={getOptionStyle("High")}>
-                  <Text style={styles.viewText}>High</Text>
-                </View>
-              </Pressable>
-              <Pressable onPress={() => handleOptionPressPriority("Critical")}>
-                <View style={getOptionStyle("Critical")}>
-                  <Text style={styles.viewText}>Critical</Text>
-                </View>
-              </Pressable>
-            </ScrollView>
-          </View>
-        </View>
-
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            margin: 8,
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 22 }}>
-              Task Complexity
-            </Text>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "flex-start",
-            }}
-          >
-            <View style={styles.viewBox}>
-              <Text style={styles.viewText}>Task Complexity</Text>
             </View>
           </View>
         </View>
+
+        <View
+          style={{
+            margin: 8,
+          }}
+        >
+          <View style={{ flex: 1 }}>
+            <Text style={styles.headingText}>Priority</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                alignItems: "center",
+                padding: 3,
+                justifyContent: "flex-start",
+              }}
+            >
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <Pressable onPress={() => handleOptionPressPriority("Low")}>
+                  <View style={getOptionStyle("Low")}>
+                    <Text style={styles.viewText}>Low</Text>
+                  </View>
+                </Pressable>
+                <Pressable onPress={() => handleOptionPressPriority("Medium")}>
+                  <View style={getOptionStyle("Medium")}>
+                    <Text style={styles.viewText}>Medium</Text>
+                  </View>
+                </Pressable>
+                <Pressable onPress={() => handleOptionPressPriority("High")}>
+                  <View style={getOptionStyle("High")}>
+                    <Text style={styles.viewText}>High</Text>
+                  </View>
+                </Pressable>
+                {/* <Pressable onPress={() => handleOptionPressPriority("Critical")}>
+                <View style={getOptionStyle("Critical")}>
+                  <Text style={styles.viewText}>Critical</Text>
+                </View>
+              </Pressable> */}
+              </ScrollView>
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
+            margin: 8,
+          }}
+        >
+          <View style={{ flex: 1 }}>
+            <Text style={styles.headingText}>Task Complexity</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                alignItems: "center",
+                padding: 3,
+                justifyContent: "flex-start",
+              }}
+            >
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <Pressable onPress={() => handleOptionPressPriority2("Low")}>
+                  <View style={getOptionStyle2("Low")}>
+                    <Text style={styles.viewText}>Low</Text>
+                  </View>
+                </Pressable>
+                <Pressable onPress={() => handleOptionPressPriority2("Medium")}>
+                  <View style={getOptionStyle2("Medium")}>
+                    <Text style={styles.viewText}>Medium</Text>
+                  </View>
+                </Pressable>
+                <Pressable onPress={() => handleOptionPressPriority2("High")}>
+                  <View style={getOptionStyle2("High")}>
+                    <Text style={styles.viewText}>High</Text>
+                  </View>
+                </Pressable>
+                {/* <Pressable onPress={() => handleOptionPressPriority("Critical")}>
+                <View style={getOptionStyle("Critical")}>
+                  <Text style={styles.viewText}>Critical</Text>
+                </View>
+              </Pressable> */}
+              </ScrollView>
+            </View>
+          </View>
+        </View>
+
         <View
           style={{
             justifyContent: "center",
             alignItems: "center",
-            marginVertical: 40,
+            marginVertical: 30,
           }}
         >
           <SubmitButton
@@ -468,7 +496,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
                   TaskComplexity: "Task Complexity",
                   // Add other properties based on your form fields 
                 };
-                addNewTask(newTask);l
+                addNewTask(newTask); l
                 // Toast.showWithGravity(
                 //   "Project Added Sucessfully.",
                 //   Toast.SHORT,
@@ -485,10 +513,11 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
             color={"#e5af54"}
           >
             {" "}
-            Add Project
+            Add Task
           </SubmitButton>
         </View>
       </ScrollView>
+      
       {isDatePickerVisible && (
         <DateTimePicker
           value={selectedDate}
@@ -497,6 +526,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
           display="default"
           onChange={handleDateChange}
         />
+
       )}
     </View>
   );
@@ -510,26 +540,28 @@ const styles = StyleSheet.create({
     backgroundColor: "#e5af54",
   },
   viewBox: {
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#9A9A9A",
     elevation: 2,
     paddingVertical: 8,
     paddingHorizontal: 8,
+    borderRadius: 3,
     marginHorizontal: 8,
     marginVertical: 8,
   },
   viewBoxBorder: {
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#50BF54",
     elevation: 2,
     paddingVertical: 8,
     paddingHorizontal: 8,
+    borderRadius: 3,
     marginHorizontal: 8,
-    borderWidth: 1,
-    borderColor: "black",
+    marginVertical: 8,
+
   },
 
   viewText: {
-    color: "#DFA242",
-    fontSize: 20,
+    color: "white",
+    fontSize: 18,
     marginHorizontal: 4,
     fontWeight: "600",
   },

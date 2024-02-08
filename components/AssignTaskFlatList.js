@@ -14,7 +14,7 @@ import { useSearch } from "../store/search-redux";
 const ProjectDetails = ({ item, navigation, storedProfile }) => {
   const header = storedProfile === "Developer" ? item.title : item.Assigned;
   function detailsHandler() {
-    navigation.navigate("AssignedTaskDetails", { ID: item });
+    navigation.navigate("AssignedTaskDetails", { ID: item,storedProfile: storedProfile});
   }
 
   if (item.id !== "placeholder") {

@@ -231,7 +231,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
         </Text>
         {/* Project */}
         <View
-          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1),marginHorizontal:w(2) }}
         >
           <Text
             style={{
@@ -255,7 +255,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
         </View>
         {/* Task Group */}
         <View
-          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1),marginHorizontal:w(2)  }}
         >
           <Text
             style={{
@@ -279,7 +279,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
         {/* Task */}
 
         <View
-          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1), marginHorizontal:w(2) }}
         >
           <Text
             style={{
@@ -306,15 +306,17 @@ const formattedWorkingHours = isNaN(workingHoursHours)
 
         {/* Issue */}
         <View
-          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1),marginHorizontal:w(2) }}
         >
           <Text
             style={{
               fontSize: dynamicFontSize ,
               marginTop: w(5),
               marginStart: w(5),
+              
               // width: w(20),
               // textAlign: "right",
+              
             }}
           >
             Issue:
@@ -329,7 +331,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
         </View>
         {/* Activity */}
         <View
-          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1),marginHorizontal:w(2) }}
         >
           <Text
             style={{
@@ -567,7 +569,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
         </View>
         {/* Task Status */}
         <View
-          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) }}
+          style={{ flexDirection: "column", marginTop: w(2), marginBottom: w(1) ,marginHorizontal:w(2) }}
         >
           <Text
             style={{

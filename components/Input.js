@@ -7,9 +7,12 @@ function Input({
   label,
   editable,
   onFocus,
+  numberOfLines,
+  multiline,
   keyboardType,
   secure,
   onUpdateValue,
+  
   value,
   isInvalid,
 }) {
@@ -21,6 +24,8 @@ function Input({
   return (
     <View style={styles.inputContainer}>
       <TextInput
+      numberOfLines={numberOfLines}
+      multiline={multiline}
         editable={editable}
         style={[styles.input, isInvalid && styles.inputInvalid]}
         keyboardType={keyboardType}
