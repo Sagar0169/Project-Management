@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     padding: w(4),
-    elevation: 8,
+    // elevation: 8,
     width: "100%",
   },
   openDropDown: {
