@@ -14,7 +14,7 @@ function AuthContextProvider({ children }) {
 
   function authenticate(token) {
     setAuthToken(token);
-   
+    console.log(token)
     AsyncStorage.setItem('token', token);
   }
 
