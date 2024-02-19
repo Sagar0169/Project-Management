@@ -37,7 +37,7 @@ function CreateNewIssues({ navigation }) {
         <CreateNewIssuesForm />
       </View>
     </View>
-    </View>
-  );
+    
+  )
 }
 export default CreateNewIssues;
