@@ -1,22 +1,26 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const BACKEND_URL = "https://projectmanagement-84b7c-default-rtdb.firebaseio.com";
-const BASE_URl="http://167.172.152.167:81/pm_tool_app_old/api/rest/";
+const BACKEND_URL =
+  "https://projectmanagement-84b7c-default-rtdb.firebaseio.com";
+const BASE_URl = "http://167.172.152.167:81/pm_tool_app_old/api/rest/";
 
-async function authenticate( email, password) {
+async function authenticate(email, password) {
   // const url = `https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${API_KEY}`;
 
   try {
-    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/login", {
-      email: email,
-      password: password,
-    });
-    
+    const response = await axios.post(
+      "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/login",
+      {
+        email: email,
+        password: password,
+      }
+    );
+
     const data = response.data._result;
-    const _resultflag=response.data._resultflag;
-  
-    await AsyncStorage.setItem("user",JSON.stringify(data));
+    const _resultflag = response.data._resultflag;
+
+    await AsyncStorage.setItem("user", JSON.stringify(data));
     return _resultflag;
   } catch (error) {
     console.error("Error in authenticate:", error);
@@ -24,13 +28,40 @@ async function authenticate( email, password) {
   }
 }
 
+async function getTasksDetails(userid, token) {
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/taskdetails", {
+      userid: userid,
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data._result;
+    const _resultflag = response.data._resultflag;
+  
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
+
+
+
 export function login(email, password) {
   return authenticate(email, password);
 }
 
+export function getTaks(userId, token) {
+  return getTasksDetails(userId, token);
+}
+
 export async function storeTask(taskData) {
   const response = await axios.post(
-    BACKEND_URL + "/tasks"+"/allTasks.json",
+    BACKEND_URL + "/tasks" + "/allTasks.json",
     taskData
   );
   const id = response.data.name;
@@ -39,7 +70,7 @@ export async function storeTask(taskData) {
 
 export async function assignedStore(taskData) {
   const response = await axios.post(
-    BACKEND_URL + "/tasks"+"/assigned.json",
+    BACKEND_URL + "/tasks" + "/assigned.json",
     taskData
   );
   const id = response.data.name;
@@ -47,17 +78,16 @@ export async function assignedStore(taskData) {
 }
 
 export async function fetchTasks() {
-  const response = await axios.get(BACKEND_URL + "/tasks"+"/allTasks.json");
+  const response = await axios.get(BACKEND_URL + "/tasks" + "/allTasks.json");
 
   const tasks = [];
 
   for (const key in response.data) {
     // Access the 'title' property within each array
-   
+
     const titles = response.data[key];
 
     for (const titleKey in titles) {
-     
       const taskObj = {
         id: titleKey, // Use titleKey as the datam
         Assigned: titles[titleKey].Assigned, // Access the 'title' property
@@ -80,14 +110,13 @@ export async function fetchTasks() {
 }
 
 export async function assignedTasksFetch() {
-  const response = await axios.get(BACKEND_URL + "/tasks"+"/assigned.json");
+  const response = await axios.get(BACKEND_URL + "/tasks" + "/assigned.json");
 
   const assigned = [];
 
   for (const key in response.data) {
     // Access the 'title' property within each array
 
-    
     const titles = response.data;
     const taskObj = {
       id: key, // Use titleKey as the data
@@ -95,7 +124,7 @@ export async function assignedTasksFetch() {
       title: titles[key].title,
       Created: titles[key].Created,
       FormTitle: titles[key].FormTitle,
-      Status: titles[key].Status,                                                                                                                    
+      Status: titles[key].Status,
       TaskPhase: titles[key].TaskPhase,
       StartDate: titles[key].StartDate,
       time: titles[key].time,
@@ -105,9 +134,8 @@ export async function assignedTasksFetch() {
       TaskComplexity: titles[key].TaskComplexity,
     };
     assigned.push(taskObj);
-    
   }
-  return assigned; 
+  return assigned;
 }
 
 export function updateTask(id, taskData) {
@@ -119,7 +147,7 @@ export function deleteTask(id) {
 }
 
 export async function fetchCheckIn() {
-  const response = await axios.get(BACKEND_URL + '/checkIn.json');
+  const response = await axios.get(BACKEND_URL + "/checkIn.json");
 
   const checkIn = [];
 
@@ -151,7 +179,6 @@ export async function fetchCheckIn() {
   return checkIn;
 }
 
-
 // export async function storeCheckIn(checkInData) {
 //   const response = await axios.post(BACKEND_URL + '/checkIn.json', checkInData);
 //   const id = response.data.name;
@@ -159,15 +186,16 @@ export async function fetchCheckIn() {
 // }
 export async function storeCheckIn(checkInData) {
   const currentDate = checkInData.date;
-  console.log("dte"+currentDate)
+  console.log("dte" + currentDate);
 
   // Check if data for the current date already exists
-  const existingDataResponse = await axios.get(`${BACKEND_URL}/checkIn.json?orderBy="date"&equalTo="${currentDate}"`);
-  console.log("edr"+existingDataResponse)
-  
-  const existingData = existingDataResponse.data;
-  console.log("ed"+existingData)
+  const existingDataResponse = await axios.get(
+    `${BACKEND_URL}/checkIn.json?orderBy="date"&equalTo="${currentDate}"`
+  );
+  console.log("edr" + existingDataResponse);
 
+  const existingData = existingDataResponse.data;
+  console.log("ed" + existingData);
 
   if (existingData) {
     // Date exists, update the existing entry with the new data
@@ -175,10 +203,14 @@ export async function storeCheckIn(checkInData) {
     const existingEntry = existingData[existingEntryKey];
 
     // Ensure the 'data' property is an array
-    const newDataArray = Array.isArray(existingEntry.data) ? existingEntry.data : [];
+    const newDataArray = Array.isArray(existingEntry.data)
+      ? existingEntry.data
+      : [];
 
     // Check if the entry already exists in the array based on some unique identifier like 'id'
-    const existingIndex = newDataArray.findIndex((entry) => entry.id === checkInData.data[0].id);
+    const existingIndex = newDataArray.findIndex(
+      (entry) => entry.id === checkInData.data[0].id
+    );
 
     if (existingIndex !== -1) {
       // Entry already exists, update it
@@ -189,12 +221,18 @@ export async function storeCheckIn(checkInData) {
     }
 
     // Update the existing data with the new array
-    await axios.put(`${BACKEND_URL}/checkIn/${existingEntryKey}.json`, { ...existingEntry, data: newDataArray });
+    await axios.put(`${BACKEND_URL}/checkIn/${existingEntryKey}.json`, {
+      ...existingEntry,
+      data: newDataArray,
+    });
 
     return existingEntryKey;
   } else {
     // Date doesn't exist, add a new entry with the provided data
-    const response = await axios.post(`${BACKEND_URL}/checkIn.json`, checkInData);
+    const response = await axios.post(
+      `${BACKEND_URL}/checkIn.json`,
+      checkInData
+    );
     const id = response.data.name;
     return id;
   }

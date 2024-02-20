@@ -8,13 +8,16 @@ import {
   Text,
   View,
 } from "react-native";
-import { assignedTasksFetch, fetchTasks } from "../store/http";
+import { assignedTasksFetch, fetchTasks, getTaks } from "../store/http";
 import { useSearch } from "../store/search-redux";
 
 const ProjectDetails = ({ item, navigation, storedProfile }) => {
   const header = storedProfile === "Developer" ? item.title : item.Assigned;
   function detailsHandler() {
-    navigation.navigate("AssignedTaskDetails", { ID: item,storedProfile: storedProfile});
+    navigation.navigate("AssignedTaskDetails", {
+      ID: item,
+      storedProfile: storedProfile,
+    });
   }
 
   if (item.id !== "placeholder") {
@@ -80,18 +83,20 @@ const AssignTaskFlatList = ({ navigation }) => {
       try {
         
         let expenses;
-        if (storedProfile === "super admin" ) {
-          const tasks = await fetchTasks()
-          const assignedTasks = await assignedTasksFetch();
-
-          // Merge the two arrays
-          expenses = [...tasks, ...assignedTasks];
+        const loginRespone = await AsyncStorage.getItem("user");
+        const response = JSON.parse(loginRespone);
+        if (storedProfile === "super admin") {
+          const tasks = await getTaks(response.userId, response.token);
+          console.log("Daata", tasks);
+          expenses = tasks;
         } else {
-          expenses = await assignedTasksFetch();
+          const tasks = await getTaks(response.userId, response.token);
+          console.log("Daata", tasks);
+          expenses = tasks;
         }
 
         if (isMounted) {
-          setTask(expenses)
+          setTask(expenses);
         }
       } catch (error) {
         console.error("Error fetching tasks:", error);
@@ -107,15 +112,11 @@ const AssignTaskFlatList = ({ navigation }) => {
     return () => {
       isMounted = false;
     };
-  }, [storedProfile, task]);
-
-  const filteredData = task.filter((item) =>
-    item.Assigned.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  }, [storedProfile]);
 
   return (
     <FlatList
-      data={filteredData}
+      data={task}
       renderItem={({ item }) => (
         <ProjectDetails
           item={item}
@@ -125,8 +126,8 @@ const AssignTaskFlatList = ({ navigation }) => {
       )}
       keyExtractor={(item, index) => `${item.id}-${index}`}
       ListEmptyComponent={() => (
-        <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color="#5063BF" />
+        <View style={styles.noDataContainer}>
+          <Text style={styles.noDataText}>No data found</Text>
         </View>
       )}
     />
