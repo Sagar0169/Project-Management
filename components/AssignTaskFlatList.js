@@ -78,10 +78,10 @@ const AssignTaskFlatList = ({ navigation }) => {
       setIsFetching(true);
 
       try {
-        const storedUserId = await AsyncStorage.getItem('userId');
+        
         let expenses;
-        if (storedProfile === "super admin" && storedUserId!==null) {
-          const tasks = await fetchTasks(storedUserId)
+        if (storedProfile === "super admin" ) {
+          const tasks = await fetchTasks()
           const assignedTasks = await assignedTasksFetch();
 
           // Merge the two arrays

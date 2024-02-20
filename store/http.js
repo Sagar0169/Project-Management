@@ -17,7 +17,6 @@ async function authenticate( email, password) {
     const _resultflag=response.data._resultflag;
   
     await AsyncStorage.setItem("user",JSON.stringify(data));
-    await AsyncStorage.setItem("userId",data.userId);
     return _resultflag;
   } catch (error) {
     console.error("Error in authenticate:", error);
@@ -47,36 +46,36 @@ export async function assignedStore(taskData) {
   return id;
 }
 
-export async function fetchTasks(userId) {
-  const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/taskdetails",userId);
+export async function fetchTasks() {
+  const response = await axios.get(BACKEND_URL + "/tasks"+"/allTasks.json");
 
   const tasks = [];
-   console("TASK DETAILS",response.data)
-  // for (const key in response.data) {
-  //   // Access the 'title' property within each array
-   
-  //   const titles = response.data[key];
 
-  //   for (const titleKey in titles) {
+  for (const key in response.data) {
+    // Access the 'title' property within each array
+   
+    const titles = response.data[key];
+
+    for (const titleKey in titles) {
      
-  //     const taskObj = {
-  //       id: titleKey, // Use titleKey as the datam
-  //       Assigned: titles[titleKey].Assigned, // Access the 'title' property
-  //       title: titles[titleKey].title,
-  //       Created: titles[titleKey].Created,
-  //       FormTitle: titles[titleKey].FormTitle,
-  //       Status: titles[titleKey].Status,
-  //       TaskPhase: titles[titleKey].TaskPhase,
-  //       StartDate: titles[titleKey].StartDate,
-  //       time: titles[titleKey].time,
-  //       Qc: titles[titleKey].Qc,
-  //       Priority: titles[titleKey].Priority,
-  //       TaskType: titles[titleKey].TaskType,
-  //       TaskComplexity: titles[titleKey].TaskComplexity,
-  //     };
-  //     tasks.push(taskObj);
-  //   }
-  // }
+      const taskObj = {
+        id: titleKey, // Use titleKey as the datam
+        Assigned: titles[titleKey].Assigned, // Access the 'title' property
+        title: titles[titleKey].title,
+        Created: titles[titleKey].Created,
+        FormTitle: titles[titleKey].FormTitle,
+        Status: titles[titleKey].Status,
+        TaskPhase: titles[titleKey].TaskPhase,
+        StartDate: titles[titleKey].StartDate,
+        time: titles[titleKey].time,
+        Qc: titles[titleKey].Qc,
+        Priority: titles[titleKey].Priority,
+        TaskType: titles[titleKey].TaskType,
+        TaskComplexity: titles[titleKey].TaskComplexity,
+      };
+      tasks.push(taskObj);
+    }
+  }
   return tasks;
 }
 
