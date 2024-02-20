@@ -41,6 +41,7 @@ function h(value) {
 
 export default function DashBoard({ navigation }) {
   const authCtx = useContext(AuthContext);
+
   const handleLogout = async () => {
     authCtx.logout();
   };
@@ -69,6 +70,7 @@ export default function DashBoard({ navigation }) {
   const fetchStoredProfile = async () => {
     try {
       setStoreProfile(await AsyncStorage.getItem("profile"));
+      console.log(await AsyncStorage.getItem('token'))
 
       if (storedProfile !== null) {
         // If the value exists in AsyncStorage
