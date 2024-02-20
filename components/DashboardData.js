@@ -93,7 +93,7 @@ export default [
   {
     id: "4",
     title: "Check In/Out",
-    color: "#6073C9C0",
+    color: "#CCD0E2C0",
     count: "",
     image:require('../assets/Images/dashBlue.png'),
     lineRightSvg: `

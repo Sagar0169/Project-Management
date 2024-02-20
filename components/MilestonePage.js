@@ -86,7 +86,7 @@ const HorizontalBarChart = () => {
 
 `;
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}                                                                                                                                                                                                                                                                                                                                                                    >
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {projectData.map((item, index) => (
         <View key={index} style={styles.barContainer}>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -133,8 +133,8 @@ const HorizontalBarChart = () => {
                   backgroundColor: "#62963AF2",
                   height: "100%",
                   width: animatedValues[index].interpolate({
-                    inputRange: [0, 1],
-                    outputRange: ["0%", "100%"],
+                    inputRange: [0, 0.2, 1],
+                    outputRange: ["20%", "20%", "100%"],
                   }),
                   position: "relative",
                 }}
@@ -146,6 +146,7 @@ const HorizontalBarChart = () => {
                       fontSize: 10,
                       fontWeight: "bold",
                       marginStart: 10,
+                      width: "auto",
                     }}
                   >
                     {Math.round(projectData[index].progress * 100)}%
@@ -181,19 +182,19 @@ const HorizontalBarChart = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 10,
     marginVertical: 8,
     backgroundColor: "white",
   },
   barContainer: {
     marginBottom: 10,
     marginTop: 5,
-    borderBottomEndRadius:10,
-    borderBottomStartRadius:10,
+    borderBottomEndRadius: 10,
+    borderBottomStartRadius: 10,
     backgroundColor: "white",
     elevation: 20,
     paddingVertical: 8,
-    shadowColor:'#8F8989'
+    shadowColor: "#8F8989",
+    marginHorizontal: 12,
   },
   projectInfoContainer: {
     flexDirection: "row",

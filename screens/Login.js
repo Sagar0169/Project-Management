@@ -85,6 +85,7 @@ function Login() {
       // Your login logic here
       try {
         const _resultflag = await login(email, password);
+
         if (_resultflag === 0) {
           // User type is null, indicating invalid credentials
           Alert.alert(
@@ -95,6 +96,7 @@ function Login() {
         }
         const loginRespone=await AsyncStorage.getItem("user")
         const response = JSON.parse(loginRespone);
+        authCtx.authenticate(response.token);
 
         
 
