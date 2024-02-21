@@ -1,16 +1,19 @@
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import BackArrowHeaderWhite from "../components/BackArrowHeaderWhite";
 import AssignTaskForm from "../components/AssignTaskForm";
-import { useNavigation } from "@react-navigation/core";
+
 import { useState } from "react";
 import TasksData from "../components/TasksData";
 import BackArrowHeader from "../components/BackArrowHeader";
 
-function AssignNewTask({navigation}) {
+
+function AssignNewTask({navigation,route}) {
   // const navigation = useNavigation()
+  const { userId } = route.params;
+  
   const [taskData, setTaskData] = useState(TasksData);
 
-  console.log(taskData)
+
   return (
     <View style={styles.rootContainer}>
       {/* <BackArrowHeaderWhite
@@ -20,11 +23,13 @@ function AssignNewTask({navigation}) {
         color="white"
         backButton={() => navigation.goBack()}
       /> */}
-      <BackArrowHeader title={"New Task"}
-                backButton={() => navigation.goBack()}
-                color={"white"}/>
+      <BackArrowHeader
+        title={"New Task"}
+        backButton={() => navigation.goBack()}
+        color={"white"}
+      />
       <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-        <AssignTaskForm taskData={taskData} setTaskData={setTaskData} navigation={navigation}  />
+        <AssignTaskForm taskData={taskData} setTaskData={setTaskData} navigation={navigation} userId={userId} />
       </View>
     </View>
   );

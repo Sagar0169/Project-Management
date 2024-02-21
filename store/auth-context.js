@@ -14,13 +14,14 @@ function AuthContextProvider({ children }) {
 
   function authenticate(token) {
     setAuthToken(token);
-   
+    console.log(token)
     AsyncStorage.setItem('token', token);
   }
 
   function logout() {
     setAuthToken(null);
     AsyncStorage.removeItem('token');
+    AsyncStorage.removeItem('user');
   }
 
   const value = {

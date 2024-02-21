@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import {
   Image,
   Pressable,
@@ -10,6 +10,7 @@ import {
   TextInput,
   Dimensions
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Input from "./Input";
 import SubmitButton from "./ui/SubmitButton";
 // import Toast from "react-native-simple-toast";
@@ -18,7 +19,9 @@ import BottomSheetDesign3 from "./BottomSheedDesign3";
 import { assignedStore, storeTask } from "../store/http";
 import useFonts from "../hooks/useFonts";
 import { Svg, SvgXml } from "react-native-svg";
+import { AuthContext } from "../store/auth-context";
 import { Svg6 } from "./svgs/svgs";
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -43,7 +46,9 @@ function h(value) {
 //CHANGE MULTIPLE SELECTION FROM BOTTOMSHEET2
 // give todays date before hand
 
-function AssignTaskForm({ taskData, setTaskData, navigation }) {
+function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
+
+  
   useEffect(() => {
     const currentDate = new Date();
     setSelectedDate(currentDate);
@@ -54,14 +59,18 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
   const addNewTask = (newTask) => {
     // Add the new task to taskData
     setTaskData((prevTaskData) => [...prevTaskData, newTask]);
-    assignedStore(newTask)
-    navigation.goBack()
+   
+    assignedStore(newTask,token)
+    // navigation.goBack()
 
     // You may also want to handle any other logic, such as API calls to save the data.
   };
 
-  function validateForm() {
+  
+ async function validateForm() {
     // Check if enteredProjectName, enteredDueDate, and AssginedForItem have values
+    
+    
     if (
       enteredTaskName.trim() !== "" &&
       enteredDueDate.trim() !== "" &&
@@ -100,7 +109,9 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
   const [enteredDueDate, setEnteredDueDate] = useState("");
   const [enteredEstimatedTime, setEnteredEstimatedTime] = useState("");
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [storedUserid, setstoredUserid] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const { token } = useContext(AuthContext);
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -184,6 +195,8 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
     // Return a loading state or null while fonts are loading
     return null;
   }
+
+  
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView style={{ flex: 1, margin: 10 }}>
@@ -478,25 +491,24 @@ function AssignTaskForm({ taskData, setTaskData, navigation }) {
           }}
         >
           <SubmitButton
+          
             onPress={() => {
               if (validateForm()) {
                 const newTask = {
-                  id: taskData.length.toString(), // You may want to generate a unique ID
-                  title: enteredTaskName,
-                  Assigned: AssginedForItem.toString(),
-                  Created: "Soumya Ranjan",
-                  FormTitle: "",
-                  Status: "In Progress",
-                  TaskPhase: enteredTaskPhase,
-                  StartDate: enteredDueDate,
-                  time: enteredEstimatedTime,
-                  Qc: "yes",
-                  Priority: "Medium",
-                  TaskType: enteredTaskType,
-                  TaskComplexity: "Task Complexity",
+                  userid: userId, // You may want to generate a unique ID
+                  task_name: enteredTaskName,
+                  assign_to: AssginedForItem.toString(),
+                  status: "In Progress",
+                  task_phase: enteredTaskPhase,
+                  task_created_date: enteredDueDate,
+                  time_alot: enteredEstimatedTime,
+                  qc_doc: "YES",
+                  priority: "HIGH",
+                  task_type: enteredTaskType,
+                  task_complexity: "HIGH",
                   // Add other properties based on your form fields 
                 };
-                addNewTask(newTask); l
+                addNewTask(newTask); 
                 // Toast.showWithGravity(
                 //   "Project Added Sucessfully.",
                 //   Toast.SHORT,

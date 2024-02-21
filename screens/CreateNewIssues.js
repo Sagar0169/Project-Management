@@ -38,6 +38,6 @@ function CreateNewIssues({ navigation }) {
       </View>
     </View>
     
-  )
+  );
 }
 export default CreateNewIssues;

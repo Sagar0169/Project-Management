@@ -1,24 +1,24 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
   FlatList,
-  Image,
-  ImageBackground,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
+import { SvgXml } from "react-native-svg";
+import { Colors } from "../Utilities/Colors";
 import DashboardData from "../components/DashboardData";
 import RecentProjectFlatList from "../components/RecentProjectFlatList";
 import TasksData from "../components/TasksData";
-import { Colors } from "../Utilities/Colors";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SvgUri, SvgXml } from "react-native-svg";
+import AuthContextProvider, { AuthContext } from "../store/auth-context";
+import { Logout } from "../store/http";
 
 const { width, height } = Dimensions.get("window");
 
@@ -41,6 +41,19 @@ function h(value) {
 }
 
 export default function DashBoard({ navigation }) {
+  const authCtx = useContext(AuthContext);
+
+  const handleLogout = async () => {
+    const loginRespone = await AsyncStorage.getItem("user");
+    const response = JSON.parse(loginRespone);
+    const logout = await Logout(response.userId, response.token);
+    if (logout._resultflag == 1) {
+      authCtx.logout();
+    }
+    else {
+      console.log(logout.message)
+    }
+  };
   const lineRightSvg = `
   <svg
     width="26"
@@ -66,6 +79,7 @@ export default function DashBoard({ navigation }) {
   const fetchStoredProfile = async () => {
     try {
       setStoreProfile(await AsyncStorage.getItem("profile"));
+      console.log(await AsyncStorage.getItem('token'))
 
       if (storedProfile !== null) {
         // If the value exists in AsyncStorage
@@ -235,7 +249,9 @@ export default function DashBoard({ navigation }) {
             style={{ margin: 4 }}
           />
         </View>
-        <SvgXml xml={bellIcon} width="20" height="20" style={{ margin: 4 }} />
+        <TouchableOpacity onPress={handleLogout}>
+          <SvgXml xml={bellIcon} width="20" height="20" style={{ margin: 4 }} />
+        </TouchableOpacity>
       </View>
       <View style={{ flex: 1, marginHorizontal: 8, marginVertical: 2 }}>
         <Text
