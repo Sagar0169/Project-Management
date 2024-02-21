@@ -2,13 +2,13 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const BACKEND_URL = "https://projectmanagement-84b7c-default-rtdb.firebaseio.com";
-const BASE_URl="http://167.172.152.167:81/pm_tool_app_old/api/rest/";
+const BASE_URl="http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/";
 
 async function authenticate( email, password) {
   // const url = `https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${API_KEY}`;
 
   try {
-    const response = await axios.post("http://167.172.152.167:81/pm_tool_app_old/api/rest/login", {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/login", {
       email: email,
       password: password,
     });
