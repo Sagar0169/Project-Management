@@ -48,7 +48,26 @@ async function getTasksDetails(userid, token) {
     throw error;
   }
 }
-
+async function logout(userid, token) {
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/logout", {
+      userid: userid,
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data;
+    const _resultflag = response.data._resultflag;
+  
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
 
 
 export function login(email, password) {
@@ -59,6 +78,9 @@ export function getTaks(userId, token) {
   return getTasksDetails(userId, token);
 }
 
+export function Logout(userId, token) {
+  return logout(userId, token);
+}
 export async function storeTask(taskData) {
   const response = await axios.post(
     BACKEND_URL + "/tasks" + "/allTasks.json",
@@ -68,12 +90,18 @@ export async function storeTask(taskData) {
   return id;
 }
 
-export async function assignedStore(taskData) {
+export async function assignedStore(taskData,token) {
   const response = await axios.post(
-    BACKEND_URL + "/tasks" + "/assigned.json",
-    taskData
+   "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/addTask",
+    taskData,{
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
   );
-  const id = response.data.name;
+  
+  const id = response.data.message;
+  console.log(id)
   return id;
 }
 

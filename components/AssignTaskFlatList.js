@@ -12,7 +12,7 @@ import { assignedTasksFetch, fetchTasks, getTaks } from "../store/http";
 import { useSearch } from "../store/search-redux";
 
 const ProjectDetails = ({ item, navigation, storedProfile }) => {
-  const header = storedProfile === "Developer" ? item.title : item.Assigned;
+  const header = item.task_name;
   function detailsHandler() {
     navigation.navigate("AssignedTaskDetails", {
       ID: item,

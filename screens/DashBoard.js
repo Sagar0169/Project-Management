@@ -18,6 +18,7 @@ import DashboardData from "../components/DashboardData";
 import RecentProjectFlatList from "../components/RecentProjectFlatList";
 import TasksData from "../components/TasksData";
 import AuthContextProvider, { AuthContext } from "../store/auth-context";
+import { Logout } from "../store/http";
 
 const { width, height } = Dimensions.get("window");
 
@@ -43,7 +44,15 @@ export default function DashBoard({ navigation }) {
   const authCtx = useContext(AuthContext);
 
   const handleLogout = async () => {
-    authCtx.logout();
+    const loginRespone = await AsyncStorage.getItem("user");
+    const response = JSON.parse(loginRespone);
+    const logout = await Logout(response.userId, response.token);
+    if (logout._resultflag == 1) {
+      authCtx.logout();
+    }
+    else {
+      console.log(logout.message)
+    }
   };
   const lineRightSvg = `
   <svg

@@ -9,16 +9,27 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function AssignTask({ navigation }) {
   // const navigation = useNavigation();
   const [storedProfile, setStoreProfile] = useState("");
+  const [storedUserId, setstoredUserId] = useState("");
+  const [storedToken, setstoredToken] = useState("");
+
 
   const handleAddTaskPress = () => {
-    navigation.navigate("AssignNewTask");
-    console.log("pressed");
+    navigation.navigate("AssignNewTask",{ userId: storedUserId});
+    console.log(storedUserId);
   };
 
   const fetchStoredProfile = useCallback(async () => {
     try {
+      const loginRespone = await AsyncStorage.getItem("user");
+      
+      const response = JSON.parse(loginRespone);
+      
+      if (response.userId !== null) {
+        setstoredUserId(response.userId);
+        
+      }
       setStoreProfile(await AsyncStorage.getItem("profile"));
-
+      
       if (storedProfile !== null) {
         console.log("Stored Profile:", storedProfile);
       } else {
