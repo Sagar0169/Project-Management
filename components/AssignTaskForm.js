@@ -355,7 +355,6 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
                 value={AssginedForItem.toString()}
                 secure={false}
                 onUpdateValue={onChangeText.bind(this, "taskName")}
-
               />
 
             </View>
@@ -498,7 +497,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
                   userid: userId, // You may want to generate a unique ID
                   task_name: enteredTaskName,
                   assign_to: AssginedForItem.toString(),
-                  status: "In Progress",
+                  status: "Pending",
                   task_phase: enteredTaskPhase,
                   task_created_date: enteredDueDate,
                   time_alot: enteredEstimatedTime,
