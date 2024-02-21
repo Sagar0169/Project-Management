@@ -12,7 +12,7 @@ import { assignedTasksFetch, fetchTasks, getTaks } from "../store/http";
 import { useSearch } from "../store/search-redux";
 
 const ProjectDetails = ({ item, navigation, storedProfile }) => {
-  const header = storedProfile === "Developer" ? item.title : item.Assigned;
+  const header = item.assign_to;
   function detailsHandler() {
     navigation.navigate("AssignedTaskDetails", {
       ID: item,
@@ -81,7 +81,7 @@ const AssignTaskFlatList = ({ navigation }) => {
       setIsFetching(true);
 
       try {
-        const storedUserId = await AsyncStorage.getItem('userId');
+        const storedUserId = await AsyncStorage.getItem("userId");
         let expenses;
         const loginRespone = await AsyncStorage.getItem("user");
         const response = JSON.parse(loginRespone);
@@ -126,8 +126,8 @@ const AssignTaskFlatList = ({ navigation }) => {
       )}
       keyExtractor={(item, index) => `${item.id}-${index}`}
       ListEmptyComponent={() => (
-        <View style={styles.noDataContainer}>
-          <Text style={styles.noDataText}>No data found</Text>
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator size="large" color="#5063BF" />
         </View>
       )}
     />
