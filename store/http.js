@@ -28,10 +28,11 @@ async function authenticate(email, password) {
   }
 }
 
-async function getTasksDetails(userid, token) {
+async function getTasksDetails(userid, token,emp_id) {
   try {
     const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/taskdetails", {
       userid: userid,
+      emp_id:emp_id
     }, {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -74,8 +75,8 @@ export function login(email, password) {
   return authenticate(email, password);
 }
 
-export function getTaks(userId, token) {
-  return getTasksDetails(userId, token);
+export function getTaks(userId, token,emp_id) {
+  return getTasksDetails(userId, token,emp_id);
 }
 
 export function Logout(userId, token) {
