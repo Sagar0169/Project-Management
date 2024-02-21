@@ -49,6 +49,28 @@ async function getTasksDetails(userid, token,emp_id) {
     throw error;
   }
 }
+
+async function getEmployees(userid,token, designation) {
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/getemployees", {
+      userid: userid,
+      designation:designation
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data._result;
+    const _resultflag = response.data._resultflag;
+  
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
 async function logout(userid, token) {
   try {
     const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/logout", {
@@ -77,6 +99,10 @@ export function login(email, password) {
 
 export function getTaks(userId, token,emp_id) {
   return getTasksDetails(userId, token,emp_id);
+}
+
+export function getEmp(userId, token,designation) {
+  return getEmployees(userId, token,designation);
 }
 
 export function Logout(userId, token) {
