@@ -81,7 +81,7 @@ const AssignTaskFlatList = ({ navigation }) => {
       setIsFetching(true);
 
       try {
-        const storedUserId = await AsyncStorage.getItem("userId");
+        
         let expenses;
         const loginRespone = await AsyncStorage.getItem("user");
         const response = JSON.parse(loginRespone);
