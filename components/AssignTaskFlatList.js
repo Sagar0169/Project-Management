@@ -126,8 +126,8 @@ const AssignTaskFlatList = ({ navigation }) => {
       )}
       keyExtractor={(item, index) => `${item.id}-${index}`}
       ListEmptyComponent={() => (
-        <View style={styles.noDataContainer}>
-          <Text style={styles.noDataText}>No data found</Text>
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator size="large" color="#5063BF" />
         </View>
       )}
     />

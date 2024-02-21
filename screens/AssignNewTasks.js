@@ -23,9 +23,11 @@ function AssignNewTask({navigation,route}) {
         color="white"
         backButton={() => navigation.goBack()}
       /> */}
-      <BackArrowHeader title={"New Task"}
-                backButton={() => navigation.goBack()}
-                color={"white"}/>
+      <BackArrowHeader
+        title={"New Task"}
+        backButton={() => navigation.goBack()}
+        color={"white"}
+      />
       <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
         <AssignTaskForm taskData={taskData} setTaskData={setTaskData} navigation={navigation} userId={userId} />
       </View>
