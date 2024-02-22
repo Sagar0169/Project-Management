@@ -56,6 +56,34 @@ async function getTasksDetails(userid, token,emp_id) {
   }
 }
 
+
+async function updateStatus(userid, token,id,status) {
+  console.log("userId",userid)
+  console.log("token",token)
+  console.log("id",id)
+  console.log("status",status)
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/editStatus", {
+      userid: userid,
+      id:id,
+      status:status
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data.message;
+    const _resultflag = response.data._resultflag;
+  
+    console.log("Status update ",data);
+    return _resultflag;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
+
 async function getEmployees(userid,token, designation) {
   try {
     const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/getemployees", {
@@ -105,6 +133,9 @@ export function login(email, password) {
 
 export function getTaks(userId, token,emp_id) {
   return getTasksDetails(userId, token,emp_id);
+}
+export function setStatus(userId, token,id,status) {
+  return updateStatus(userId, token,id,status);
 }
 
 export function getEmp(userId, token,designation) {

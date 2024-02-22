@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { assignedTasksFetch, fetchTasks, getTaks } from "../store/http";
 import { useSearch } from "../store/search-redux";
+import { useFocusEffect } from "@react-navigation/native";
 
 const ProjectDetails = ({ item, navigation, storedProfile }) => {
   const header = item.assign_to;
@@ -74,46 +75,64 @@ const AssignTaskFlatList = ({ navigation }) => {
     fetchStoredProfile();
   }, [fetchStoredProfile]);
 
+  const fetchData = useCallback(async () => {
+    setIsFetching(true);
+
+    try {
+      let expenses;
+      const loginRespone = await AsyncStorage.getItem("user");
+      const response = JSON.parse(loginRespone);
+      if (storedProfile === "super admin") {
+        const tasks = await getTaks(
+          response.userId,
+          response.token,
+          response.emp_id
+        );
+        if (searchQuery) {
+          expenses = tasks.filter((item) =>
+            item.assign_to.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+        } else {
+          expenses = tasks;
+        }
+        expenses = tasks;
+      } else {
+        const tasks = await getTaks(
+          response.userId,
+          response.token,
+          response.emp_id
+        );
+        console.log("Daata", tasks);
+        expenses = tasks;
+      }
+
+      setTask(expenses);
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    } finally {
+      setIsFetching(false);
+    }
+  }, [storedProfile,searchQuery]);
+
   useEffect(() => {
     let isMounted = true;
-
-    const fetchData = async () => {
-      setIsFetching(true);
-
-      try {
-        
-        let expenses;
-        const loginRespone = await AsyncStorage.getItem("user");
-        const response = JSON.parse(loginRespone);
-        if (storedProfile === "super admin") {
-          const tasks = await getTaks(response.userId, response.token,response.emp_id);
-          console.log("Daata", tasks);
-          expenses = tasks;
-        } else {
-          const tasks = await getTaks(response.userId, response.token,response.emp_id);
-          console.log("Daata", tasks);
-          expenses = tasks;
-        }
-
-        if (isMounted) {
-          setTask(expenses);
-        }
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      } finally {
-        if (isMounted) {
-          setIsFetching(false);
-        }
-      }
-    };
 
     fetchData();
 
     return () => {
       isMounted = false;
     };
-  }, [storedProfile]);
+  }, [fetchData]);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, [fetchData])
+  );
+  const handleRefresh = () => {
+    // Manually trigger refresh when needed
+    fetchData();
+  };
   return (
     <FlatList
       data={task}
@@ -125,6 +144,8 @@ const AssignTaskFlatList = ({ navigation }) => {
         />
       )}
       keyExtractor={(item, index) => `${item.id}-${index}`}
+      refreshing={isFetching}
+      onRefresh={handleRefresh}
       ListEmptyComponent={() => (
         <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color="#5063BF" />
