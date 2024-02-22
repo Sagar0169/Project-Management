@@ -46,13 +46,14 @@ export default function DashBoard({ navigation }) {
   const handleLogout = async () => {
     const loginRespone = await AsyncStorage.getItem("user");
     const response = JSON.parse(loginRespone);
-    const logout = await Logout(response.userId, response.token);
-    if (logout._resultflag == 1) {
-      authCtx.logout();
-    }
-    else {
-      console.log(logout.message)
-    }
+    authCtx.logout();
+    // const logout = await Logout(response.userId, response.token);
+    // if (logout._resultflag == 1) {
+    //   authCtx.logout();
+    // }
+    // else {
+    //   console.log(logout.message)
+    // }
   };
   const lineRightSvg = `
   <svg

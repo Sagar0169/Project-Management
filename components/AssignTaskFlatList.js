@@ -12,7 +12,7 @@ import { assignedTasksFetch, fetchTasks, getTaks } from "../store/http";
 import { useSearch } from "../store/search-redux";
 
 const ProjectDetails = ({ item, navigation, storedProfile }) => {
-  const header = item.task_name;
+  const header = item.assign_to;
   function detailsHandler() {
     navigation.navigate("AssignedTaskDetails", {
       ID: item,
@@ -86,11 +86,11 @@ const AssignTaskFlatList = ({ navigation }) => {
         const loginRespone = await AsyncStorage.getItem("user");
         const response = JSON.parse(loginRespone);
         if (storedProfile === "super admin") {
-          const tasks = await getTaks(response.userId, response.token);
+          const tasks = await getTaks(response.userId, response.token,response.emp_id);
           console.log("Daata", tasks);
           expenses = tasks;
         } else {
-          const tasks = await getTaks(response.userId, response.token);
+          const tasks = await getTaks(response.userId, response.token,response.emp_id);
           console.log("Daata", tasks);
           expenses = tasks;
         }

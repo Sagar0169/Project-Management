@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
 import SubmitButton from "./ui/SubmitButton";
+import { useSearch } from "../store/search-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getEmp } from "../store/http";
 
 const ProjectDetails = ({ item, handleSportSelection, isSelected }) => {
   const backgroundColor = isSelected ? "#E9EEFF" : "#f5f5f5";
 
   return (
     <Pressable
-      onPress={() => handleSportSelection(item.projectName)}
+      onPress={() => handleSportSelection(item.name)}
       style={[styles.itemContainer2, { backgroundColor }]}
     >
       <View style={styles.itemContainer2Content}>
-        <Text style={styles.text2}>{item.projectName}</Text>
+        <Text style={styles.text2}>{item.name}</Text>
       </View>
     </Pressable>
   );
@@ -25,6 +28,70 @@ const BottomSheetDesign3 = ({ handleSportSelection }) => {
     'Shubhra srivastava (php)', 'Yashika gupta (php)', 'Abhay sahani (Designer)',
     'Jitendar singh (Designer)'
   ];
+
+  const { searchQuery, setSearchQuery } = useSearch();
+  const [task, setTask] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
+  const [storedProfile, setStoreProfile] = useState("");
+
+  const fetchStoredProfile = useCallback(async () => {
+    try {
+      setStoreProfile(await AsyncStorage.getItem("profile"));
+
+      if (storedProfile !== null) {
+        console.log("Stored Profile:", storedProfile);
+      } else {
+        console.log("Profile not found in AsyncStorage");
+      }
+    } catch (error) {
+      console.error("Error fetching profile from AsyncStorage:", error);
+    }
+  }, [storedProfile]);
+
+  useEffect(() => {
+    fetchStoredProfile();
+  }, [fetchStoredProfile]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchData = async () => {
+      setIsFetching(true);
+
+      try {
+        
+        let expenses;
+        const loginRespone = await AsyncStorage.getItem("user");
+        const response = JSON.parse(loginRespone);
+        if (storedProfile === "super admin") {
+          const tasks = await getEmp(response.userId, response.token);
+          console.log("Daata", tasks);
+          expenses = tasks;
+        } else {
+          const tasks = await getEmp(response.userId, response.token);
+          console.log("Daata", tasks);
+          expenses = tasks;
+        }
+
+        if (isMounted) {
+          setTask(expenses);
+        }
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      } finally {
+        if (isMounted) {[]
+          setIsFetching(false);
+        }
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [storedProfile]);
+
 
   const toggleSelection = (projectName) => {
     // If the same item is selected again, unselect it
@@ -44,12 +111,12 @@ const BottomSheetDesign3 = ({ handleSportSelection }) => {
       </View>
       <View style={{ flex: 1 }}>
         <FlatList
-          data={projectData}
+          data={task}
           renderItem={({ item }) => (
             <ProjectDetails
               item={item}
               handleSportSelection={toggleSelection}
-              isSelected={selectedItem === item.projectName}
+              isSelected={selectedItem === item.name}
             />
           )}
           keyExtractor={(item) => item.id}

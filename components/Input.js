@@ -11,7 +11,7 @@ function Input({
   multiline,
   keyboardType,
   secure,
-  onUpdateValue,
+  onChangeText,
   
   value,
   isInvalid,
@@ -31,7 +31,7 @@ function Input({
         keyboardType={keyboardType}
         secureTextEntry={secure ? isPasswordVisible :!isPasswordVisible}
         placeholder={label}
-        onChangeText={onUpdateValue}
+        onChangeText={onChangeText}
         value={value}
       />
       {secure && (

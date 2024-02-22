@@ -70,6 +70,9 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
  async function validateForm() {
     // Check if enteredProjectName, enteredDueDate, and AssginedForItem have values
     
+    console.log("task priority",selectedPriority)
+    console.log("task option",selectedOption)
+    console.log("task complexity",selectedComplexity)
     
     if (
       enteredTaskName.trim() !== "" &&
@@ -251,7 +254,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
               label="Enter Type"
               secure={false}
               onChangeText={onChangeText.bind(this, "taskType")}
-
+              value={enteredTaskType}
             />
           </View>
         </View>
@@ -355,7 +358,6 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
                 value={AssginedForItem.toString()}
                 secure={false}
                 onUpdateValue={onChangeText.bind(this, "taskName")}
-
               />
 
             </View>
@@ -498,14 +500,14 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
                   userid: userId, // You may want to generate a unique ID
                   task_name: enteredTaskName,
                   assign_to: AssginedForItem.toString(),
-                  status: "In Progress",
+                  status: "Pending",
                   task_phase: enteredTaskPhase,
                   task_created_date: enteredDueDate,
                   time_alot: enteredEstimatedTime,
-                  qc_doc: "YES",
-                  priority: "HIGH",
+                  qc_doc: selectedOption,
+                  priority: selectedPriority,
                   task_type: enteredTaskType,
-                  task_complexity: "HIGH",
+                  task_complexity: selectedComplexity,
                   // Add other properties based on your form fields 
                 };
                 addNewTask(newTask); 
