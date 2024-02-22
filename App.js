@@ -23,6 +23,7 @@ import Music from "./screens/Music";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import ContextProvider from "./store/context";
 import { SearchProvider } from "./store/search-redux";
+import UpdateStatus from "./screens/UpdateStatus";
 
 const Stack = createNativeStackNavigator();
 
@@ -165,6 +166,15 @@ function AuthenticatedStack() {
       <Stack.Screen
         name="CheckIn/Out"
         component={CheckInLayout}
+        options={{
+          headerShown: false,
+          presentation: "modal",
+          animation: "slide_from_right",
+        }}
+      />
+      <Stack.Screen
+        name="UpdateStatus"
+        component={UpdateStatus}
         options={{
           headerShown: false,
           presentation: "modal",

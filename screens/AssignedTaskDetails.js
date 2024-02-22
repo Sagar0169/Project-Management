@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Image,
   Pressable,
@@ -20,6 +20,7 @@ import SubmitButton from "../components/ui/SubmitButton";
 import BottomSheetDesign3 from "../components/BottomSheedDesign3";
 import { Svg6 } from "../components/svgs/svgs";
 import BackArrowHeaderWhite from "../components/BackArrowHeaderWhite";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 
@@ -52,6 +53,26 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
     setSelectedDate(currentDate);
     setEnteredDueDate(currentDate.toISOString().split("T")[0]);
   }, []); // Empty dependency array ensures that this effect runs only once, when the component mounts
+
+  const [storedProfile, setStoreProfile] = useState("");
+
+  const fetchStoredProfile = useCallback(async () => {
+    try {
+      setStoreProfile(await AsyncStorage.getItem("profile"));
+
+      if (storedProfile !== null) {
+        console.log("Stored Profile:", storedProfile);
+      } else {
+        console.log("Profile not found in AsyncStorage");
+      }
+    } catch (error) {
+      console.error("Error fetching profile from AsyncStorage:", error);
+    }
+  }, [storedProfile]);
+
+  useEffect(() => {
+    fetchStoredProfile();
+  }, [fetchStoredProfile]);
 
   const addNewTask = (newTask) => {
     // Add the new task to taskData
@@ -198,6 +219,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
     // Return a loading state or null while fonts are loading
     return null;
   }
+
   return (
     <View style={{ flex: 1, backgroundColor: "white", paddingTop: w(5) }}>
       <BackArrowHeaderWhite
@@ -442,6 +464,22 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               >
                 <Text style={styles.viewText}>Completed</Text>
               </View>
+              {storedProfile === "Developer" && (
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate("UpdateStatus", { ID: item.id })
+                  }
+                  style={{
+                    marginHorizontal: w(2),
+                    borderRadius: w(2),
+                    borderWidth: 1,
+                    paddingHorizontal: w(2),
+                    paddingVertical: w(1),
+                  }}
+                >
+                  <Text>Edit</Text>
+                </Pressable>
+              )}
             </View>
           </View>
         </View>
