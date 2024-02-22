@@ -70,10 +70,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
  async function validateForm() {
     // Check if enteredProjectName, enteredDueDate, and AssginedForItem have values
     
-    console.log("task priority",selectedPriority)
-    console.log("task option",selectedOption)
-    console.log("task complexity",selectedComplexity)
-    
+ 
     if (
       enteredTaskName.trim() !== "" &&
       enteredDueDate.trim() !== "" &&

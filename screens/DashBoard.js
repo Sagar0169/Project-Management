@@ -17,8 +17,8 @@ import { Colors } from "../Utilities/Colors";
 import DashboardData from "../components/DashboardData";
 import RecentProjectFlatList from "../components/RecentProjectFlatList";
 import TasksData from "../components/TasksData";
-import AuthContextProvider, { AuthContext } from "../store/auth-context";
-import { Logout } from "../store/http";
+import { AuthContext } from "../store/auth-context";
+import { Logout, getTaks } from "../store/http";
 
 const { width, height } = Dimensions.get("window");
 
@@ -76,7 +76,7 @@ export default function DashBoard({ navigation }) {
 `;
 
   const [storedProfile, setStoreProfile] = useState("");
-
+  const [isFetching, setIsFetching] = useState(true);
   const fetchStoredProfile = async () => {
     try {
       setStoreProfile(await AsyncStorage.getItem("profile"));
@@ -106,7 +106,37 @@ export default function DashBoard({ navigation }) {
       useNativeDriver: false, // Set to true if possible for better performance
     }).start();
   };
-
+  useEffect(() => {
+    let isMounted = true;
+    const fetchData = async () => {
+      setIsFetching(true);
+      try {
+      
+        const loginRespone = await AsyncStorage.getItem("user");
+        const response = JSON.parse(loginRespone);
+          const tasks = await getTaks(response.userId, response.token,response.emp_id);
+          
+          if(tasks===0)
+          {
+            console.log("Daata", tasks);
+            handleLogout()
+          }
+          
+          
+        
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      } finally {
+        if (isMounted) {
+          setIsFetching(false);
+        }
+      }
+    };
+    fetchData();
+    return () => {
+      isMounted = false;
+    };
+  }, [isFetching]);
   useEffect(() => {
     animateList();
   }, []);

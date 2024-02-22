@@ -1,9 +1,12 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useContext } from "react";
+import { AuthContext } from "./auth-context";
 
 const BACKEND_URL =
   "https://projectmanagement-84b7c-default-rtdb.firebaseio.com";
 const BASE_URl = "http://167.172.152.167:81/pm_tool_app_old/api/rest/";
+
 
 async function authenticate(email, password) {
   // const url = `https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${API_KEY}`;
@@ -29,6 +32,7 @@ async function authenticate(email, password) {
 }
 
 async function getTasksDetails(userid, token,emp_id) {
+
   try {
     const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/taskdetails", {
       userid: userid,
@@ -41,8 +45,10 @@ async function getTasksDetails(userid, token,emp_id) {
     
     const data = response.data._result;
     const _resultflag = response.data._resultflag;
-  
-    console.log(data);
+    if(_resultflag===0)
+    {
+      return _resultflag
+    }
     return data;
   } catch (error) {
     console.error("Error in authenticate:", error);
