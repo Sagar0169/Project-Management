@@ -9,6 +9,7 @@ import {
   Modal,
   TextInput,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 // import Toast from "react-native-simple-toast";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -21,6 +22,7 @@ import BottomSheetDesign3 from "../components/BottomSheedDesign3";
 import { Svg6 } from "../components/svgs/svgs";
 import BackArrowHeaderWhite from "../components/BackArrowHeaderWhite";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 
@@ -124,6 +126,8 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
   const [enteredEstimatedTime, setEnteredEstimatedTime] = useState("");
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isEditEnabled, setIsEditEnabled] = useState(false);
+  const [qcDocStatus, setQcDocStatus] = useState(item.qc_doc);
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -171,6 +175,12 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
   };
   const handleOptionPressPriority2 = (option) => {
     setselectedComplexity(option);
+  };
+  const handleQcDocStatusChange = (status) => {
+    if (isEditEnabled) {
+      getOptionStyle(status)
+      setQcDocStatus(status);
+    }
   };
   const getOptionStyle = (status) => {
     return {
@@ -253,7 +263,8 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               alignItems: "center",
             }}
           >
-            <Text
+            <TextInput
+              editable={isEditEnabled}
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
@@ -265,7 +276,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               }}
             >
               {item.assign_to}
-            </Text>
+            </TextInput>
           </View>
         </View>
 
@@ -324,7 +335,8 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               alignItems: "center",
             }}
           >
-            <Text
+            <TextInput
+              editable={isEditEnabled}
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
@@ -336,7 +348,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               }}
             >
               {item.task_name}
-            </Text>
+            </TextInput>
           </View>
         </View>
 
@@ -360,7 +372,8 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               alignItems: "center",
             }}
           >
-            <Text
+            <TextInput
+              editable={isEditEnabled}
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
@@ -372,7 +385,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               }}
             >
               {item.task_phase}
-            </Text>
+            </TextInput>
           </View>
         </View>
 
@@ -396,7 +409,8 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               alignItems: "center",
             }}
           >
-            <Text
+            <TextInput
+              editable={isEditEnabled}
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
@@ -408,7 +422,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               }}
             >
               {item.task_type}
-            </Text>
+            </TextInput>
           </View>
         </View>
 
@@ -483,7 +497,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
             </View>
           </View>
         </View>
-
+        {/* FOR DATE CREATED UPDATE THE CURRENT DATE WHEN THE EDIT BUTTON IS CLICKED */}
         <View
           style={{
             flexDirection: "row",
@@ -531,7 +545,8 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
                     alignItems: "center",
                   }}
                 >
-                  <Text
+                  <TextInput
+                    editable={isEditEnabled}
                     style={{
                       paddingVertical: 10,
                       paddingHorizontal: 8,
@@ -543,7 +558,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
                     }}
                   >
                     {item.task_created_date}
-                  </Text>
+                  </TextInput>
                 </View>
                 <SvgXml
                   xml={Svg6}
@@ -592,7 +607,8 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
                     alignItems: "center",
                   }}
                 >
-                  <Text
+                  <TextInput
+                    editable={isEditEnabled}
                     style={{
                       paddingVertical: 10,
                       paddingHorizontal: 8,
@@ -604,7 +620,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
                     }}
                   >
                     {item.time_alot}
-                  </Text>
+                  </TextInput>
                 </View>
               </View>
             </Pressable>
@@ -624,12 +640,13 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               justifyContent: "flex-start",
             }}
           >
-            <Pressable>
+            {/* #####################################################fix this##################################33 */}
+            <Pressable onPress={() => handleQcDocStatusChange("Yes")}>
               <View style={getOptionStyle(item.qc_doc)}>
                 <Text style={styles.viewText}>Yes</Text>
               </View>
             </Pressable>
-            <Pressable>
+            <Pressable onPress={() => handleQcDocStatusChange("No")}>
               <View
                 style={getOptionStyle(item.qc_doc === "Yes" ? "No" : "Yes")}
               >
@@ -735,8 +752,20 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               <Text style={styles.viewText}>High</Text>
             </View>
           </View>
+          
+         
         </View>
+
       </ScrollView>
+      <TouchableOpacity
+          style={[styles.addButton, { backgroundColor: "#5063Bf" }]}
+          onPress={() => setIsEditEnabled(!isEditEnabled)}>
+            {isEditEnabled ? (
+              <MaterialCommunityIcons name="content-save" size={30} color="white" />
+            ) : (
+              <MaterialCommunityIcons name="pencil" size={30} color="white" />
+            )}
+          </TouchableOpacity>
 
       {isDatePickerVisible && (
         <DateTimePicker
@@ -792,5 +821,16 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 18,
     fontFamily: "poppinsemi",
+  },
+  addButton: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 5,
   },
 });
