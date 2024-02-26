@@ -10,7 +10,7 @@ import moviesData from "./moviesData";
 
 const NoticesItem = ({ navigation, item }) => {
   function detailsHandler() {
-    navigation.navigate("AssignedTaskDetails", { ID: item });
+    navigation.navigate("IssuesDetails", { ID: item });
   }
   if (item.id !== "placeholder") {
     return (

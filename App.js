@@ -24,6 +24,7 @@ import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import ContextProvider from "./store/context";
 import { SearchProvider } from "./store/search-redux";
 import UpdateStatus from "./screens/UpdateStatus";
+import IssuesDetails from "./components/IssuesDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -87,6 +88,14 @@ function AuthenticatedStack() {
           headerShown: false,
           presentation: "modal",
           animation: "slide_from_left",
+        }}
+      />
+      <Stack.Screen
+        name="IssuesDetails"
+        component={IssuesDetails}
+        options={{
+          headerShown: false,
+          presentation: "modal",
         }}
       />
       <Stack.Screen
