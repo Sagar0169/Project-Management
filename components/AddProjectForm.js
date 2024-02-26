@@ -63,12 +63,12 @@ function AddNewProjectFrom() {
   const [isModalVisible2, setModalVisible2] = useState(false);
   const [isModalVisible3, setModalVisible3] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedDocument, setSelectedDocument] = useState(null);
+  const [selectedSrs, setSelectedSrs] = useState(null);
+  const [selectedRequirement, setselectedRequirement] = useState(null);
+  const [selectedDocument, setselectedDocument] = useState(null);
 
   const handleDocumentPress = async (documentType, open) => {
     if (documentType === "srs") {
-      console.log("file opened");
-    } else {
       try {
         const result = await DocumentPicker.getDocumentAsync({
           type: "application/pdf",
@@ -77,7 +77,38 @@ function AddNewProjectFrom() {
         if (!result.canceled && !open) {
           // Handle the selected document here
           console.log("Selected document:", result.assets);
-          setSelectedDocument(result.assets[0].name);
+          setSelectedSrs(result.assets[0].name);
+        } else {
+          if (open && result.assets[0].uri) {
+            const source = { uri: result.assets[0].uri };
+            // Linking.openURL(result.assets[0].uri);
+            return (
+              <Video
+                source={source}
+                resizeMode="contain"
+                useNativeControls
+                style={{ width: "90%", height: 300 }}
+              />
+            );
+          } else {
+            console.log("Document picker cancelled", result.assets);
+          }
+        }
+      } catch (err) {
+        console.error("Error picking document:", err);
+      }
+    } else {
+      if(documentType==="documentation")
+      {
+      try {
+        const result = await DocumentPicker.getDocumentAsync({
+          type: "application/pdf",
+        });
+
+        if (!result.canceled && !open) {
+          // Handle the selected document here
+          console.log("Selected document:", result.assets);
+          setselectedDocument(result.assets[0].name);
         } else {
           if (open && result.assets[0].uri) {
             const source = { uri: result.assets[0].uri };
@@ -98,6 +129,38 @@ function AddNewProjectFrom() {
         console.error("Error picking document:", err);
       }
     }
+    else{
+      try {
+        const result = await DocumentPicker.getDocumentAsync({
+          type: "application/pdf",
+        });
+
+        if (!result.canceled && !open) {
+          // Handle the selected document here
+          console.log("Selected document:", result.assets);
+          setselectedRequirement(result.assets[0].name);
+        } else {
+          if (open && result.assets[0].uri) {
+            const source = { uri: result.assets[0].uri };
+            // Linking.openURL(result.assets[0].uri);
+            return (
+              <Video
+                source={source}
+                resizeMode="contain"
+                useNativeControls
+                style={{ width: "90%", height: 300 }}
+              />
+            );
+          } else {
+            console.log("Document picker cancelled", result.assets);
+          }
+        }
+      } catch (err) {
+        console.error("Error picking document:", err);
+      }
+    }
+  }
+ 
   };
 
   const showModal = () => {
@@ -415,7 +478,7 @@ function AddNewProjectFrom() {
                 alignItems: "center",
                 marginTop: w(5),
               }}
-              onPress={() => handleDocumentPress("Requirements", false)}
+             
             >
               <SvgXml xml={Svg3} width="55" height="55" />
 
@@ -441,12 +504,62 @@ function AddNewProjectFrom() {
                 }}
               >
                 <SvgXml xml={Svg4} width="30" height="30" />
+                {selectedSrs && (
+                  <Text style={{ fontSize: dynamicFontSize * 1 }}>
+                    {selectedSrs}
+                  </Text>
+                )}
+
+                {!selectedSrs && (
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text>No Selected File - </Text>
+                    <SvgXml xml={Svg5} width="30" height="30" />
+                  </View>
+                )}
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.borderContainerDocument2, { marginTop: w(5) }]}
+              onPress={() => handleDocumentPress("requirements")}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <SvgXml xml={Svg4} width="30" height="30" />
+                {selectedRequirement && (
+                  <Text style={{ fontSize: dynamicFontSize * 1 }}>
+                    {selectedRequirement}
+                  </Text>
+                )}
+                {!selectedRequirement && (
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text>No Selected File - </Text>
+                    <SvgXml xml={Svg5} width="30" height="30" />
+                  </View>
+                )}
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.borderContainerDocument2, { marginTop: w(5) }]}
+              onPress={() => handleDocumentPress("documentation")}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <SvgXml xml={Svg4} width="30" height="30" />
                 {selectedDocument && (
                   <Text style={{ fontSize: dynamicFontSize * 1 }}>
                     {selectedDocument}
                   </Text>
                 )}
-
                 {!selectedDocument && (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Text>No Selected File - </Text>
