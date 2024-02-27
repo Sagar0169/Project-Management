@@ -61,10 +61,15 @@ function h(value) {
 
 function AddNewProjectFrom() {
   const { token } = useContext(AuthContext);
-  const readFileContent = async (fileUri) => {
-    const fileContent = await FileSystem.readAsStringAsync(fileUri, { encoding: FileSystem.EncodingType.Base64 })
-    return fileContent;
-  };
+  async function readFileContent(uri) {
+    try {
+      const fileContent = await FileSystem.readAsStringAsync(uri);
+      return fileContent;
+    } catch (error) {
+      console.error('Error reading file content:', error);
+      throw error;
+    }
+  }
 
   const getFileName = (uri) => {
     // Extract file name from the URI
@@ -85,10 +90,7 @@ function AddNewProjectFrom() {
   const [selectedDocument, setselectedDocument] = useState(null);
 
 
-  const UserIdfetch =async()=>{
-   
-        return token.userId
-  }
+
 
   const handleDocumentPress = async (documentType, open) => {
     if (documentType === "srs") {
@@ -96,21 +98,19 @@ function AddNewProjectFrom() {
         const result = await DocumentPicker.getDocumentAsync({
           type: "application/pdf",
         });
-        const fileContent = await readFileContent(result.assets[0].uri)
         const loginRespone = await AsyncStorage.getItem("user")
         const token = JSON.parse(loginRespone);
-
+      
+        
         if (!result.canceled && !open) {
-          // const requestBody = {
-          //   userid: token.userId,
-          //   attach: {
-          //     uri: result.assets[0].uri,
-          //     name: result.assets[0].name,
-          //     size: fileContent.length,
-          //     type: 'application/pdf',
-          //   },
-          // };
-          // uploadFile(requestBody, token.token)
+          const formData = new FormData();
+          formData.append('userid', token.userId);
+          formData.append('attach', {
+            uri: result.assets[0].uri,
+            name: getFileName(result.assets[0].uri),
+            type: 'application/pdf', // Set the correct MIME type for PDF
+          });
+          uploadFile(formData, token.token)
 
           setSelectedSrs(result.assets[0].name);
         }
@@ -127,9 +127,14 @@ function AddNewProjectFrom() {
           });
 
           if (!result.canceled && !open) {
-            // Handle the selected document here
-            console.log("Selected document:", result.assets);
-
+            // const formData = new FormData();
+            // formData.append('userid', token.userId);
+            // formData.append('attach', {
+            //   uri: result.assets[0].uri,
+            //   name: getFileName(result.assets[0].uri),
+            //   type: 'application/pdf', // Set the correct MIME type for PDF
+            // });
+            // uploadFile(formData, token.token)
             setselectedDocument(result.assets[0].name);
           } else {
             if (open && result.assets[0].uri) {
@@ -160,8 +165,15 @@ function AddNewProjectFrom() {
           });
 
           if (!result.canceled && !open) {
-            // Handle the selected document here
-            console.log("Selected document:", result.assets);
+            // const formData = new FormData();
+            // formData.append('userid', token.userId);
+            // formData.append('attach', {
+            //   uri: result.assets[0].uri,
+            //   name: getFileName(result.assets[0].uri),
+            //   type: 'application/pdf', // Set the correct MIME type for PDF
+            // });
+            // uploadFile(formData, token.token)
+            
             setselectedRequirement(result.assets[0].name);
           } else {
             if (open && result.assets[0].uri) {
@@ -564,7 +576,7 @@ function AddNewProjectFrom() {
                 )}
               </View>
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={[styles.borderContainerDocument2, { marginTop: w(5) }]}
               onPress={() => handleDocumentPress("requirements")}
             >
@@ -588,8 +600,8 @@ function AddNewProjectFrom() {
                   </View>
                 )}
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </TouchableOpacity> */}
+            {/* <TouchableOpacity
               style={[styles.borderContainerDocument2, { marginTop: w(5) }]}
               onPress={() => handleDocumentPress("documentation")}
             >
@@ -613,7 +625,7 @@ function AddNewProjectFrom() {
                   </View>
                 )}
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             {/* <TouchableOpacity
                             style={[styles.borderContainerDocument3, { marginTop: w(5) }]}
