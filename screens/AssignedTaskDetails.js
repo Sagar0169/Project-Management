@@ -178,10 +178,14 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
     setSelectedOption(option);
   };
   const handleOptionPressPriority = (option) => {
+    if (isEditEnabled) {
     setSelectedPriority(option);
+    }
   };
   const handleOptionPressPriority2 = (option) => {
+    if (isEditEnabled) {
     setselectedComplexity(option);
+    }
   };
   const handleQcDocStatusChange = (status) => {
     if (isEditEnabled) {
@@ -722,16 +726,15 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               justifyContent: "flex-start",
             }}
           >
-            {/* #####################################################fix this##################################33 */}
+            {/* to handle pressable on is enable i used a usestate with default value set to the value received from backend hence by default it will show the value that was stored in db */}
             <Pressable onPress={() => handleQcDocStatusChange("Yes")}>
-              <View style={getOptionStyle(item.qc_doc)}>
+              <View style={getOptionStyle(qcDocStatus)}>
                 <Text style={styles.viewText}>Yes</Text>
               </View>
             </Pressable>
             <Pressable onPress={() => handleQcDocStatusChange("No")}>
               <View
-                style={getOptionStyle(item.qc_doc === "Yes" ? "No" : "Yes")}
-              >
+                style={getOptionStyle(qcDocStatus === "Yes" ? "No" : "Yes")}>
                 <Text style={styles.viewText}>NO</Text>
               </View>
             </Pressable>
@@ -750,9 +753,12 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               justifyContent: "flex-start",
             }}
           >
+            <Pressable onPress={ ()=> handleOptionPressPriority("Low")}>
+              
+            
             <View
               style={{
-                backgroundColor: item.priority == "Low" ? "#50BF54" : "#9A9A9A",
+                backgroundColor: selectedPriority == "Low" ? "#50BF54" : "#9A9A9A",
                 padding: 8,
                 borderRadius: 5,
                 marginHorizontal: 4,
@@ -760,10 +766,12 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
             >
               <Text style={styles.viewText}>Low</Text>
             </View>
+            </Pressable>
+            <Pressable onPress={ ()=> handleOptionPressPriority("Medium")}>
             <View
               style={{
                 backgroundColor:
-                  item.priority == "Medium" ? "#50BF54" : "#9A9A9A",
+                selectedPriority == "Medium" ? "#50BF54" : "#9A9A9A",
                 padding: 8,
                 borderRadius: 5,
                 marginHorizontal: 4,
@@ -771,10 +779,12 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
             >
               <Text style={styles.viewText}>Medium</Text>
             </View>
+            </Pressable>
+            <Pressable onPress={()=> handleOptionPressPriority("High")}>
             <View
               style={{
                 backgroundColor:
-                  item.priority == "High" ? "#50BF54" : "#9A9A9A",
+                selectedPriority == "High" ? "#50BF54" : "#9A9A9A",
                 padding: 8,
                 borderRadius: 5,
                 marginHorizontal: 4,
@@ -782,6 +792,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
             >
               <Text style={styles.viewText}>High</Text>
             </View>
+            </Pressable>
           </View>
         </View>
         <View
@@ -800,10 +811,11 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               justifyContent: "flex-start",
             }}
           >
+              <Pressable onPress={ ()=> handleOptionPressPriority2("Low")}>
             <View
               style={{
                 backgroundColor:
-                  item.task_complexity == "Low" ? "#50BF54" : "#9A9A9A",
+                  selectedComplexity == "Low" ? "#50BF54" : "#9A9A9A",
                 padding: 8,
                 borderRadius: 5,
                 marginHorizontal: 4,
@@ -811,10 +823,12 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
             >
               <Text style={styles.viewText}>Low</Text>
             </View>
+            </Pressable>
+            <Pressable onPress={ ()=> handleOptionPressPriority2("Medium")}>
             <View
               style={{
                 backgroundColor:
-                  item.task_complexity == "Medium" ? "#50BF54" : "#9A9A9A",
+                selectedComplexity == "Medium" ? "#50BF54" : "#9A9A9A",
                 padding: 8,
                 borderRadius: 5,
                 marginHorizontal: 4,
@@ -822,10 +836,12 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
             >
               <Text style={styles.viewText}>Medium</Text>
             </View>
+            </Pressable>
+            <Pressable onPress={ ()=> handleOptionPressPriority2("High")}>
             <View
               style={{
                 backgroundColor:
-                  item.task_complexity == "High" ? "#50BF54" : "#9A9A9A",
+                selectedComplexity == "High" ? "#50BF54" : "#9A9A9A",
                 padding: 8,
                 borderRadius: 5,
                 marginHorizontal: 4,
@@ -833,6 +849,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
             >
               <Text style={styles.viewText}>High</Text>
             </View>
+            </Pressable>
           </View>
         </View>
       </ScrollView>
