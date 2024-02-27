@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Image,
   Pressable,
@@ -9,10 +9,12 @@ import {
   Modal,
   TextInput,
   Dimensions,
+  TouchableOpacity,
+  Alert,
 } from "react-native";
 // import Toast from "react-native-simple-toast";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { assignedStore, storeTask } from "../store/http";
+import { assignedStore, deleteTask, storeTask } from "../store/http";
 import useFonts from "../hooks/useFonts";
 import { Svg, SvgXml } from "react-native-svg";
 import Input from "../components/Input";
@@ -20,6 +22,10 @@ import SubmitButton from "../components/ui/SubmitButton";
 import BottomSheetDesign3 from "../components/BottomSheedDesign3";
 import { Svg6 } from "../components/svgs/svgs";
 import BackArrowHeaderWhite from "../components/BackArrowHeaderWhite";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useSearch } from "../store/search-redux";
+import Toast from "react-native-toast-message";
 
 const { width, height } = Dimensions.get("window");
 
@@ -47,11 +53,32 @@ function h(value) {
 function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
   const item = route.params.ID;
   console.log("Task ID", item);
+
   useEffect(() => {
     const currentDate = new Date();
     setSelectedDate(currentDate);
     setEnteredDueDate(currentDate.toISOString().split("T")[0]);
   }, []); // Empty dependency array ensures that this effect runs only once, when the component mounts
+
+  const [storedProfile, setStoreProfile] = useState("");
+
+  const fetchStoredProfile = useCallback(async () => {
+    try {
+      setStoreProfile(await AsyncStorage.getItem("profile"));
+
+      if (storedProfile !== null) {
+        console.log("Stored Profile:", storedProfile);
+      } else {
+        console.log("Profile not found in AsyncStorage");
+      }
+    } catch (error) {
+      console.error("Error fetching profile from AsyncStorage:", error);
+    }
+  }, [storedProfile]);
+
+  useEffect(() => {
+    fetchStoredProfile();
+  }, [fetchStoredProfile]);
 
   const addNewTask = (newTask) => {
     // Add the new task to taskData
@@ -103,6 +130,8 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
   const [enteredEstimatedTime, setEnteredEstimatedTime] = useState("");
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isEditEnabled, setIsEditEnabled] = useState(false);
+  const [qcDocStatus, setQcDocStatus] = useState(item.qc_doc);
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -142,14 +171,27 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedPriority, setSelectedPriority] = useState(null);
   const [selectedComplexity, setselectedComplexity] = useState(null);
+  const { searchQuery, setSearchQuery } = useSearch();
+  const [task, setTask] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
   const handleOptionPress = (option) => {
     setSelectedOption(option);
   };
   const handleOptionPressPriority = (option) => {
+    if (isEditEnabled) {
     setSelectedPriority(option);
+    }
   };
   const handleOptionPressPriority2 = (option) => {
+    if (isEditEnabled) {
     setselectedComplexity(option);
+    }
+  };
+  const handleQcDocStatusChange = (status) => {
+    if (isEditEnabled) {
+      getOptionStyle(status);
+      setQcDocStatus(status);
+    }
   };
   const getOptionStyle = (status) => {
     return {
@@ -181,6 +223,79 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
     };
   };
 
+  const fetchData = useCallback(async () => {
+    setIsFetching(true);
+
+    try {
+      let expenses;
+      const loginRespone = await AsyncStorage.getItem("user");
+      const response = JSON.parse(loginRespone);
+      console.log(response.token);
+      if (storedProfile === "super admin") {
+        const tasks = await deleteTask(
+          response.userId,
+          response.id,
+          response.token
+        );
+        if (searchQuery) {
+          expenses = tasks.filter((item) =>
+            item.assign_to.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+        } else {
+          expenses = tasks;
+        }
+        expenses = tasks;
+      } else {
+        const tasks = await deleteTask(
+          response.userId,
+          response.id,
+          response.token
+        );
+        console.log("Daata", tasks);
+        expenses = tasks;
+      }
+
+      setTask(expenses);
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    } finally {
+      setIsFetching(false);
+    }
+  }, [storedProfile, searchQuery]);
+
+  const handleDeleteItem = () => {
+    Alert.alert(
+      "Delete Task",
+      "Are you sure you want to delete this task?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: async () => {
+            try {
+              // Make API request to delete the item
+              const loginRespone = await AsyncStorage.getItem("user");
+              const response = JSON.parse(loginRespone);
+
+              await deleteTask(response.userId, item.id, response.token);
+
+              // If you want to navigate back after deletion
+
+              navigation.goBack();
+            } catch (error) {
+              console.error("Error deleting task:", error);
+              // Handle error appropriately
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   const handleSportSelection = (sport) => {
     setAssginedForItem(sport);
     toggleModal();
@@ -198,9 +313,12 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
     // Return a loading state or null while fonts are loading
     return null;
   }
+
   return (
     <View style={{ flex: 1, backgroundColor: "white", paddingTop: w(5) }}>
       <BackArrowHeaderWhite
+        deleteCall={handleDeleteItem}
+        showDelete={true}
         showSearch={true}
         filter={true}
         title="Tasks Details"
@@ -231,7 +349,8 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               alignItems: "center",
             }}
           >
-            <Text
+            <TextInput
+              editable={isEditEnabled}
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
@@ -243,7 +362,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               }}
             >
               {item.assign_to}
-            </Text>
+            </TextInput>
           </View>
         </View>
 
@@ -302,7 +421,8 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               alignItems: "center",
             }}
           >
-            <Text
+            <TextInput
+              editable={isEditEnabled}
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
@@ -314,7 +434,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               }}
             >
               {item.task_name}
-            </Text>
+            </TextInput>
           </View>
         </View>
 
@@ -338,7 +458,8 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               alignItems: "center",
             }}
           >
-            <Text
+            <TextInput
+              editable={isEditEnabled}
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
@@ -350,7 +471,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               }}
             >
               {item.task_phase}
-            </Text>
+            </TextInput>
           </View>
         </View>
 
@@ -374,7 +495,8 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               alignItems: "center",
             }}
           >
-            <Text
+            <TextInput
+              editable={isEditEnabled}
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
@@ -386,7 +508,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               }}
             >
               {item.task_type}
-            </Text>
+            </TextInput>
           </View>
         </View>
 
@@ -442,10 +564,26 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               >
                 <Text style={styles.viewText}>Completed</Text>
               </View>
+              {storedProfile === "Developer" && (
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate("UpdateStatus", { ID: item.id })
+                  }
+                  style={{
+                    marginHorizontal: w(2),
+                    borderRadius: w(2),
+                    borderWidth: 1,
+                    paddingHorizontal: w(2),
+                    paddingVertical: w(1),
+                  }}
+                >
+                  <Text>Edit</Text>
+                </Pressable>
+              )}
             </View>
           </View>
         </View>
-
+        {/* FOR DATE CREATED UPDATE THE CURRENT DATE WHEN THE EDIT BUTTON IS CLICKED */}
         <View
           style={{
             flexDirection: "row",
@@ -493,7 +631,8 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
                     alignItems: "center",
                   }}
                 >
-                  <Text
+                  <TextInput
+                    editable={isEditEnabled}
                     style={{
                       paddingVertical: 10,
                       paddingHorizontal: 8,
@@ -505,7 +644,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
                     }}
                   >
                     {item.task_created_date}
-                  </Text>
+                  </TextInput>
                 </View>
                 <SvgXml
                   xml={Svg6}
@@ -554,7 +693,8 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
                     alignItems: "center",
                   }}
                 >
-                  <Text
+                  <TextInput
+                    editable={isEditEnabled}
                     style={{
                       paddingVertical: 10,
                       paddingHorizontal: 8,
@@ -566,7 +706,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
                     }}
                   >
                     {item.time_alot}
-                  </Text>
+                  </TextInput>
                 </View>
               </View>
             </Pressable>
@@ -586,15 +726,15 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               justifyContent: "flex-start",
             }}
           >
-            <Pressable>
-              <View style={getOptionStyle(item.qc_doc)}>
+            {/* to handle pressable on is enable i used a usestate with default value set to the value received from backend hence by default it will show the value that was stored in db */}
+            <Pressable onPress={() => handleQcDocStatusChange("Yes")}>
+              <View style={getOptionStyle(qcDocStatus)}>
                 <Text style={styles.viewText}>Yes</Text>
               </View>
             </Pressable>
-            <Pressable>
+            <Pressable onPress={() => handleQcDocStatusChange("No")}>
               <View
-                style={getOptionStyle(item.qc_doc === "Yes" ? "No" : "Yes")}
-              >
+                style={getOptionStyle(qcDocStatus === "Yes" ? "No" : "Yes")}>
                 <Text style={styles.viewText}>NO</Text>
               </View>
             </Pressable>
@@ -613,9 +753,12 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               justifyContent: "flex-start",
             }}
           >
+            <Pressable onPress={ ()=> handleOptionPressPriority("Low")}>
+              
+            
             <View
               style={{
-                backgroundColor: item.priority == "Low" ? "#50BF54" : "#9A9A9A",
+                backgroundColor: selectedPriority == "Low" ? "#50BF54" : "#9A9A9A",
                 padding: 8,
                 borderRadius: 5,
                 marginHorizontal: 4,
@@ -623,10 +766,12 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
             >
               <Text style={styles.viewText}>Low</Text>
             </View>
+            </Pressable>
+            <Pressable onPress={ ()=> handleOptionPressPriority("Medium")}>
             <View
               style={{
                 backgroundColor:
-                  item.priority == "Medium" ? "#50BF54" : "#9A9A9A",
+                selectedPriority == "Medium" ? "#50BF54" : "#9A9A9A",
                 padding: 8,
                 borderRadius: 5,
                 marginHorizontal: 4,
@@ -634,10 +779,12 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
             >
               <Text style={styles.viewText}>Medium</Text>
             </View>
+            </Pressable>
+            <Pressable onPress={()=> handleOptionPressPriority("High")}>
             <View
               style={{
                 backgroundColor:
-                  item.priority == "High" ? "#50BF54" : "#9A9A9A",
+                selectedPriority == "High" ? "#50BF54" : "#9A9A9A",
                 padding: 8,
                 borderRadius: 5,
                 marginHorizontal: 4,
@@ -645,6 +792,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
             >
               <Text style={styles.viewText}>High</Text>
             </View>
+            </Pressable>
           </View>
         </View>
         <View
@@ -663,10 +811,11 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               justifyContent: "flex-start",
             }}
           >
+              <Pressable onPress={ ()=> handleOptionPressPriority2("Low")}>
             <View
               style={{
                 backgroundColor:
-                  item.task_complexity == "Low" ? "#50BF54" : "#9A9A9A",
+                  selectedComplexity == "Low" ? "#50BF54" : "#9A9A9A",
                 padding: 8,
                 borderRadius: 5,
                 marginHorizontal: 4,
@@ -674,10 +823,12 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
             >
               <Text style={styles.viewText}>Low</Text>
             </View>
+            </Pressable>
+            <Pressable onPress={ ()=> handleOptionPressPriority2("Medium")}>
             <View
               style={{
                 backgroundColor:
-                  item.task_complexity == "Medium" ? "#50BF54" : "#9A9A9A",
+                selectedComplexity == "Medium" ? "#50BF54" : "#9A9A9A",
                 padding: 8,
                 borderRadius: 5,
                 marginHorizontal: 4,
@@ -685,10 +836,12 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
             >
               <Text style={styles.viewText}>Medium</Text>
             </View>
+            </Pressable>
+            <Pressable onPress={ ()=> handleOptionPressPriority2("High")}>
             <View
               style={{
                 backgroundColor:
-                  item.task_complexity == "High" ? "#50BF54" : "#9A9A9A",
+                selectedComplexity == "High" ? "#50BF54" : "#9A9A9A",
                 padding: 8,
                 borderRadius: 5,
                 marginHorizontal: 4,
@@ -696,9 +849,29 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
             >
               <Text style={styles.viewText}>High</Text>
             </View>
+            </Pressable>
           </View>
         </View>
       </ScrollView>
+
+      {storedProfile !== "Developer" && (
+        <>
+          <TouchableOpacity
+            style={[styles.addButton, { backgroundColor: "#5063Bf" }]}
+            onPress={() => setIsEditEnabled(!isEditEnabled)}
+          >
+            {isEditEnabled ? (
+              <MaterialCommunityIcons
+                name="content-save"
+                size={30}
+                color="white"
+              />
+            ) : (
+              <MaterialCommunityIcons name="pencil" size={30} color="white" />
+            )}
+          </TouchableOpacity>
+        </>
+      )}
 
       {isDatePickerVisible && (
         <DateTimePicker
@@ -754,5 +927,16 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 18,
     fontFamily: "poppinsemi",
+  },
+  addButton: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 5,
   },
 });

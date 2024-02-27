@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   Animated,
   Dimensions,
@@ -18,8 +19,8 @@ import { Colors } from "../Utilities/Colors";
 import DashboardData from "../components/DashboardData";
 import RecentProjectFlatList from "../components/RecentProjectFlatList";
 import TasksData from "../components/TasksData";
-import AuthContextProvider, { AuthContext } from "../store/auth-context";
-import { Logout } from "../store/http";
+import { AuthContext } from "../store/auth-context";
+import { Logout, getTaks } from "../store/http";
 
 const { width, height } = Dimensions.get("window");
 
@@ -77,9 +78,19 @@ export default function DashBoard({ navigation }) {
 `;
 
   const [storedProfile, setStoreProfile] = useState("");
+  const [isFetching, setIsFetching] = useState(true);
 
   const fetchStoredProfile = async () => {
     try {
+      const loginRespone = await AsyncStorage.getItem("user");
+      const response = JSON.parse(loginRespone);
+        const tasks = await getTaks(response.userId, response.token,response.emp_id);
+        
+        if(tasks===0)
+        {
+          console.log("Daata", tasks);
+          handleLogout()
+        }
       setStoreProfile(await AsyncStorage.getItem("profile"));
       console.log(await AsyncStorage.getItem('token'))
 
@@ -95,7 +106,6 @@ export default function DashBoard({ navigation }) {
       console.error("Error fetching profile from AsyncStorage:", error);
     }
   };
-
   fetchStoredProfile();
 
   const animatedValue = useRef(new Animated.Value(0)).current;
@@ -107,6 +117,9 @@ export default function DashBoard({ navigation }) {
       useNativeDriver: false, // Set to true if possible for better performance
     }).start();
   };
+  
+
+ 
 
   useEffect(() => {
     animateList();

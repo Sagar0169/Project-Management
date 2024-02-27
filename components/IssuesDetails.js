@@ -21,6 +21,7 @@ import CustomModal from "./CustomModal";
 import Input from "./Input";
 import { Svg, SvgXml } from "react-native-svg";
 import { Svg6 } from "./svgs/svgs";
+import BackArrowHeader from "./BackArrowHeader";
 
 //CHANGE MULTIPLE SELECTION FROM BOTTOMSHEET2
 
@@ -44,7 +45,7 @@ function h(value) {
   return height * value;
 }
 
-function CreateNewIssuesForm() {
+function IssuesDetails({ navigation }) {
   const [isModalVisible2, setModalVisible2] = useState(false);
   const [isModalVisible3, setModalVisible3] = useState(false);
 
@@ -91,6 +92,7 @@ function CreateNewIssuesForm() {
   const [selectedProject, setSelectedproject] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(null);
+  const [isEditEnabled, setIsEditEnabled] = useState(false);
 
   const handleSelectProject = (category) => {
     setSelectedproject(category);
@@ -153,8 +155,19 @@ function CreateNewIssuesForm() {
     setModalVisible3(false);
   };
 
+  function handlerBack() {
+    navigation.goBack();
+  }
+
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: "white", paddingTop: w(6) }}>
+      <BackArrowHeader
+        backButton={handlerBack}
+        title="Issue Details"
+        color={"#ffffff"}
+        textColor="#2D2C2E"
+      />
+
       <ScrollView style={{ flex: 1, margin: 10 }}>
         <View
           style={{
@@ -162,15 +175,35 @@ function CreateNewIssuesForm() {
           }}
         >
           <View>
-            <Text style={{ color: "black", fontSize: 26 }}>Project </Text>
-            <View>
-              <DropDown
-                data={ProjectGroup}
-                selectValue={selectedProject}
-                oneSelect={handleSelectProject}
-                hi={h(2)}
-                wi={w(2)}
-              />
+            <Text style={{ color: "black", fontSize: dynamicFontSize * 1 }}>
+              Project{" "}
+            </Text>
+            <View
+              style={{
+                flex: 1,
+                borderWidth: 1,
+                borderColor: "#8A96D3",
+                borderRadius: 1,
+                marginVertical: 8,
+                backgroundColor: "#E9EEFF",
+                flexDirection: "row", // Add this line to align items horizontally
+                alignItems: "center",
+              }}
+            >
+              <TextInput
+                editable={isEditEnabled}
+                style={{
+                  paddingVertical: 10,
+                  paddingHorizontal: 8,
+                  backgroundColor: "#E9EEFF",
+                  borderBottomColor: "#DCDCDC",
+                  fontSize: 16,
+                  color: "#404040",
+                  width: "100%",
+                }}
+              >
+                Project Name
+              </TextInput>
             </View>
           </View>
         </View>
@@ -180,16 +213,36 @@ function CreateNewIssuesForm() {
           }}
         >
           <View>
-            <Text style={{ color: "black", fontSize: 26 }}>Project Task</Text>
+            <Text style={{ color: "black", fontSize: dynamicFontSize * 1 }}>
+              Project Task
+            </Text>
           </View>
-          <View>
-            <DropDown
-              data={Tasks}
-              selectValue={selectedTask}
-              oneSelect={handleSelectTask}
-              hi={h(2)}
-              wi={w(2)}
-            />
+          <View
+            style={{
+              flex: 1,
+              borderWidth: 1,
+              borderColor: "#8A96D3",
+              borderRadius: 1,
+              marginVertical: 8,
+              backgroundColor: "#E9EEFF",
+              flexDirection: "row", // Add this line to align items horizontally
+              alignItems: "center",
+            }}
+          >
+            <TextInput
+              editable={isEditEnabled}
+              style={{
+                paddingVertical: 10,
+                paddingHorizontal: 8,
+                backgroundColor: "#E9EEFF",
+                borderBottomColor: "#DCDCDC",
+                fontSize: 16,
+                color: "#404040",
+                width: "100%",
+              }}
+            >
+              Project Task Name
+            </TextInput>
           </View>
         </View>
         <View
@@ -198,15 +251,36 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "black", fontSize: 26 }}>Title</Text>
+            <Text style={{ color: "black", fontSize: dynamicFontSize * 1 }}>
+              Title
+            </Text>
           </View>
-          <View style={{ marginHorizontal: w(1) }}>
-            <Input
-              label="Enter Title"
-              secure={false}
-              onUpdateValue={onChangeText.bind(this, "taskName")}
-              value={enteredTaskName}
-            />
+          <View
+            style={{
+              flex: 1,
+              borderWidth: 1,
+              borderColor: "#8A96D3",
+              borderRadius: 1,
+              marginVertical: 8,
+              backgroundColor: "#E9EEFF",
+              flexDirection: "row", // Add this line to align items horizontally
+              alignItems: "center",
+            }}
+          >
+            <TextInput
+              editable={isEditEnabled}
+              style={{
+                paddingVertical: 10,
+                paddingHorizontal: 8,
+                backgroundColor: "#E9EEFF",
+                borderBottomColor: "#DCDCDC",
+                fontSize: 16,
+                color: "#404040",
+                width: "100%",
+              }}
+            >
+              Project Title
+            </TextInput>
           </View>
         </View>
 
@@ -216,28 +290,41 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "black", fontSize: 26 }}>Description</Text>
-            <View style={{ marginHorizontal: w(1) }}>
-              <TextInput
-                multiline={true}
-                onChangeText={onChangeText.bind(this, "taskPhase")}
-                numberOfLines={4}
+            <Text style={{ color: "black", fontSize: dynamicFontSize * 1 }}>
+              Description
+            </Text>
+            <ScrollView
+              style={{
+                borderWidth: 1,
+                borderColor: "#8A96D3",
+                borderRadius: 1,
+                marginVertical: 8,
+                backgroundColor: "#E9EEFF",
+                paddingVertical: w(1),
+                paddingHorizontal: w(1),
+              }}
+            >
+              <Text
                 style={{
-                  borderWidth: 1,
-                  borderColor: "#8A96D3",
-                  borderRadius: 1,
-                  marginVertical: 8,
-                  backgroundColor: "#E9EEFF",
-                  flexDirection: "row", // Add this line to align items horizontally
-                  alignItems: "center",
                   fontSize: dynamicFontSize * 0.8,
                   textAlign: "left",
-                  paddingVertical: w(1),
-                  flex: 1,
-                  maxHeight: h(10),
+                  color: "#404040",
+                  height: 100,
                 }}
-              ></TextInput>
-            </View>
+              >
+                There are varieties of ways in which history can be organized,
+                including chronologically, culturally, territorially, and
+                thematically. These divisions are not mutually exclusive, and
+                significant intersections are present. It is possible for
+                historians to concern themselves with both the very specific and
+                the very general, though the trend has been toward
+                specialization. The area called Big History resists this
+                specialization, and searches for universal patterns or trends.
+                History has often been studied with some practical or
+                theoretical aim, but may be studied out of simple intellectual
+                curiosity.
+              </Text>
+            </ScrollView>
           </View>
         </View>
         <View
@@ -248,14 +335,35 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Task Type</Text>
-            <View style={{ marginHorizontal: w(1) }}>
-              <Input
-                label="Enter Type"
-                secure={false}
-                onUpdateValue={onChangeText.bind(this, "taskType")}
-                value={enteredTaskType}
-              />
+            <Text style={{ color: "black", fontSize: dynamicFontSize * 1 }}>
+              Task Type
+            </Text>
+            <View
+              style={{
+                flex: 1,
+                borderWidth: 1,
+                borderColor: "#8A96D3",
+                borderRadius: 1,
+                marginVertical: 8,
+                backgroundColor: "#E9EEFF",
+                flexDirection: "row", // Add this line to align items horizontally
+                alignItems: "center",
+              }}
+            >
+              <TextInput
+                editable={isEditEnabled}
+                style={{
+                  paddingVertical: 10,
+                  paddingHorizontal: 8,
+                  backgroundColor: "#E9EEFF",
+                  borderBottomColor: "#DCDCDC",
+                  fontSize: 16,
+                  color: "#404040",
+                  width: "100%",
+                }}
+              >
+                Project Task Type
+              </TextInput>
             </View>
           </View>
         </View>
@@ -265,19 +373,39 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Status</Text>
+            <Text style={{ color: "black", fontSize: dynamicFontSize * 1 }}>
+              Status
+            </Text>
           </View>
-          <View style={{ flex: 1 }}>
-            <DropDown
-              data={Status}
-              selectValue={selectedStatus}
-              oneSelect={handleSelectStatus}
-              hi={h(2)}
-              wi={w(2)}
-            />
+          <View
+            style={{
+              flex: 1,
+              borderWidth: 1,
+              borderColor: "#8A96D3",
+              borderRadius: 1,
+              marginVertical: 8,
+              backgroundColor: "#E9EEFF",
+              flexDirection: "row", // Add this line to align items horizontally
+              alignItems: "center",
+            }}
+          >
+            <TextInput
+              editable={isEditEnabled}
+              style={{
+                paddingVertical: 10,
+                paddingHorizontal: 8,
+                backgroundColor: "#E9EEFF",
+                borderBottomColor: "#DCDCDC",
+                fontSize: 16,
+                color: "#404040",
+                width: "100%",
+              }}
+            >
+              Project status
+            </TextInput>
           </View>
         </View>
-        <View style={{ margin: 8 }}>
+        <View style={{ marginHorizontal: 8 }}>
           <Text style={{ color: "#5063BF", fontSize: dynamicFontSize * 1 }}>
             Created by
           </Text>
@@ -308,7 +436,7 @@ function CreateNewIssuesForm() {
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            margin: 8,
+            marginHorizontal: 8,
           }}
         >
           <View
@@ -322,25 +450,46 @@ function CreateNewIssuesForm() {
                 marginTop: w(2),
               }}
             >
-              <Text style={[{ maxWidth: w(30), marginEnd: w(5) }]}>
+              <Text
+                style={[
+                  {
+                    maxWidth: w(30),
+                    marginEnd: w(5),
+                    color: "black",
+                    fontSize: dynamicFontSize * 1,
+                  },
+                ]}
+              >
                 Date Created
               </Text>
             </View>
             <Pressable>
               <View
                 style={{
-                  flex: 0.7,
-                  flexDirection: "row",
+                  flex: 1,
+                  borderWidth: 1,
+                  borderColor: "#8A96D3",
+                  borderRadius: 1,
+                  marginVertical: 8,
+                  backgroundColor: "#E9EEFF",
+                  flexDirection: "row", // Add this line to align items horizontally
                   alignItems: "center",
                 }}
               >
-                <Input
-                  label="Due Date"
-                  editable={false}
-                  secure={false}
-                  onUpdateValue={onChangeText.bind(this, "dueDate")}
-                  value={enteredDueDate}
-                />
+                <TextInput
+                  editable={isEditEnabled}
+                  style={{
+                    paddingVertical: 10,
+                    paddingHorizontal: 8,
+                    backgroundColor: "#E9EEFF",
+                    borderBottomColor: "#DCDCDC",
+                    fontSize: 16,
+                    color: "#404040",
+                    width: "100%",
+                  }}
+                >
+                  Project Date
+                </TextInput>
                 <SvgXml
                   xml={Svg6}
                   width="20"
@@ -359,42 +508,56 @@ function CreateNewIssuesForm() {
                 marginTop: w(2),
               }}
             >
-              <Text style={[{ maxWidth: w(30), marginEnd: w(5) }]}>
+              <Text
+                style={[
+                  {
+                    maxWidth: w(30),
+                    marginEnd: w(5),
+                    color: "black",
+                    fontSize: dynamicFontSize * 1,
+                  },
+                ]}
+              >
                 Time Created
               </Text>
             </View>
             <Pressable>
               <View
                 style={{
-                  flex: 0.7,
-                  flexDirection: "row",
+                  flex: 1,
+                  borderWidth: 1,
+                  borderColor: "#8A96D3",
+                  borderRadius: 1,
+                  marginVertical: 8,
+                  backgroundColor: "#E9EEFF",
+                  flexDirection: "row", // Add this line to align items horizontally
                   alignItems: "center",
                 }}
               >
-                <Input
-                  label="00:00"
-                  editable={true}
-                  secure={false}
-                  onUpdateValue={onChangeText.bind(this, "estimatedTime")}
-                  value={enteredEstimatedTime}
-                />
+                <TextInput
+                  editable={isEditEnabled}
+                  style={{
+                    paddingVertical: 10,
+                    paddingHorizontal: 8,
+                    backgroundColor: "#E9EEFF",
+                    borderBottomColor: "#DCDCDC",
+                    fontSize: 16,
+                    color: "#404040",
+                    width: "100%",
+                  }}
+                >
+                  Project Time Created
+                </TextInput>
               </View>
             </Pressable>
           </View>
         </View>
 
         {/* Yes BUtton */}
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            margin: 8,
-          }}
-        >
+
+        <View style={{ marginHorizontal: 8, marginVertical: 6 }}>
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 22 }}>
-              Issue Test Phase
-            </Text>
+            <Text style={styles.headingText}>Issue Test Phase</Text>
           </View>
           <View
             style={{
@@ -404,72 +567,54 @@ function CreateNewIssuesForm() {
               justifyContent: "flex-start",
             }}
           >
-            <Pressable onPress={() => handleOptionPress("Yes")}>
-              <View style={getOptionStyle("Yes")}>
+            {/* #####################################################fix this##################################33 */}
+            <Pressable>
+              <View style={styles.viewBox}>
                 <Text style={styles.viewText}>Review</Text>
               </View>
             </Pressable>
-            <Pressable onPress={() => handleOptionPress("No")}>
-              <View style={getOptionStyle("No")}>
+            <Pressable>
+              <View style={styles.viewBox}>
                 <Text style={styles.viewText}>Testing</Text>
               </View>
             </Pressable>
           </View>
         </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            margin: 8,
-          }}
-        >
+        <View style={{ margin: 8 }}>
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 22 }}>Priority</Text>
+            <Text style={styles.headingText}>Priority</Text>
           </View>
           <View
             style={{
               flex: 1,
               flexDirection: "row",
               alignItems: "center",
-              padding: 3,
               justifyContent: "flex-start",
             }}
           >
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <Pressable onPress={() => handleOptionPressPriority("Low")}>
-                <View style={getOptionStyle("Low")}>
-                  <Text style={styles.viewText}>Low</Text>
-                </View>
-              </Pressable>
-              <Pressable onPress={() => handleOptionPressPriority("Medium")}>
-                <View style={getOptionStyle("Medium")}>
-                  <Text style={styles.viewText}>Medium</Text>
-                </View>
-              </Pressable>
-              <Pressable onPress={() => handleOptionPressPriority("High")}>
-                <View style={getOptionStyle("High")}>
-                  <Text style={styles.viewText}>High</Text>
-                </View>
-              </Pressable>
-              <Pressable onPress={() => handleOptionPressPriority("Critical")}>
-                <View style={getOptionStyle("Critical")}>
-                  <Text style={styles.viewText}>Critical</Text>
-                </View>
-              </Pressable>
-            </ScrollView>
+            {/* #####################################################fix this##################################33 */}
+            <Pressable>
+              <View style={styles.viewBox}>
+                <Text style={styles.viewText}>Low</Text>
+              </View>
+            </Pressable>
+            <Pressable>
+              <View style={styles.viewBox}>
+                <Text style={styles.viewText}>Medium</Text>
+              </View>
+            </Pressable>
+            <Pressable>
+              <View style={styles.viewBox}>
+                <Text style={styles.viewText}>High</Text>
+              </View>
+            </Pressable>
           </View>
         </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            margin: 8,
-          }}
-        >
+        <View style={{ margin: 8 }}>
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 22 }}>Severity</Text>
+            <Text style={styles.headingText}>Severity</Text>
           </View>
           <View
             style={{
@@ -479,18 +624,22 @@ function CreateNewIssuesForm() {
               justifyContent: "flex-start",
             }}
           >
-            <View style={styles.viewBox}>
-              <Text style={styles.viewText}>Severity</Text>
-            </View>
+            {/* #####################################################fix this##################################33 */}
+            <Pressable>
+              <View style={styles.viewBox}>
+                <Text style={styles.viewText}>Severity</Text>
+              </View>
+            </Pressable>
           </View>
         </View>
-        <View
+
+        {/* <View
           style={{
             justifyContent: "center",
             alignItems: "center",
             marginVertical: 40,
           }}
-        >
+        > */}
           <SubmitButton
             onPress={() => {
               if (validateForm()) {
@@ -514,7 +663,7 @@ function CreateNewIssuesForm() {
             {" "}
             Add Issue
           </SubmitButton>
-        </View>
+        
 
         {/* Toast */}
         {isModalVisible2 && (
@@ -535,7 +684,7 @@ function CreateNewIssuesForm() {
     </View>
   );
 }
-export default CreateNewIssuesForm;
+export default IssuesDetails;
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -571,5 +720,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     justifyContent: "flex-end",
+  },
+  headingText: {
+    color: "black",
+    fontSize: dynamicFontSize * 1,
   },
 });

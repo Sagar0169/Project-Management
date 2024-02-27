@@ -10,13 +10,14 @@ import {
   TouchableOpacity,
   Linking,
   Image,
+  Platform,
   ToastAndroid,
 } from "react-native";
 import { AVPlaybackStatus, Video } from "expo-av";
 import { useNavigation } from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { useState, useEffect } from "react";
-
+import { useState, useEffect, useContext } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 import Input from "./Input";
 import PriorityData from "./PriorityData";
@@ -30,8 +31,12 @@ import AssignedForItem from "./AssginedForItem";
 import BottomSheetDesign2 from "./BottomSheetDesign2";
 import BackArrowHeader from "./BackArrowHeader";
 import CustomModal from "./CustomModal";
+import * as FileSystem from 'expo-file-system';
 import { Svg, SvgXml } from "react-native-svg";
 import { Svg1, Svg2, Svg3, Svg4, Svg5, Svg6 } from "./svgs/svgs";
+import axios from "axios";
+import { addProject, uploadFile } from "../store/http";
+import { AuthContext } from "../store/auth-context";
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width
@@ -55,6 +60,17 @@ function h(value) {
 //WORK ON MULTIPLE SELECTION
 
 function AddNewProjectFrom() {
+  const { token } = useContext(AuthContext);
+  const readFileContent = async (fileUri) => {
+    const fileContent = await FileSystem.readAsStringAsync(fileUri, { encoding: FileSystem.EncodingType.Base64 })
+    return fileContent;
+  };
+
+  const getFileName = (uri) => {
+    // Extract file name from the URI
+    const parts = uri.split('/');
+    return parts[parts.length - 1];
+  };
   const navigation = useNavigation();
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -62,42 +78,115 @@ function AddNewProjectFrom() {
 
   const [isModalVisible2, setModalVisible2] = useState(false);
   const [isModalVisible3, setModalVisible3] = useState(false);
+  const [isModalVisible4, setModalVisible4] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedDocument, setSelectedDocument] = useState(null);
+  const [selectedSrs, setSelectedSrs] = useState(null);
+  const [selectedRequirement, setselectedRequirement] = useState(null);
+  const [selectedDocument, setselectedDocument] = useState(null);
+
+
+  const UserIdfetch =async()=>{
+   
+        return token.userId
+  }
 
   const handleDocumentPress = async (documentType, open) => {
     if (documentType === "srs") {
-      console.log("file opened");
-    } else {
       try {
         const result = await DocumentPicker.getDocumentAsync({
           type: "application/pdf",
         });
+        const fileContent = await readFileContent(result.assets[0].uri)
+        const loginRespone = await AsyncStorage.getItem("user")
+        const token = JSON.parse(loginRespone);
 
         if (!result.canceled && !open) {
-          // Handle the selected document here
-          console.log("Selected document:", result.assets);
-          setSelectedDocument(result.assets[0].name);
-        } else {
-          if (open && result.assets[0].uri) {
-            const source = { uri: result.assets[0].uri };
-            // Linking.openURL(result.assets[0].uri);
-            return (
-              <Video
-                source={source}
-                resizeMode="contain"
-                useNativeControls
-                style={{ width: "90%", height: 300 }}
-              />
-            );
-          } else {
-            console.log("Document picker cancelled", result.assets);
-          }
+          // const requestBody = {
+          //   userid: token.userId,
+          //   attach: {
+          //     uri: result.assets[0].uri,
+          //     name: result.assets[0].name,
+          //     size: fileContent.length,
+          //     type: 'application/pdf',
+          //   },
+          // };
+          // uploadFile(requestBody, token.token)
+
+          setSelectedSrs(result.assets[0].name);
         }
       } catch (err) {
-        console.error("Error picking document:", err);
+        setModalVisible4(true)
+        console.error("Error picking document:");
+
+      }
+    } else {
+      if (documentType === "documentation") {
+        try {
+          const result = await DocumentPicker.getDocumentAsync({
+            type: "application/pdf",
+          });
+
+          if (!result.canceled && !open) {
+            // Handle the selected document here
+            console.log("Selected document:", result.assets);
+
+            setselectedDocument(result.assets[0].name);
+          } else {
+            if (open && result.assets[0].uri) {
+              const source = { uri: result.assets[0].uri };
+              // Linking.openURL(result.assets[0].uri);
+              return (
+                <Video
+                  source={source}
+                  resizeMode="contain"
+                  useNativeControls
+                  style={{ width: "90%", height: 300 }}
+                />
+              );
+            } else {
+              setModalVisible4(true)
+              console.log("Document picker cancelled", result.assets);
+            }
+          }
+        } catch (err) {
+          setModalVisible4(true)
+          console.error("Error picking document:");
+        }
+      }
+      else {
+        try {
+          const result = await DocumentPicker.getDocumentAsync({
+            type: "application/pdf",
+          });
+
+          if (!result.canceled && !open) {
+            // Handle the selected document here
+            console.log("Selected document:", result.assets);
+            setselectedRequirement(result.assets[0].name);
+          } else {
+            if (open && result.assets[0].uri) {
+              const source = { uri: result.assets[0].uri };
+              // Linking.openURL(result.assets[0].uri);
+              return (
+                <Video
+                  source={source}
+                  resizeMode="contain"
+                  useNativeControls
+                  style={{ width: "90%", height: 300 }}
+                />
+              );
+            } else {
+              setModalVisible4(true)
+              console.log("Document picker cancelled", result.assets);
+            }
+          }
+        } catch (err) {
+          setModalVisible4(true)
+          console.error("Error picking document:");
+        }
       }
     }
+
   };
 
   const showModal = () => {
@@ -107,6 +196,7 @@ function AddNewProjectFrom() {
   const hideModal = () => {
     setModalVisible2(false);
     setModalVisible3(false);
+    setModalVisible4(false)
   };
 
   const showDatePicker = () => {
@@ -135,8 +225,10 @@ function AddNewProjectFrom() {
     setModalVisible(!isModalVisible);
   };
 
-  const handleSportSelection = (sport) => {
-    addAssignedForItem(sport);
+  const [selectedId, setSelectedId] = useState([]);
+  const handleSportSelection = (sport, id) => {
+    setSelectedId(id)
+    addAssignedForItem(sport, id);
     toggleModal();
   };
 
@@ -144,6 +236,7 @@ function AddNewProjectFrom() {
   const [enteredDueDate, setEnteredDueDate] = useState("");
   const [priorityItems, setPriorityItems] = useState(PriorityData);
   const [AssginedForItem, setAssginedForItem] = useState(AssignedForData);
+
   function onChangeText(inputType, enteredValue) {
     switch (inputType) {
       case "projectName":
@@ -154,32 +247,46 @@ function AddNewProjectFrom() {
         break;
     }
   }
-  function validateForm() {
+ async function validateForm() {
+  const loginRespone = await AsyncStorage.getItem("user")
+  const response = JSON.parse(loginRespone);
+  
     // Check if enteredProjectName, enteredDueDate, and AssginedForItem have values
     if (
       enteredProjectName.trim() !== "" &&
       enteredDueDate.trim() !== "" &&
       AssginedForItem.length > 0
     ) {
+      const newProject = {
+        userid: response.userId, // You may want to generate a unique ID
+        emp_id: selectedId,
+        project_name: enteredProjectName,
+        status: "Started",
+        due_date: enteredDueDate,
+        priority: selectedPriority.title,
+
+      }
+      addProject(token,newProject)
+
+
       return true;
     } else {
       return false;
     }
   }
-
-  const addAssignedForItem = (sport) => {
-    // Check if the item already exists in the list
-    sport.forEach((sport) => {
+  const addAssignedForItem = (sports, ids) => {
+    sports.forEach((sport, index) => {
       // Check if the item already exists in the list
       const isDuplicate = AssginedForItem.some((item) => item.title === sport);
 
       if (!isDuplicate) {
-        // Add a new assigned for item to the state
+        // Add a new assigned for item to the state with the corresponding id
         const newAssignedForItem = {
-          id: Math.random().toString(),
+          id: ids[index],
           title: sport,
           color: "#ffffff",
         };
+        console.log("assigned item", newAssignedForItem);
         setAssginedForItem((prevItems) => [...prevItems, newAssignedForItem]);
       } else {
         ToastAndroid.show("This member already selected", ToastAndroid.SHORT);
@@ -188,6 +295,8 @@ function AddNewProjectFrom() {
 
     toggleModal();
   };
+
+
 
   const [fontsLoaded, setFontsLoaded] = useState(false);
   useEffect(() => {
@@ -225,7 +334,7 @@ function AddNewProjectFrom() {
             <Input
               label="Project Name"
               secure={false}
-              onUpdateValue={onChangeText.bind(this, "projectName")}
+              onChangeText={onChangeText.bind(this, "projectName")}
               value={enteredProjectName}
             />
           </View>
@@ -263,7 +372,7 @@ function AddNewProjectFrom() {
                   label="Due Date"
                   editable={false}
                   secure={false}
-                  onUpdateValue={onChangeText.bind(this, "dueDate")}
+                  onChangeText={onChangeText.bind(this, "dueDate")}
                   value={enteredDueDate}
                 />
                 <SvgXml
@@ -415,7 +524,7 @@ function AddNewProjectFrom() {
                 alignItems: "center",
                 marginTop: w(5),
               }}
-              onPress={() => handleDocumentPress("Requirements", false)}
+
             >
               <SvgXml xml={Svg3} width="55" height="55" />
 
@@ -441,12 +550,62 @@ function AddNewProjectFrom() {
                 }}
               >
                 <SvgXml xml={Svg4} width="30" height="30" />
+                {selectedSrs && (
+                  <Text style={{ fontSize: dynamicFontSize * 1 }}>
+                    {selectedSrs}
+                  </Text>
+                )}
+
+                {!selectedSrs && (
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text>No Selected File - </Text>
+                    <SvgXml xml={Svg5} width="30" height="30" />
+                  </View>
+                )}
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.borderContainerDocument2, { marginTop: w(5) }]}
+              onPress={() => handleDocumentPress("requirements")}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <SvgXml xml={Svg4} width="30" height="30" />
+                {selectedRequirement && (
+                  <Text style={{ fontSize: dynamicFontSize * 1 }}>
+                    {selectedRequirement}
+                  </Text>
+                )}
+                {!selectedRequirement && (
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text>No Selected File - </Text>
+                    <SvgXml xml={Svg5} width="30" height="30" />
+                  </View>
+                )}
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.borderContainerDocument2, { marginTop: w(5) }]}
+              onPress={() => handleDocumentPress("documentation")}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <SvgXml xml={Svg4} width="30" height="30" />
                 {selectedDocument && (
                   <Text style={{ fontSize: dynamicFontSize * 1 }}>
                     {selectedDocument}
                   </Text>
                 )}
-
                 {!selectedDocument && (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Text>No Selected File - </Text>
@@ -478,6 +637,7 @@ function AddNewProjectFrom() {
           <SubmitButton
             onPress={() => {
               if (validateForm()) {
+
                 setModalVisible2(true);
               } else {
                 setModalVisible3(true);
@@ -500,6 +660,13 @@ function AddNewProjectFrom() {
           <CustomModal
             visible={isModalVisible3}
             message="Please fill all details."
+            onHide={hideModal}
+          />
+        )}
+         {isModalVisible4 && (
+          <CustomModal
+            visible={isModalVisible3}
+            message="Document not selected"
             onHide={hideModal}
           />
         )}

@@ -1,9 +1,12 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useContext } from "react";
+import { AuthContext } from "./auth-context";
 
 const BACKEND_URL =
   "https://projectmanagement-84b7c-default-rtdb.firebaseio.com";
 const BASE_URl = "http://167.172.152.167:81/pm_tool_app_old/api/rest/";
+
 
 async function authenticate(email, password) {
   // const url = `https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${API_KEY}`;
@@ -29,6 +32,7 @@ async function authenticate(email, password) {
 }
 
 async function getTasksDetails(userid, token,emp_id) {
+
   try {
     const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/taskdetails", {
       userid: userid,
@@ -41,8 +45,36 @@ async function getTasksDetails(userid, token,emp_id) {
     
     const data = response.data._result;
     const _resultflag = response.data._resultflag;
-  
-    console.log(data);
+    if(_resultflag===0)
+    {
+      return _resultflag
+    }
+    return data;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
+
+
+async function getProjectDetails(userid, token,emp_id) {
+
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/projectlist", {
+      userid: userid,
+      // emp_id:emp_id
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data._result;
+    const _resultflag = response.data._resultflag;
+    if(_resultflag===0)
+    {
+      return _resultflag
+    }
     return data;
   } catch (error) {
     console.error("Error in authenticate:", error);
@@ -99,6 +131,69 @@ async function postCheckInData(userid,checkedInStatus,time, place_name,date,loca
   }
 }
 
+
+async function updateStatus(userid, token,id,status) {
+  
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/editStatus", {
+      userid: userid,
+      id:id,
+      status:status
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data.message;
+    const _resultflag = response.data._resultflag;
+  
+    console.log("Status update ",data);
+    return _resultflag;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
+export async function addProject( token,projectData) {
+  console.log(projectData)
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/addproject", projectData,{
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data.message;
+    const _resultflag = response.data._resultflag;
+  
+    console.log("Status update ",data);
+    return _resultflag;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
+
+export async function uploadFile(requestBody, token) {
+  
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/uploadfile", requestBody,{
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+  
+    const _resultflag = response.data
+    console.log("api response  ",response.data);
+    return _resultflag;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
 async function getEmployees(userid,token, designation) {
   try {
     const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/getemployees", {
@@ -142,12 +237,45 @@ async function logout(userid, token) {
 }
 
 
+async function getDeleteTask(userid,id, token) {
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/deletetask", {
+      userid: userid,
+      id: id,
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data.message;
+    const _resultflag = response.data._resultflag;
+  
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
+
+
 export function login(email, password) {
   return authenticate(email, password);
 }
 
+export function deleteTask(userid,id, token) {
+  return getDeleteTask(userid,id, token);
+}
+
 export function getTaks(userId, token,emp_id) {
   return getTasksDetails(userId, token,emp_id);
+}
+export function getProjects(userId, token,emp_id) {
+  return getProjectDetails(userId, token,emp_id);
+}
+export function setStatus(userId, token,id,status) {
+  return updateStatus(userId, token,id,status);
 }
 
 export function getCheckInList(userId, token) {
@@ -252,13 +380,6 @@ export async function assignedTasksFetch() {
   return assigned;
 }
 
-export function updateTask(id, taskData) {
-  return axios.put(BACKEND_URL + `/tasks/${id}.json`, taskData);
-}
-
-export function deleteTask(id) {
-  return axios.delete(BACKEND_URL + `/tasks/${id}.json`);
-}
 
 export async function fetchCheckIn() {
   const response = await axios.get(BACKEND_URL + "/checkIn.json");

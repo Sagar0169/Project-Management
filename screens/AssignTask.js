@@ -17,6 +17,10 @@ export default function AssignTask({ navigation }) {
     navigation.navigate("AssignNewTask",{ userId: storedUserId});
     console.log(storedUserId);
   };
+  const handleEditPress = () => {
+    navigation.navigate("AssignNewTask",{ userId: storedUserId});
+    console.log(storedUserId);
+  };
 
   const fetchStoredProfile = useCallback(async () => {
     try {
@@ -57,12 +61,20 @@ export default function AssignTask({ navigation }) {
         <AssignTaskFlatList navigation={navigation} storedProfile={storedProfile}/>
       </View>
       {storedProfile !== "Developer" && (
+        <>
         <TouchableOpacity
           style={[styles.addButton, { backgroundColor: "#5063Bf" }]}
           onPress={handleAddTaskPress}
-        >
+        > 
+
+         
           <MaterialCommunityIcons name="plus" size={30} color="#fff" />
         </TouchableOpacity>
+       
+        
+        </>
+        
+        
       )}
     </View>
   );

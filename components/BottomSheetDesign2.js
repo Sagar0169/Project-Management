@@ -6,6 +6,9 @@ import {
   StyleSheet,
   Pressable,
 } from "react-native";
+import { useCallback } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getEmp } from "../store/http";
 import SubmitButton from "./ui/SubmitButton";
 
 
@@ -15,7 +18,7 @@ const ProjectDetails = ({ item,handleSportSelection,isSelected }) => {
  
     return (
       <Pressable
-      onPress={() => handleSportSelection(item.projectName)}
+      onPress={() => handleSportSelection(item.name,item.emp_id)}
       style={[styles.itemContainer2, ]}
     >
       <View
@@ -35,7 +38,7 @@ const ProjectDetails = ({ item,handleSportSelection,isSelected }) => {
             marginVertical: 14,
           }}
         >
-          <Text style={styles.text2}>{item.projectName}</Text>
+          <Text style={styles.text2}>{item.name}</Text>
         </View>
       </View>
     </Pressable>
@@ -47,35 +50,98 @@ const ProjectDetails = ({ item,handleSportSelection,isSelected }) => {
 
 const BottomSheetDesign2 = ({handleSportSelection}) => {
   const [selectedItems, setSelectedItems] = useState([]);
-  const members = ['Shreyash Jain (Android)', 'Nimish Sharma(Android)', 'Akshat Bansal (Android)', 'Sagar (Android)', 'Rohit (Java)', 'Aman pandey(Java)', 'Atul (Java)', 'Shubhra srivastava (php)', 'Yashika gupta (php)', 'Abhay sahani (Designer)', 'Jitendar singh (Designer)'];
-  let lastMemberIndex = -1;
-  const generateRandomProjectName = () => {
-   
-      lastMemberIndex = (lastMemberIndex + 1) % members.length;
+  const [selectedItemIDs, setSelectedItemIDs] = useState([]);
 
-     
-      return members[lastMemberIndex];
+  
 
-  };
+  const [task, setTask] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
+  const [storedProfile, setStoreProfile] = useState("");
 
-  const toggleSelection = (projectName) => {
+  const fetchStoredProfile = useCallback(async () => {
+    try {
+      setStoreProfile(await AsyncStorage.getItem("profile"));
+
+      if (storedProfile !== null) {
+        console.log("Stored Profile:", storedProfile);
+      } else {
+        console.log("Profile not found in AsyncStorage");
+      }
+    } catch (error) {
+      console.error("Error fetching profile from AsyncStorage:", error);
+    }
+  }, [storedProfile]);
+
+  useEffect(() => {
+    fetchStoredProfile();
+  }, [fetchStoredProfile]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchData = async () => {
+      setIsFetching(true);
+
+      try {
+        
+        let expenses;
+        const loginRespone = await AsyncStorage.getItem("user");
+        const response = JSON.parse(loginRespone);
+        if (storedProfile === "super admin") {
+          const tasks = await getEmp(response.userId, response.token);
+          
+          expenses = tasks;
+        } else {
+          const tasks = await getEmp(response.userId, response.token);
+          
+          expenses = tasks;
+        }
+
+        if (isMounted) {
+          setTask(expenses);
+        }
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      } finally {
+        if (isMounted) {[]
+          setIsFetching(false);
+        }
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [storedProfile]);
+
+  const toggleSelection = (projectName, projectid) => {
     // Check if the item is already selected
-    if (selectedItems.includes(projectName)) {
+    if (selectedItems.some((item) => item.name === projectName)) {
       // Item is selected, remove it from the selection
       setSelectedItems((prevSelected) =>
-        prevSelected.filter((item) => item !== projectName)
+        prevSelected.filter((item) => item.name !== projectName)
+      );
+
+      // Remove corresponding projectid from selectedItemIDs
+      setSelectedItemIDs((prevSelectedIDs) =>
+        prevSelectedIDs.filter((id) => id !== projectid)
       );
     } else {
       // Item is not selected, add it to the selection
       setSelectedItems((prevSelected) => [...prevSelected, projectName]);
+
+      // Add corresponding projectid to selectedItemIDs
+      setSelectedItemIDs((prevSelectedIDs) => [...prevSelectedIDs, projectid]);
     }
   };
 
   // Generate project data with random project names
-  const projectData = Array.from({ length:11 }, (_, index) => ({
-    projectName: generateRandomProjectName(),
 
-  }));
+
+  
+ 
   return (
     <View style={{flex:1}}>
        <View style={{ alignItems: 'center',marginTop:10 }}>
@@ -83,18 +149,19 @@ const BottomSheetDesign2 = ({handleSportSelection}) => {
         </View>
    <View style={{flex:1}}>
    <FlatList
-      data={projectData}
+      data={task}
       renderItem={({ item }) =>    
       <ProjectDetails
       item={item}
       handleSportSelection={toggleSelection}
-      isSelected={selectedItems.includes(item.projectName)}
+      isSelected={selectedItems.includes(item.name)}
     />}
-      keyExtractor={(item, index) => `${item.id}-${index}`}
+    keyExtractor={(item, index) => `${item}-${index}`}
+
     />
    </View>
    <View style={{ alignItems: 'center',marginTop:10, marginBottom:20 }}>
-          <SubmitButton onPress={() => handleSportSelection(selectedItems)} color='black'>Add</SubmitButton>
+          <SubmitButton onPress={() => handleSportSelection(selectedItems,selectedItemIDs)} color='black'>Add</SubmitButton>
         </View>
    
      </View>
