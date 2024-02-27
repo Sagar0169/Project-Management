@@ -16,7 +16,7 @@ import { getProjects } from "../store/http";
 const ProjectDetails = ({ item }) => {
   const navigation = useNavigation()
   function navigationPdf(){
-    navigation.navigate('Pdf')
+    // navigation.navigate('Pdf')
   }
   if (item.id !== "placeholder") {
     return (
