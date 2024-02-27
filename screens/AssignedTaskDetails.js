@@ -10,10 +10,11 @@ import {
   TextInput,
   Dimensions,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 // import Toast from "react-native-simple-toast";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { assignedStore, storeTask } from "../store/http";
+import { assignedStore, deleteTask, storeTask } from "../store/http";
 import useFonts from "../hooks/useFonts";
 import { Svg, SvgXml } from "react-native-svg";
 import Input from "../components/Input";
@@ -23,6 +24,8 @@ import { Svg6 } from "../components/svgs/svgs";
 import BackArrowHeaderWhite from "../components/BackArrowHeaderWhite";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useSearch } from "../store/search-redux";
+import Toast from "react-native-toast-message";
 
 const { width, height } = Dimensions.get("window");
 
@@ -50,6 +53,7 @@ function h(value) {
 function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
   const item = route.params.ID;
   console.log("Task ID", item);
+
   useEffect(() => {
     const currentDate = new Date();
     setSelectedDate(currentDate);
@@ -167,6 +171,9 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedPriority, setSelectedPriority] = useState(null);
   const [selectedComplexity, setselectedComplexity] = useState(null);
+  const { searchQuery, setSearchQuery } = useSearch();
+  const [task, setTask] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
   const handleOptionPress = (option) => {
     setSelectedOption(option);
   };
@@ -178,7 +185,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
   };
   const handleQcDocStatusChange = (status) => {
     if (isEditEnabled) {
-      getOptionStyle(status)
+      getOptionStyle(status);
       setQcDocStatus(status);
     }
   };
@@ -212,6 +219,79 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
     };
   };
 
+  const fetchData = useCallback(async () => {
+    setIsFetching(true);
+
+    try {
+      let expenses;
+      const loginRespone = await AsyncStorage.getItem("user");
+      const response = JSON.parse(loginRespone);
+      console.log(response.token);
+      if (storedProfile === "super admin") {
+        const tasks = await deleteTask(
+          response.userId,
+          response.id,
+          response.token
+        );
+        if (searchQuery) {
+          expenses = tasks.filter((item) =>
+            item.assign_to.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+        } else {
+          expenses = tasks;
+        }
+        expenses = tasks;
+      } else {
+        const tasks = await deleteTask(
+          response.userId,
+          response.id,
+          response.token
+        );
+        console.log("Daata", tasks);
+        expenses = tasks;
+      }
+
+      setTask(expenses);
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    } finally {
+      setIsFetching(false);
+    }
+  }, [storedProfile, searchQuery]);
+
+  const handleDeleteItem = () => {
+    Alert.alert(
+      "Delete Task",
+      "Are you sure you want to delete this task?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: async () => {
+            try {
+              // Make API request to delete the item
+              const loginRespone = await AsyncStorage.getItem("user");
+              const response = JSON.parse(loginRespone);
+
+              await deleteTask(response.userId, item.id, response.token);
+
+              // If you want to navigate back after deletion
+
+              navigation.goBack();
+            } catch (error) {
+              console.error("Error deleting task:", error);
+              // Handle error appropriately
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   const handleSportSelection = (sport) => {
     setAssginedForItem(sport);
     toggleModal();
@@ -233,6 +313,8 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
   return (
     <View style={{ flex: 1, backgroundColor: "white", paddingTop: w(5) }}>
       <BackArrowHeaderWhite
+        deleteCall={handleDeleteItem}
+        showDelete={true}
         showSearch={true}
         filter={true}
         title="Tasks Details"
@@ -752,20 +834,27 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               <Text style={styles.viewText}>High</Text>
             </View>
           </View>
-          
-         
         </View>
-
       </ScrollView>
-      <TouchableOpacity
-          style={[styles.addButton, { backgroundColor: "#5063Bf" }]}
-          onPress={() => setIsEditEnabled(!isEditEnabled)}>
+
+      {storedProfile !== "Developer" && (
+        <>
+          <TouchableOpacity
+            style={[styles.addButton, { backgroundColor: "#5063Bf" }]}
+            onPress={() => setIsEditEnabled(!isEditEnabled)}
+          >
             {isEditEnabled ? (
-              <MaterialCommunityIcons name="content-save" size={30} color="white" />
+              <MaterialCommunityIcons
+                name="content-save"
+                size={30}
+                color="white"
+              />
             ) : (
               <MaterialCommunityIcons name="pencil" size={30} color="white" />
             )}
           </TouchableOpacity>
+        </>
+      )}
 
       {isDatePickerVisible && (
         <DateTimePicker
