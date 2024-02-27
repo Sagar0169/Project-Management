@@ -663,7 +663,7 @@ function IssuesDetails({ navigation }) {
             {" "}
             Add Issue
           </SubmitButton>
-        </View> */}
+        
 
         {/* Toast */}
         {isModalVisible2 && (

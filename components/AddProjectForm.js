@@ -78,6 +78,7 @@ function AddNewProjectFrom() {
 
   const [isModalVisible2, setModalVisible2] = useState(false);
   const [isModalVisible3, setModalVisible3] = useState(false);
+  const [isModalVisible4, setModalVisible4] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedSrs, setSelectedSrs] = useState(null);
   const [selectedRequirement, setselectedRequirement] = useState(null);
@@ -114,8 +115,9 @@ function AddNewProjectFrom() {
           setSelectedSrs(result.assets[0].name);
         }
       } catch (err) {
-        console.error("Error picking document:", err);
-        
+        setModalVisible4(true)
+        console.error("Error picking document:");
+
       }
     } else {
       if (documentType === "documentation") {
@@ -142,11 +144,13 @@ function AddNewProjectFrom() {
                 />
               );
             } else {
+              setModalVisible4(true)
               console.log("Document picker cancelled", result.assets);
             }
           }
         } catch (err) {
-          console.error("Error picking document:", err);
+          setModalVisible4(true)
+          console.error("Error picking document:");
         }
       }
       else {
@@ -172,11 +176,13 @@ function AddNewProjectFrom() {
                 />
               );
             } else {
+              setModalVisible4(true)
               console.log("Document picker cancelled", result.assets);
             }
           }
         } catch (err) {
-          console.error("Error picking document:", err);
+          setModalVisible4(true)
+          console.error("Error picking document:");
         }
       }
     }
@@ -190,6 +196,7 @@ function AddNewProjectFrom() {
   const hideModal = () => {
     setModalVisible2(false);
     setModalVisible3(false);
+    setModalVisible4(false)
   };
 
   const showDatePicker = () => {
@@ -653,6 +660,13 @@ function AddNewProjectFrom() {
           <CustomModal
             visible={isModalVisible3}
             message="Please fill all details."
+            onHide={hideModal}
+          />
+        )}
+         {isModalVisible4 && (
+          <CustomModal
+            visible={isModalVisible3}
+            message="Document not selected"
             onHide={hideModal}
           />
         )}
