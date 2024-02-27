@@ -26,23 +26,23 @@ export default function CheckInDetails({
   date,
   checkInTime,
   location,
-  remarks,
   checkOut,
   isCheckedIn,
   place,
 }) {
   console.log("cc" + isCheckedIn);
+  
   return (
     <View style={{borderWidth:w(0.2),backgroundColor:"rgba(80, 99, 191, 0.21)",marginHorizontal:w(3.4),marginTop:h(0.1),borderRadius:w(2),padding:w(3)}}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={{ flexDirection: "row" }}>
-          {isCheckedIn && (
+          {isCheckedIn===1 && (
             <>
               <Text style={{fontWeight: "700",color:"#45BE27"}}>Check In:</Text>
               <Text style={{ marginStart: 5 }}>{checkInTime}</Text>
             </>
           )}
-          {!isCheckedIn && (
+          {isCheckedIn===0 && (
             <>
               <Text style={{fontWeight: "700",color:"#DC1010"}}>Check Out:</Text>
               <Text style={{ marginStart: 5 }}>{checkOut}</Text>

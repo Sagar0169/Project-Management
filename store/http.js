@@ -50,6 +50,55 @@ async function getTasksDetails(userid, token,emp_id) {
   }
 }
 
+async function getCheckInDetails(userid, token) {
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/checkInDetailList", {
+      userid: userid,
+      
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data;
+    const _resultflag = response.data._resultflag;
+  
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
+postCheckInData
+
+async function postCheckInData(userid,checkedInStatus,time, place_name,date,location,token) {
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/checkinDetailAdd", {
+    userid: userid,
+    check_in_status:checkedInStatus,
+    time:time,
+    place_name:place_name,
+    date:date,
+    location:location
+      
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data;
+    const _resultflag = response.data._resultflag;
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
+
 async function getEmployees(userid,token, designation) {
   try {
     const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/getemployees", {
@@ -100,6 +149,16 @@ export function login(email, password) {
 export function getTaks(userId, token,emp_id) {
   return getTasksDetails(userId, token,emp_id);
 }
+
+export function getCheckInList(userId, token) {
+  return getCheckInDetails(userId, token);
+}
+export function postCheckIn(userid,checkedInStatus,time, place_name,date,location,token) {
+  return postCheckInData(userid,checkedInStatus,time, place_name,date,location, token);
+}
+
+
+getCheckInDetails
 
 export function getEmp(userId, token,designation) {
   return getEmployees(userId, token,designation);

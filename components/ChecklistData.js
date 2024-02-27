@@ -26,13 +26,13 @@ export default function ChecklistData({id,data,date}) {
     const item=itemData.item
     const mealsDetails={
      id:item.id,
-     date:item.date,
-     checkInTime:item.checkInTime,
+     date:item.checkinoutdate,
+     checkInTime:item.check_in_time,
      location:item.location,
-     remarks:item.remarks,
-     checkOut:item.checkOut,
-     isCheckedIn:item.isCheckedIn,
-     place:item.placeName
+    //  remarks:item.remarks,
+     checkOut:item.check_out_time,
+     isCheckedIn:item.check_in_status,
+     place:item.place_name
 
 
       

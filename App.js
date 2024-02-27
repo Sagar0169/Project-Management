@@ -23,8 +23,13 @@ import Music from "./screens/Music";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import ContextProvider from "./store/context";
 import { SearchProvider } from "./store/search-redux";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { CustomDrawer } from "./components/drawer/CustomDrawer";
 
+let name;
+  let type;
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 function Root() {
   const [isTryingLogin, setIsTryingLogin] = useState(true);
@@ -32,6 +37,23 @@ function Root() {
   const authCtx = useContext(AuthContext);
 
   useEffect(() => {
+
+    const getUserDetails = async() => {
+
+      try{
+        const loginRespone=await AsyncStorage.getItem("user")
+        const response = JSON.parse(loginRespone);
+        console.log("name&type",response)
+        name=response.name
+        type=response.usertype
+        
+      }catch{
+      }
+      }
+      getUserDetails()
+
+
+
     async function fetchToken() {
       try {
         // Prevent native splash screen from auto-hiding
@@ -71,13 +93,22 @@ function AuthStack() {
     </Stack.Navigator>
   );
 }
-
+function DrawerHandler() {
+  return (
+    <Drawer.Navigator
+      screenOptions={{ headerShown: false }}
+      drawerContent={(props) => <CustomDrawer {...props} name={name} type={type} />}
+    >
+      <Drawer.Screen name="DashBoardScreen" component={DashBoard} />
+    </Drawer.Navigator>
+  );
+}
 function AuthenticatedStack() {
   const authCtx = useContext(AuthContext);
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Dashboard" component={DashBoard} />
+      <Stack.Screen name="Dashboard" component={DrawerHandler} />
 
       <Stack.Screen
         name="AssignedProject"

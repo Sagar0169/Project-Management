@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
@@ -236,6 +237,9 @@ export default function DashBoard({ navigation }) {
           marginVertical: 10,
         }}
       >
+           <TouchableOpacity  onPress={() => {
+            navigation.openDrawer();
+          }}>
         <View
           style={{
             backgroundColor: "#E9EEFF",
@@ -243,13 +247,17 @@ export default function DashBoard({ navigation }) {
             padding: w(2),
           }}
         >
-          <SvgXml
+       
+<SvgXml
             xml={lineRightSvg}
             width="20"
             height="20"
             style={{ margin: 4 }}
           />
+         
+          
         </View>
+        </TouchableOpacity>
         <TouchableOpacity onPress={handleLogout}>
           <SvgXml xml={bellIcon} width="20" height="20" style={{ margin: 4 }} />
         </TouchableOpacity>

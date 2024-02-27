@@ -603,7 +603,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
           </SubmitButton>
           <SubmitButton color={"#5063BF"}>Cancel</SubmitButton>
         </View>
-        <Text
+        {/* <Text
           style={{
             // alignSelf: "center",
             fontSize: dynamicFontSize * 1.2,
@@ -614,9 +614,9 @@ const formattedWorkingHours = isNaN(workingHoursHours)
           }}
         >
           Daily Work
-        </Text>
+        </Text> */}
 
-        <TimeSheetList selectedDate={selectedDate}/>
+        {/* <TimeSheetList selectedDate={selectedDate}/> */}
       </ScrollView>
     </>
   );
