@@ -13,7 +13,7 @@ function AssignedForItem({ item }){
         <Pressable onPress={handlePress}>
         <View style={{...styles.borderContainer,backgroundColor}}>
             <Text>
-                {item.title}
+                Name: {item.title} , Employee id:{item.id}
             </Text>
 
         </View>

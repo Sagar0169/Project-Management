@@ -600,7 +600,7 @@ function IssuesDetails({ navigation }) {
             margin: 8,
           }}
         >
-          <View style={{ flex: 1 }}>
+          {/* <View style={{ flex: 1 }}>
             <Text style={{ color: "#666666", fontSize: 22 }}>Severity</Text>
           </View>
           <View
@@ -622,7 +622,7 @@ function IssuesDetails({ navigation }) {
             alignItems: "center",
             marginVertical: 40,
           }}
-        >
+        > */}
           <SubmitButton
             onPress={() => {
               if (validateForm()) {

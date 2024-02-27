@@ -58,10 +58,7 @@ async function getTasksDetails(userid, token,emp_id) {
 
 
 async function updateStatus(userid, token,id,status) {
-  console.log("userId",userid)
-  console.log("token",token)
-  console.log("id",id)
-  console.log("status",status)
+  
   try {
     const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/editStatus", {
       userid: userid,
@@ -83,7 +80,45 @@ async function updateStatus(userid, token,id,status) {
     throw error;
   }
 }
+export async function addProject( token,projectData) {
+  console.log(projectData)
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/addproject", projectData,{
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data.message;
+    const _resultflag = response.data._resultflag;
+  
+    console.log("Status update ",data);
+    return _resultflag;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
 
+export async function uploadFile(requestBody, token) {
+  
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/uploadfile", requestBody,{
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+  
+    const _resultflag = response.data
+    console.log("api response  ",response.data);
+    return _resultflag;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
 async function getEmployees(userid,token, designation) {
   try {
     const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/getemployees", {
