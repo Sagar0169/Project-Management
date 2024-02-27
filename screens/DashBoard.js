@@ -46,9 +46,9 @@ export default function DashBoard({ navigation }) {
   const authCtx = useContext(AuthContext);
 
   const handleLogout = async () => {
-    const loginRespone = await AsyncStorage.getItem("user");
-    const response = JSON.parse(loginRespone);
-    authCtx.logout();
+    // const loginRespone = await AsyncStorage.getItem("user");
+    // const response = JSON.parse(loginRespone);
+    // authCtx.logout();
     // const logout = await Logout(response.userId, response.token);
     // if (logout._resultflag == 1) {
     //   authCtx.logout();

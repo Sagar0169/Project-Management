@@ -133,16 +133,16 @@ export default function CheckInLayout({ navigation }) {
           else if(_resultflag.checkinstatus==0){
             setCheckedIn(true)
           }
-        if(_resultflag.checkinstatus){
+        
           if(_resultflag.checkinstatus==1){
             setCheckedInNumeric(0)
           }
-          else{
+          else if(_resultflag.checkinstatus==0){
             setCheckedInNumeric(1)
       
           }
           
-        } 
+        
         
         
           console.log("status of checkedin"+checkedIn)
