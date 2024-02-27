@@ -8,12 +8,13 @@ export default function BackArrowHeaderWhite({
   title,
   backButton,
   showArrow,
+  showDelete,
   searchTitle,
   showSearch,
   color,
+  deleteCall
 }) {
   const { searchQuery, setSearchQuery } = useSearch();
-
 
   return (
     <LinearGradient
@@ -28,10 +29,10 @@ export default function BackArrowHeaderWhite({
         style={{
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "flex-start",
+          justifyContent: "space-between",
         }}
       >
-        <View style={{ width: "33%" }}>
+        <View>
           {showArrow ? null : (
             <Pressable
               onPress={backButton}
@@ -61,6 +62,21 @@ export default function BackArrowHeaderWhite({
         >
           {title}
         </Text>
+        <View>
+          {showDelete ? (
+            <Pressable
+              onPress={deleteCall}
+              hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
+            >
+              <Ionicons
+                name="trash-outline"
+                style={{ width: 20, height: 20, marginTop: 2, marginStart: 5 }}
+                size={20}
+                color="black"
+              />
+            </Pressable>
+          ) : null}
+        </View>
       </View>
       {showSearch ? null : (
         <View
