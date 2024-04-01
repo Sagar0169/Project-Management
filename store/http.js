@@ -168,6 +168,7 @@ export async function addProject( token,projectData) {
     const _resultflag = response.data._resultflag;
   
     console.log("Status update ",data);
+    console.log("Status update ",_resultflag);
     return _resultflag;
   } catch (error) {
     console.error("Error in authenticate:", error);

@@ -80,7 +80,6 @@ function AddNewProjectFrom() {
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
-
   const [isModalVisible2, setModalVisible2] = useState(false);
   const [isModalVisible3, setModalVisible3] = useState(false);
   const [isModalVisible4, setModalVisible4] = useState(false);
@@ -649,8 +648,9 @@ function AddNewProjectFrom() {
           <SubmitButton
             onPress={() => {
               if (validateForm()) {
-
+                
                 setModalVisible2(true);
+                navigation.goBack()
               } else {
                 setModalVisible3(true);
               }
