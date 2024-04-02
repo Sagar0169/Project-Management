@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   Image,
   Pressable,
@@ -12,6 +12,9 @@ import {
   Dimensions,
 } from "react-native";
 import SubmitButton from "./ui/SubmitButton";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getProjects } from "../store/http";
+import { useSearch } from "../store/search-redux";
 // import Toast from "react-native-simple-toast";
 
 import BottomSheetDesign2 from "./BottomSheetDesign2";
@@ -21,6 +24,8 @@ import CustomModal from "./CustomModal";
 import Input from "./Input";
 import { Svg, SvgXml } from "react-native-svg";
 import { Svg6 } from "./svgs/svgs";
+import BottomSheetProjectList from "./BottomSheetProjectList";
+import BottomSheetTaskList from "./BottomSheetTaskList";
 
 //CHANGE MULTIPLE SELECTION FROM BOTTOMSHEET2
 
@@ -47,6 +52,7 @@ function h(value) {
 function CreateNewIssuesForm() {
   const [isModalVisible2, setModalVisible2] = useState(false);
   const [isModalVisible3, setModalVisible3] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
 
   function validateForm() {
     // Check if enteredProjectName, enteredDueDate, and AssginedForItem have values
@@ -60,10 +66,12 @@ function CreateNewIssuesForm() {
       selectedPriority !== null &&
       AssginedForItem.length > 0
     ) {
+      
       return true;
     } else {
       return false;
     }
+   
   }
 
   function ModalHandler() {
@@ -77,7 +85,6 @@ function CreateNewIssuesForm() {
         }}
       >
         <View style={[styles.modalContainer]}>
-          {/* <BottomSheet sports={['Shreyash Jain (Android)', 'Nimish Sharma(Android)', 'Akshat Bansal (Android)', 'Sagar (Android)', 'Rohit (Java)', 'Aman pandey(Java)', 'Atul (Java)', 'Shubhra srivastava (php)', 'Yashika gupta (php)', 'Abhay sahani (Designer)', 'Jitendar singh (Designer)']} handleSportSelection={handleSportSelection} /> */}
           <BottomSheetDesign2 handleSportSelection={handleSportSelection} />
         </View>
       </Modal>
@@ -88,12 +95,15 @@ function CreateNewIssuesForm() {
   const [enteredTaskType, setEnteredTaskType] = useState("");
   const [enteredDueDate, setEnteredDueDate] = useState("");
   const [enteredEstimatedTime, setEnteredEstimatedTime] = useState("");
-  const [selectedProject, setSelectedproject] = useState(null);
+
+  const [selectedProject, setSelectedproject] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(null);
 
   const handleSelectProject = (category) => {
+
     setSelectedproject(category);
+    console.log(selectedProject)
     // Add any additional logic you want when a category is selected
   };
   const handleSelectTask = (category) => {
@@ -123,10 +133,15 @@ function CreateNewIssuesForm() {
         break;
     }
   }
+
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisibletask, setModalVisibletask] = useState(false);
   const [AssginedForItem, setAssginedForItem] = useState("");
+  const [AssginedForTask, setAssginedForTask] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedPriority, setSelectedPriority] = useState(null);
+  const [task, setTask] = useState([]);
+  const [storedProfile, setStoreProfile] = useState("");
   const handleOptionPress = (option) => {
     setSelectedOption(option);
   };
@@ -143,15 +158,45 @@ function CreateNewIssuesForm() {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+  const toggleModal2 = () => {
+    setModalVisibletask(!isModalVisibletask);
+  };
+
 
   const handleSportSelection = (sport) => {
     setAssginedForItem(sport);
+    
     toggleModal();
+  };
+  const handleSportSelection2 = (sport) => {
+    setAssginedForTask(sport);
+    
+    toggleModal2();
   };
   const hideModal = () => {
     setModalVisible2(false);
     setModalVisible3(false);
   };
+
+  const fetchStoredProfile = useCallback(async () => {
+    try {
+      setStoreProfile(await AsyncStorage.getItem("profile"));
+
+      if (storedProfile !== null) {
+        console.log("Stored Profile:", storedProfile);
+      } else {
+        console.log("Profile not found in AsyncStorage");
+      }
+    } catch (error) {
+      console.error("Error fetching profile from AsyncStorage:", error);
+    }
+  }, [storedProfile]);
+
+  useEffect(() => {
+    fetchStoredProfile();
+  }, [fetchStoredProfile]);
+
+
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -163,15 +208,27 @@ function CreateNewIssuesForm() {
         >
           <View>
             <Text style={{ color: "black", fontSize: 26 }}>Project </Text>
+            <Pressable
+                  onPress={toggleModal}
+                  style={styles.dropDownStyle}
+                >
             <View>
-              <DropDown
-                data={ProjectGroup}
-                selectValue={selectedProject}
-                oneSelect={handleSelectProject}
-                hi={h(2)}
-                wi={w(2)}
-              />
+             
+            <Text style={styles.optionText}> {AssginedForItem ? AssginedForItem : "Select Project"}</Text>
             </View>
+            </Pressable>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={isModalVisible}
+                onRequestClose={() => {
+                  toggleModal();
+                }}
+              >
+                <View style={[styles.modalContainer]}>
+                  <BottomSheetProjectList handleSportSelection={handleSportSelection} onBack={toggleModal} />
+                </View>
+              </Modal>
           </View>
         </View>
         <View
@@ -181,8 +238,29 @@ function CreateNewIssuesForm() {
         >
           <View>
             <Text style={{ color: "black", fontSize: 26 }}>Project Task</Text>
+            <Pressable
+                  onPress={toggleModal2}
+                  style={styles.dropDownStyle}
+                >
+            <View>
+             
+            <Text style={styles.optionText}> {AssginedForTask ? AssginedForTask : "Select Task"}</Text>
+            </View>
+            </Pressable>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={isModalVisibletask}
+                onRequestClose={() => {
+                  toggleModal2();
+                }}
+              >
+                <View style={[styles.modalContainer]}>
+                  <BottomSheetTaskList handleSportSelection={handleSportSelection2} onBack={toggleModal2} />
+                </View>
+              </Modal>
           </View>
-          <View>
+          {/* <View>
             <DropDown
               data={Tasks}
               selectValue={selectedTask}
@@ -190,7 +268,7 @@ function CreateNewIssuesForm() {
               hi={h(2)}
               wi={w(2)}
             />
-          </View>
+          </View> */}
         </View>
         <View
           style={{
@@ -571,5 +649,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     justifyContent: "flex-end",
+  },
+  dropDownStyle: {
+    backgroundColor: "rgba(80, 99, 191, 0.21)",
+    minHeight: 40,
+    borderTopEndRadius: w(1),
+    borderTopStartRadius: w(1),
+    borderBottomStartRadius: w(1),
+    borderBottomEndRadius: w(1),
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: w(4),
+    
+    width: "100%",
+  },
+  optionText: {
+    flex: 1,
+    marginLeft: 0,
   },
 });

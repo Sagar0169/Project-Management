@@ -34,13 +34,14 @@ const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
 
   const oneSelectItem = (val) => {
     setOption(false);
+    // console.log(val)
     oneSelect(val);
   };
 
   return (
     <View style={{  marginVertical: h(1),flex:1 }}>
       <TouchableOpacity style={styles.dropDownStyle} onPress={selectOption}>
-        <Text style={{color:Colors.timesheetHint}}>{!!selectValue ? selectValue.title : "Select Category"}</Text>
+        <Text style={{color:Colors.timesheetHint}}>{!!selectValue ? selectValue.project_name : "Select Category"}</Text>
         <Image
           source={require("../../assets/Images/left.png")}
           style={{
@@ -53,7 +54,7 @@ const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
 
       {option && (
         <View style={styles.openDropDown}>
-          {data.map((val, i) => {
+          {data && data.map((val, i) => {
             return (
               <TouchableOpacity
                 key={i}
@@ -68,7 +69,7 @@ const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
                   source={val.image}
                   style={styles.optionImage}
                 /> */}
-                <Text style={styles.optionText}>{val.title}</Text>
+                <Text style={styles.optionText}>{val.project_name}</Text>
                 {/* <Text style={{ marginLeft: 'auto' }}>{val.count}</Text> */}
               </TouchableOpacity>
             );
