@@ -97,10 +97,11 @@ const AssignTaskFlatList = ({ navigation }) => {
         }
         expenses = tasks;
       } else {
+        console.log(response.userId, response.token, response.emp_id);
         const tasks = await getTaks(
           response.userId,
           response.token,
-          response.emp_id
+          response.emp_id //emp id is of particular user
         );
         console.log("Daata", tasks);
         expenses = tasks;
@@ -112,7 +113,7 @@ const AssignTaskFlatList = ({ navigation }) => {
     } finally {
       setIsFetching(false);
     }
-  }, [storedProfile,searchQuery]);
+  }, [storedProfile, searchQuery]);
 
   useEffect(() => {
     let isMounted = true;
@@ -147,8 +148,8 @@ const AssignTaskFlatList = ({ navigation }) => {
       refreshing={isFetching}
       onRefresh={handleRefresh}
       ListEmptyComponent={() => (
-        <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color="#5063BF" />
+        <View style={styles.noDataContainer}>
+          <Text style={styles.noDataText}>No data found</Text>
         </View>
       )}
     />

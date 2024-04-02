@@ -57,11 +57,14 @@ async function getTasksDetails(userid, token,emp_id) {
 }
 
 
-async function getProjectDetails(userid, token,emp_id) {
+async function getProjectDetails(userid, token,emp_id,ITEMS_PER_PAGE,page) {
 
   try {
     const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/projectlist", {
       userid: userid,
+      ITEMS_PER_PAGE:ITEMS_PER_PAGE,
+      page:page
+
       // emp_id:emp_id
     }, {
       headers: {
@@ -271,8 +274,8 @@ export function deleteTask(userid,id, token) {
 export function getTaks(userId, token,emp_id) {
   return getTasksDetails(userId, token,emp_id);
 }
-export function getProjects(userId, token,emp_id) {
-  return getProjectDetails(userId, token,emp_id);
+export function getProjects(userId, token,emp_id,ITEMS_PER_PAGE,page) {
+  return getProjectDetails(userId, token,emp_id,ITEMS_PER_PAGE,page);
 }
 export function setStatus(userId, token,id,status) {
   return updateStatus(userId, token,id,status);
