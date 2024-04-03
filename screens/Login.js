@@ -22,9 +22,14 @@ import useFonts from "../hooks/useFonts";
 import { lineRightSvg } from "../components/svgs/svgs";
 import { AuthContext } from "../store/auth-context";
 import { login } from "../store/http";
+import { colors } from "../components/config/theme";
+
+import { ThemeContext } from "../context/ThemeContext";
 
 
 function Login() {
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
   const authCtx = useContext(AuthContext);
   const navigation = useNavigation();
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -172,7 +177,7 @@ function Login() {
   }
 
   return (
-    <View style={{ flex: 1, marginTop: 50, alignItems: "center", backgroundColor:'white' }}>
+    <View style={{ flex: 1, marginTop: 50, alignItems: "center", backgroundColor:activeColors.background }}>
       <View>
         <View style={{justifyContent:'center', alignItems:'center'}}>
         <SvgXml xml={lineRightSvg} width="190" height="110" style={{ margin: 4 }} />
@@ -205,7 +210,7 @@ function Login() {
           <Text
             style={{
               textAlign: "left",
-              color: Colors.loginBlue,
+              color: activeColors.color,
               marginTop: 20,
               fontSize: dynamicFontSize * 1.7,
               fontWeight: 700,
@@ -216,7 +221,7 @@ function Login() {
           </Text>
         </View>
         
-        <View style={{ marginTop: 20, marginHorizontal: 5 }}>
+        <View style={{  marginTop: 20, marginHorizontal: 5 }}>
           <LoginForm onSubmit={handleLoginFormSubmit} />
           {/* change onSubmit to handlerLoginFormSubmit for validation */}
         </View>

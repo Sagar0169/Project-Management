@@ -1,8 +1,16 @@
 import { Pressable, StyleSheet, Text, View,Dimensions } from 'react-native';
+import { colors } from '../config/theme';
+import { useContext } from "react";
+import { ThemeContext } from '../../context/ThemeContext';
+
+
 
 
 
 function SubmitButton({ children, onPress,color }) {
+  
+const {theme}=useContext(ThemeContext)
+let activeColors=colors[theme.mode]
   const { width, height } = Dimensions.get("window");
 
   // Calculate a scaling factor based on the screen width
@@ -24,11 +32,11 @@ function SubmitButton({ children, onPress,color }) {
   }
   return (
     <Pressable
-      style={({ pressed }) => [styles.button, pressed && styles.pressed,{width:w(35)}]}
+      style={({ pressed }) => [styles.button, pressed && styles.pressed,{width:w(35), backgroundColor: activeColors.blackBg,}]}
       onPress={onPress}
     >
       <View>
-        <Text style={styles.buttonText}>{children}</Text>
+        <Text style={[styles.buttonText , {color: activeColors.color}]}>{children}</Text>
       </View>
     </Pressable>
   );
@@ -41,7 +49,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingVertical: 15,
     paddingHorizontal: 12,
-    backgroundColor: '#5063BF',
+   
     elevation: 2,
     shadowColor: 'black',
     shadowOffset: { width: 1, height: 1 },
@@ -53,7 +61,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: 'center',
-    color: 'white',
+    
     fontSize: 16,
     fontWeight: '500'
   },

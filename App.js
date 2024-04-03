@@ -13,7 +13,7 @@ import DashBoard from "./screens/DashBoard";
 import Login from "./screens/Login";
 import Projectlist from "./screens/Projectlist";
 import TaskList from "./screens/TaskList";
-
+import { ThemeContext } from "./context/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useContext, useEffect, useState } from "react";
 import CheckInLayout from "./screens/CheckInLayout";
@@ -27,6 +27,7 @@ import UpdateStatus from "./screens/UpdateStatus";
 import IssuesDetails from "./components/IssuesDetails";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { CustomDrawer } from "./components/drawer/CustomDrawer";
+
 
 let name;
   let type;
@@ -238,13 +239,25 @@ function Navigation() {
 }
 
 export default function App() {
+  const [theme,setTheme]=useState({mode:"light"})
+
+  const updateTheme=(newTheme)=>{
+    if(!newTheme)
+    {
+      mode==theme.mode==="light"?"dark":"light"
+      newTheme={mode}
+    }
+    setTheme(newTheme)
+  }
   return (
     <>
-      <StatusBar backgroundColor="transparent" />
+        <StatusBar style="auto" />
       <AuthContextProvider>
         <ContextProvider>
           <SearchProvider>
+            <ThemeContext.Provider value={{theme,updateTheme}}>
             <Root />
+            </ThemeContext.Provider>  
           </SearchProvider>
         </ContextProvider>
       </AuthContextProvider>
