@@ -21,6 +21,7 @@ import RecentProjectFlatList from "../components/RecentProjectFlatList";
 import TasksData from "../components/TasksData";
 import { AuthContext } from "../store/auth-context";
 import { Logout, getProjects, getTaks } from "../store/http";
+import { colors } from "../components/config/theme";
 const ITEMS_PER_PAGE = 10;
 
 const { width, height } = Dimensions.get("window");
@@ -44,6 +45,8 @@ function h(value) {
 }
 
 export default function DashBoard({ navigation }) {
+  const theme={mode:"dark"}
+  let activeColors=colors[theme.mode]
   const authCtx = useContext(AuthContext);
 
   const handleLogout = async () => {
