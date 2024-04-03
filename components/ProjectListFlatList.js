@@ -79,14 +79,17 @@ const ProjectListFlatList = ({}) => {
 
   useEffect(() => {
     fetchStoredProfile();
-    fetchData();
   }, [fetchStoredProfile]);
-
+  useEffect(() => {
+    console.log("COunter",page)
+    fetchData();
+  }, []);
   const fetchData = async () => {
     try {
       setLoading(true);
       const loginRespone = await AsyncStorage.getItem("user");
       const response = JSON.parse(loginRespone);
+      console.log("Page", page);
       const data = await getProjects(
         response.userId,
         response.token,
