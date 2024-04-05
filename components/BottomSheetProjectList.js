@@ -213,8 +213,7 @@ const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
           marginTop: 10,
           flexDirection: "row",
           marginEnd: 20,
-       , }}
-      >
+        }}>
         <Pressable onPress={onBack}>
           <View
             style={{
@@ -236,7 +235,10 @@ const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
         <View style={{ flex: 9, alignItems: "center" }}>
           <Text style={styles.modalTitle}>Select Project</Text>
         </View>
-      </View>
+        </View>
+      
+    
+    
 
       <View style={{ flex: 1 }}>
         <FlatList
@@ -277,6 +279,7 @@ const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
         </SubmitButton>
       </View>
     </View>
+    
   );
 };
 
