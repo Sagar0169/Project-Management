@@ -7,17 +7,22 @@ import {
   Pressable,
   Image
 } from "react-native";
-import { useCallback } from "react";
+import { useCallback,useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getEmp } from "../store/http";
 import { getProjects } from "../store/http";
 import SubmitButton from "./ui/SubmitButton";
 import BackArrowHeader from "../components/BackArrowHeader";
+import { colors
+ } from "./config/theme";
+ import { ThemeContext } from "../context/ThemeContext";
 
 
 
 const ProjectDetails = ({ item,handleSportSelection,isSelected }) => {
-  const backgroundColor = isSelected ? "#E9EEFF" : "#f5f5f5";
+  const {theme}=useContext(ThemeContext)
+let activeColors=colors[theme.mode]
+  const backgroundColor = isSelected ? "#E9EEFF" : activeColors.blackBg;
  
     return (
       <Pressable
@@ -41,7 +46,7 @@ const ProjectDetails = ({ item,handleSportSelection,isSelected }) => {
             marginVertical: 14,
           }}
         >
-          <Text style={styles.text2}>{item.project_name}</Text>
+          <Text style={[styles.text2,{color:activeColors.color}]}>{item.project_name}</Text>
         </View>
       </View>
     </Pressable>
@@ -143,16 +148,19 @@ const BottomSheetProjectList = ({handleSportSelection,onBack}) => {
   // Generate project data with random project names
 
 
-  
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
+   
  
   return (
-    <View style={{flex:1}}>
+
+    <View  style={{flex:1, backgroundColor:activeColors.background}}>
       
-       <View style={{ alignItems: 'center', justifyContent:'space-between',marginTop:10, flexDirection:'row', marginEnd:20 }}>
+       <View style={{ alignItems: 'center', justifyContent:'space-between',marginTop:10, flexDirection:'row', marginEnd:20, }}>
         <Pressable onPress={onBack}>
 
         
-        <View style={{backgroundColor:'white', alignItems:'flex-start', marginLeft:10}}>
+        <View style={{backgroundColor:activeColors.background, alignItems:'flex-start', marginLeft:10}}>
         <Image
             style={{
               width: 40,
@@ -166,7 +174,7 @@ const BottomSheetProjectList = ({handleSportSelection,onBack}) => {
         </View>
         </Pressable>
       <View style={{ flex:9 ,alignItems:'center'}}>
-      <Text style={styles.modalTitle}>Select Project</Text>
+      <Text style={[styles.modalTitle,{color:activeColors.color}]}>Select Project</Text>
       </View>
           
         </View>

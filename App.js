@@ -239,19 +239,19 @@ function Navigation() {
 }
 
 export default function App() {
-  const [theme,setTheme]=useState({mode:"light"})
+  const [theme,setTheme]=useState({mode:"dark"})
 
   const updateTheme=(newTheme)=>{
     if(!newTheme)
     {
-      mode==theme.mode==="light"?"dark":"light"
+      mode = theme.mode ==="light"?"dark":"light"
       newTheme={mode}
     }
     setTheme(newTheme)
   }
   return (
     <>
-        <StatusBar style="auto" />
+        <StatusBar style={theme}/>
       <AuthContextProvider>
         <ContextProvider>
           <SearchProvider>

@@ -55,25 +55,26 @@ function LoginForm({ onSubmit }) {
             underlineColorAndroid: "white",
             backgroundColor: activeColors.background,
             borderBottomColor: "#C4C4C4",
-            color: "#C4C4C4",
           }}
+          textColor={activeColors.color}
           placeholder="abcd@gmail.com"
           placeholderTextColor="#C4C4C4"
         />
       </View>
-      <View style={{ marginTop: 25 }}>
+      <View style={{ marginTop: 25}}>
         <Text style={{ color: activeColors.hint, fontSize: 15 }}>Password</Text>
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer,{backgroundColor:activeColors.background }]}>
           <TextInput
             secureTextEntry={isPasswordVisible}
             onChangeText={onChangeText.bind(this, "password")}
             value={enteredPassword}
             style={{
-              flex: 1,
+             flex:1,
               backgroundColor: activeColors.background,
               maxWidth: "100%",
-              borderBottomColor: "#C4C4C4",
+              borderBottomColor: "#C4C4C4",             
             }}
+            textColor={activeColors.color}
             placeholder="Password"
             placeholderTextColor="#C4C4C4"
           />

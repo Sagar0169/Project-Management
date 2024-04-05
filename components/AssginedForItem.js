@@ -1,18 +1,23 @@
 import { Pressable, View, Text, Touchable, Image, ImageBackground, Dimensions, StyleSheet,TouchableNativeFeedback } from "react-native";
-import { useState } from "react";
+import { useState,useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "./config/theme";
+
 
 function AssignedForItem({ item }){
-    const [backgroundColor, setBackgroundColor] = useState('#E9EEFF');
+    const {theme}=useContext(ThemeContext)
+let activeColors=colors[theme.mode]
+    const [backgroundColor, setBackgroundColor] = useState(activeColors.inputBg);
     const handlePress = () => {
         // Change the background color to item.color on press
-        setBackgroundColor('#E9EEFF');
+        setBackgroundColor(activeColors.balckBg);
       };
     
     
     return(
         <Pressable onPress={handlePress}>
-        <View style={{...styles.borderContainer,backgroundColor}}>
-            <Text>
+        <View style={[styles.borderContainer,{backgroundColor:activeColors.inputBg}]}>
+            <Text style={{color:activeColors.color}}>
                 Name: {item.title} , Employee id:{item.id}
             </Text>
 
@@ -53,7 +58,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderRadius: w(1),
         justifyContent: 'center',
-        backgroundColor: '#E9EEFF',
+     
 
     },
 })

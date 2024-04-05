@@ -226,6 +226,7 @@ function Login() {
           {/* change onSubmit to handlerLoginFormSubmit for validation */}
         </View>
       </View>
+      
     </View>
   );
 }

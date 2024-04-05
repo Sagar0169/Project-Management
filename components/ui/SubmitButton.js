@@ -36,7 +36,7 @@ let activeColors=colors[theme.mode]
       onPress={onPress}
     >
       <View>
-        <Text style={[styles.buttonText , {color: activeColors.color}]}>{children}</Text>
+        <Text style={[styles.buttonText , {color: activeColors.text}]}>{children}</Text>
       </View>
     </Pressable>
   );

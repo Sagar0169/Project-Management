@@ -13,8 +13,7 @@ import {
 } from "react-native";
 import SubmitButton from "./ui/SubmitButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getProjects } from "../store/http";
-import { useSearch } from "../store/search-redux";
+
 // import Toast from "react-native-simple-toast";
 
 import BottomSheetDesign2 from "./BottomSheetDesign2";
@@ -26,6 +25,9 @@ import { Svg, SvgXml } from "react-native-svg";
 import { Svg6 } from "./svgs/svgs";
 import BottomSheetProjectList from "./BottomSheetProjectList";
 import BottomSheetTaskList from "./BottomSheetTaskList";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "./config/theme";
+import { useContext } from "react";
 
 //CHANGE MULTIPLE SELECTION FROM BOTTOMSHEET2
 
@@ -50,6 +52,10 @@ function h(value) {
 }
 
 function CreateNewIssuesForm() {
+
+  
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
   const [isModalVisible2, setModalVisible2] = useState(false);
   const [isModalVisible3, setModalVisible3] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
@@ -199,7 +205,7 @@ function CreateNewIssuesForm() {
 
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: activeColors.background }}>
       <ScrollView style={{ flex: 1, margin: 10 }}>
         <View
           style={{
@@ -207,14 +213,14 @@ function CreateNewIssuesForm() {
           }}
         >
           <View>
-            <Text style={{ color: "black", fontSize: 26 }}>Project </Text>
+            <Text style={{ color:activeColors.color, fontSize: 26 }}>Project </Text>
             <Pressable
                   onPress={toggleModal}
-                  style={styles.dropDownStyle}
+                  style={[styles.dropDownStyle,{backgroundColor:activeColors.inputBg}]}
                 >
             <View>
              
-            <Text style={styles.optionText}> {AssginedForItem ? AssginedForItem : "Select Project"}</Text>
+            <Text style={[styles.optionText,{color:activeColors.hint}]}> {AssginedForItem ? AssginedForItem : "Select Project"}</Text>
             </View>
             </Pressable>
             <Modal
@@ -237,14 +243,14 @@ function CreateNewIssuesForm() {
           }}
         >
           <View>
-            <Text style={{ color: "black", fontSize: 26 }}>Project Task</Text>
+            <Text style={{ color:activeColors.color, fontSize: 26 }}>Project Task</Text>
             <Pressable
                   onPress={toggleModal2}
-                  style={styles.dropDownStyle}
+                  style={[styles.dropDownStyle,{backgroundColor:activeColors.inputBg}]}
                 >
             <View>
              
-            <Text style={styles.optionText}> {AssginedForTask ? AssginedForTask : "Select Task"}</Text>
+            <Text style={[styles.optionText,{color:activeColors.hint}]}> {AssginedForTask ? AssginedForTask : "Select Task"}</Text>
             </View>
             </Pressable>
             <Modal
@@ -276,7 +282,7 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "black", fontSize: 26 }}>Title</Text>
+            <Text style={{ color: activeColors.color, fontSize: 26 }}>Title</Text>
           </View>
           <View style={{ marginHorizontal: w(1) }}>
             <Input
@@ -294,7 +300,7 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "black", fontSize: 26 }}>Description</Text>
+            <Text style={{ color: activeColors.color, fontSize: 26 }}>Description</Text>
             <View style={{ marginHorizontal: w(1) }}>
               <TextInput
                 multiline={true}
@@ -302,10 +308,10 @@ function CreateNewIssuesForm() {
                 numberOfLines={4}
                 style={{
                   borderWidth: 1,
-                  borderColor: "#8A96D3",
+                  borderColor:activeColors.blackBg,
                   borderRadius: 1,
                   marginVertical: 8,
-                  backgroundColor: "#E9EEFF",
+                  backgroundColor: activeColors.inputBg,
                   flexDirection: "row", // Add this line to align items horizontally
                   alignItems: "center",
                   fontSize: dynamicFontSize * 0.8,
@@ -326,7 +332,7 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Task Type</Text>
+            <Text style={{ color: activeColors.color, fontSize: 26 }}>Task Type</Text>
             <View style={{ marginHorizontal: w(1) }}>
               <Input
                 label="Enter Type"
@@ -343,7 +349,7 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Status</Text>
+            <Text style={{ color: activeColors.color, fontSize: 26 }}>Status</Text>
           </View>
           <View style={{ flex: 1 }}>
             <DropDown
@@ -356,7 +362,7 @@ function CreateNewIssuesForm() {
           </View>
         </View>
         <View style={{ margin: 8 }}>
-          <Text style={{ color: "#5063BF", fontSize: dynamicFontSize * 1 }}>
+          <Text style={{ color: activeColors.highlight, fontSize: dynamicFontSize * 1 }}>
             Created by
           </Text>
 
@@ -366,17 +372,17 @@ function CreateNewIssuesForm() {
               justifyContent: "flex-start",
               alignItems: "center",
               borderWidth: 1,
-              borderColor: "#8A96D3",
+              borderColor:activeColors.blackBg,
               borderRadius: 1,
               paddingVertical: 10,
               paddingHorizontal: 8,
               marginVertical: 8,
-              backgroundColor: "#E9EEFF",
+              backgroundColor: activeColors.inputBg,
               flexDirection: "row", // Add this line to align items horizontally
               alignItems: "center",
             }}
           >
-            <Text style={{ color: "#666666", fontSize: dynamicFontSize * 0.8 }}>
+            <Text style={{ color: activeColors.hint, fontSize: dynamicFontSize * 0.8 }}>
               Super Admin
             </Text>
           </View>
@@ -400,7 +406,7 @@ function CreateNewIssuesForm() {
                 marginTop: w(2),
               }}
             >
-              <Text style={[{ maxWidth: w(30), marginEnd: w(5) }]}>
+              <Text style={[{ maxWidth: w(30), marginEnd: w(5),color:activeColors.color }]}>
                 Date Created
               </Text>
             </View>
@@ -437,7 +443,7 @@ function CreateNewIssuesForm() {
                 marginTop: w(2),
               }}
             >
-              <Text style={[{ maxWidth: w(30), marginEnd: w(5) }]}>
+              <Text style={[{ maxWidth: w(30), marginEnd: w(5),color:activeColors.color  }]}>
                 Time Created
               </Text>
             </View>
@@ -470,7 +476,7 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 22 }}>
+            <Text style={{ color:activeColors.hint , fontSize: 22 }}>
               Issue Test Phase
             </Text>
           </View>
@@ -503,7 +509,7 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 22 }}>Priority</Text>
+            <Text style={{ color:activeColors.hint, fontSize: 22 }}>Priority</Text>
           </View>
           <View
             style={{
@@ -547,7 +553,7 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 22 }}>Severity</Text>
+            <Text style={{ color:activeColors.hint, fontSize: 22 }}>Severity</Text>
           </View>
           <View
             style={{
