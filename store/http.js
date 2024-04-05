@@ -7,7 +7,6 @@ const BACKEND_URL =
   "https://projectmanagement-84b7c-default-rtdb.firebaseio.com";
 const BASE_URl = "http://167.172.152.167:81/pm_tool_app_old/api/rest/";
 
-
 async function authenticate(email, password) {
   // const url = `https://identitytoolkit.googleapis.com/v1/accounts:${mode}?key=${API_KEY}`;
 
@@ -31,23 +30,29 @@ async function authenticate(email, password) {
   }
 }
 
-async function getTasksDetails(userid, token,emp_id) {
-
+async function getTasksDetails(userid, token, emp_id, ITEMS_PER_PAGE, page) {
   try {
-    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/taskdetails", {
-      userid: userid,
-      emp_id:emp_id
-    }, {
-      headers: {
-        'Authorization': `Bearer ${token}`
+    const response = await axios.post(
+      "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/taskdetails",
+      {
+        userid: userid,
+        // emp_id: emp_id,
+        limit: ITEMS_PER_PAGE,
+        page: page,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
-    
+    );
+
     const data = response.data._result;
     const _resultflag = response.data._resultflag;
-    if(_resultflag===0)
-    {
-      return _resultflag
+    const totalcount = response.data.taskscount;
+    console.log("TotalCount",totalcount)
+    if (_resultflag === 0) {
+      return _resultflag;
     }
     return data;
   } catch (error) {
@@ -56,27 +61,28 @@ async function getTasksDetails(userid, token,emp_id) {
   }
 }
 
-
-async function getProjectDetails(userid, token,emp_id,ITEMS_PER_PAGE,page) {
-
+async function getProjectDetails(userid, token, emp_id, ITEMS_PER_PAGE, page) {
   try {
-    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/projectlist", {
-      userid: userid,
-      ITEMS_PER_PAGE:ITEMS_PER_PAGE,
-      page:page
+    const response = await axios.post(
+      "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/projectlist",
+      {
+        userid: userid,
+        ITEMS_PER_PAGE: ITEMS_PER_PAGE,
+        page: page,
 
-      // emp_id:emp_id
-    }, {
-      headers: {
-        'Authorization': `Bearer ${token}`
+        // emp_id:emp_id
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
-    
+    );
+
     const data = response.data._result;
     const _resultflag = response.data._resultflag;
-    if(_resultflag===0)
-    {
-      return _resultflag
+    if (_resultflag === 0) {
+      return _resultflag;
     }
     return data;
   } catch (error) {
@@ -87,18 +93,21 @@ async function getProjectDetails(userid, token,emp_id,ITEMS_PER_PAGE,page) {
 
 async function getCheckInDetails(userid, token) {
   try {
-    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/checkInDetailList", {
-      userid: userid,
-      
-    }, {
-      headers: {
-        'Authorization': `Bearer ${token}`
+    const response = await axios.post(
+      "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/checkInDetailList",
+      {
+        userid: userid,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
-    
+    );
+
     const data = response.data;
     const _resultflag = response.data._resultflag;
-  
+
     console.log(data);
     return data;
   } catch (error) {
@@ -106,24 +115,35 @@ async function getCheckInDetails(userid, token) {
     throw error;
   }
 }
-postCheckInData
+postCheckInData;
 
-async function postCheckInData(userid,checkedInStatus,time, place_name,date,location,token) {
+async function postCheckInData(
+  userid,
+  checkedInStatus,
+  time,
+  place_name,
+  date,
+  location,
+  token
+) {
   try {
-    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/checkinDetailAdd", {
-    userid: userid,
-    check_in_status:checkedInStatus,
-    time:time,
-    place_name:place_name,
-    date:date,
-    location:location
-      
-    }, {
-      headers: {
-        'Authorization': `Bearer ${token}`
+    const response = await axios.post(
+      "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/checkinDetailAdd",
+      {
+        userid: userid,
+        check_in_status: checkedInStatus,
+        time: time,
+        place_name: place_name,
+        date: date,
+        location: location,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
-    
+    );
+
     const data = response.data;
     const _resultflag = response.data._resultflag;
     console.log(data);
@@ -134,44 +154,50 @@ async function postCheckInData(userid,checkedInStatus,time, place_name,date,loca
   }
 }
 
-
-async function updateStatus(userid, token,id,status) {
-  
+async function updateStatus(userid, token, id, status) {
   try {
-    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/editStatus", {
-      userid: userid,
-      id:id,
-      status:status
-    }, {
-      headers: {
-        'Authorization': `Bearer ${token}`
+    const response = await axios.post(
+      "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/editStatus",
+      {
+        userid: userid,
+        id: id,
+        status: status,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
-    
+    );
+
     const data = response.data.message;
     const _resultflag = response.data._resultflag;
-  
-    console.log("Status update ",data);
+
+    console.log("Status update ", data);
     return _resultflag;
   } catch (error) {
     console.error("Error in authenticate:", error);
     throw error;
   }
 }
-export async function addProject( token,projectData) {
-  console.log(projectData)
+export async function addProject(token, projectData) {
+  console.log(projectData);
   try {
-    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/addproject", projectData,{
-      headers: {
-        'Authorization': `Bearer ${token}`
+    const response = await axios.post(
+      "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/addproject",
+      projectData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
-    
+    );
+
     const data = response.data.message;
     const _resultflag = response.data._resultflag;
-  
-    console.log("Status update ",data);
-    console.log("Status update ",_resultflag);
+
+    console.log("Status update ", data);
+    console.log("Status update ", _resultflag);
     return _resultflag;
   } catch (error) {
     console.error("Error in authenticate:", error);
@@ -180,38 +206,44 @@ export async function addProject( token,projectData) {
 }
 
 export async function uploadFile(requestBody, token) {
-  
   try {
-    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/uploadfile", requestBody,{
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${token}`
+    const response = await axios.post(
+      "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/uploadfile",
+      requestBody,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
-    
-  
-    const _resultflag = response.data
-    console.log("api response  ",response.data);
+    );
+
+    const _resultflag = response.data;
+    console.log("api response  ", response.data);
     return _resultflag;
   } catch (error) {
     console.error("Error in authenticate:", error);
     throw error;
   }
 }
-async function getEmployees(userid,token, designation) {
+async function getEmployees(userid, token, designation) {
   try {
-    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/getemployees", {
-      userid: userid,
-      designation:designation
-    }, {
-      headers: {
-        'Authorization': `Bearer ${token}`
+    const response = await axios.post(
+      "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/getemployees",
+      {
+        userid: userid,
+        designation: designation,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
-    
+    );
+
     const data = response.data._result;
     const _resultflag = response.data._resultflag;
-  
+
     console.log(data);
     return data;
   } catch (error) {
@@ -221,17 +253,21 @@ async function getEmployees(userid,token, designation) {
 }
 async function logout(userid, token) {
   try {
-    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/logout", {
-      userid: userid,
-    }, {
-      headers: {
-        'Authorization': `Bearer ${token}`
+    const response = await axios.post(
+      "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/logout",
+      {
+        userid: userid,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
-    
+    );
+
     const data = response.data;
     const _resultflag = response.data._resultflag;
-  
+
     console.log(data);
     return data;
   } catch (error) {
@@ -240,21 +276,24 @@ async function logout(userid, token) {
   }
 }
 
-
-async function getDeleteTask(userid,id, token) {
+async function getDeleteTask(userid, id, token) {
   try {
-    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/deletetask", {
-      userid: userid,
-      id: id,
-    }, {
-      headers: {
-        'Authorization': `Bearer ${token}`
+    const response = await axios.post(
+      "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/deletetask",
+      {
+        userid: userid,
+        id: id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
-    
+    );
+
     const data = response.data.message;
     const _resultflag = response.data._resultflag;
-  
+
     console.log(data);
     return data;
   } catch (error) {
@@ -262,38 +301,52 @@ async function getDeleteTask(userid,id, token) {
     throw error;
   }
 }
-
 
 export function login(email, password) {
   return authenticate(email, password);
 }
 
-export function deleteTask(userid,id, token) {
-  return getDeleteTask(userid,id, token);
+export function deleteTask(userid, id, token) {
+  return getDeleteTask(userid, id, token);
 }
 
-export function getTaks(userId, token,emp_id) {
-  return getTasksDetails(userId, token,emp_id);
+export function getTaks(userId, token, emp_id, ITEMS_PER_PAGE, page) {
+  return getTasksDetails(userId, token, emp_id, ITEMS_PER_PAGE, page);
 }
-export function getProjects(userId, token,emp_id,ITEMS_PER_PAGE,page) {
-  return getProjectDetails(userId, token,emp_id,ITEMS_PER_PAGE,page);
+export function getProjects(userId, token, emp_id, ITEMS_PER_PAGE, page) {
+  return getProjectDetails(userId, token, emp_id, ITEMS_PER_PAGE, page);
 }
-export function setStatus(userId, token,id,status) {
-  return updateStatus(userId, token,id,status);
+export function setStatus(userId, token, id, status) {
+  return updateStatus(userId, token, id, status);
 }
 
 export function getCheckInList(userId, token) {
   return getCheckInDetails(userId, token);
 }
-export function postCheckIn(userid,checkedInStatus,time, place_name,date,location,token) {
-  return postCheckInData(userid,checkedInStatus,time, place_name,date,location, token);
+export function postCheckIn(
+  userid,
+  checkedInStatus,
+  time,
+  place_name,
+  date,
+  location,
+  token
+) {
+  return postCheckInData(
+    userid,
+    checkedInStatus,
+    time,
+    place_name,
+    date,
+    location,
+    token
+  );
 }
 
+getCheckInDetails;
 
-getCheckInDetails
-
-export function getEmp(userId, token,designation) {
-  return getEmployees(userId, token,designation);
+export function getEmp(userId, token, designation) {
+  return getEmployees(userId, token, designation);
 }
 
 export function Logout(userId, token) {
@@ -308,18 +361,19 @@ export async function storeTask(taskData) {
   return id;
 }
 
-export async function assignedStore(taskData,token) {
+export async function assignedStore(taskData, token) {
   const response = await axios.post(
-   "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/addTask",
-    taskData,{
+    "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/addTask",
+    taskData,
+    {
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     }
   );
-  
+
   const id = response.data.message;
-  console.log(id)
+  console.log(id);
   return id;
 }
 
@@ -383,7 +437,6 @@ export async function assignedTasksFetch() {
   }
   return assigned;
 }
-
 
 export async function fetchCheckIn() {
   const response = await axios.get(BACKEND_URL + "/checkIn.json");

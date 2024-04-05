@@ -32,15 +32,15 @@ function RecentProjectFlatList({ item }) {
     outputRange: [100, 0], // Adjust the values based on your desired animation
   });
   const priorityColor =
-    item.Priority === "Low"
+    item.priority === "Low"
       ? Colors.lowPriority
-      : item.Priority === "High"
+      : item.priority === "High"
       ? Colors.highPriority
       : Colors.mediumPriority;
   const complexityColor =
-    item.TaskComplexity === "Low"
+    item.priority === "Low"
       ? Colors.lowComplexity
-      : item.TaskComplexity === "High"
+      : item.priority === "High"
       ? Colors.highComplexity
       : Colors.mediumComplexity;
 
@@ -67,6 +67,9 @@ function RecentProjectFlatList({ item }) {
 </defs>
 </svg>
 `;
+
+
+
   return (
     <Animated.View style={[styles.item, { transform: [{ translateY }] }]}>
       <Pressable style={styles.borderContainer}>
@@ -80,7 +83,7 @@ function RecentProjectFlatList({ item }) {
               <Text
                 style={{ color: Colors.black, fontWeight: "500", fontSize: 16 }}
               >
-                {item.title}
+                {item.project_name}
               </Text>
             </View>
             <Ionicons size={20} name="ellipsis-vertical" color="#5063BF" />
@@ -105,7 +108,7 @@ function RecentProjectFlatList({ item }) {
                   backgroundColor: priorityColor,
                 }}
               >
-                {item.Priority}
+                {item.priority}
               </Text>
               <Text
                 style={{
@@ -118,7 +121,7 @@ function RecentProjectFlatList({ item }) {
                   backgroundColor: complexityColor,
                 }}
               >
-                {item.TaskComplexity}
+                {item.priority}
               </Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -129,7 +132,7 @@ function RecentProjectFlatList({ item }) {
                 style={{ margin: 4 }}
               />
               <Text style={{ marginHorizontal: 6, color: "#181818" }}>
-                {item.StartDate}
+                {item.due_date}
               </Text>
             </View>
           </View>

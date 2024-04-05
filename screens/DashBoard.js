@@ -20,8 +20,9 @@ import DashboardData from "../components/DashboardData";
 import RecentProjectFlatList from "../components/RecentProjectFlatList";
 import TasksData from "../components/TasksData";
 import { AuthContext } from "../store/auth-context";
-import { Logout, getTaks } from "../store/http";
+import { Logout, getProjects, getTaks } from "../store/http";
 import { colors } from "../components/config/theme";
+const ITEMS_PER_PAGE = 10;
 
 const { width, height } = Dimensions.get("window");
 
@@ -82,20 +83,71 @@ export default function DashBoard({ navigation }) {
 
   const [storedProfile, setStoreProfile] = useState("");
   const [isFetching, setIsFetching] = useState(true);
+  const [sportsData, setSportsData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    fetchStoredProfile();
+  }, [fetchStoredProfile]);
+  useEffect(() => {
+    console.log("COunter", page);
+    fetchData();
+  }, []);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const loginRespone = await AsyncStorage.getItem("user");
+      const response = JSON.parse(loginRespone);
+      console.log("Page", page);
+      const data = await getProjects(
+        response.userId,
+        response.token,
+        response.emp_id,
+        ITEMS_PER_PAGE,
+        page
+      );
+      console.log("DAAAAAAAAAAta", data.length);
+
+      if (data && data.length > 0 && !refreshing) {
+        console.log("Helloooooooooo");
+        setSportsData((prevData) => [...prevData, ...data]);
+
+        // Update the page only if the data length is equal to the limit
+        setPage((prevPage) =>
+          data.length === ITEMS_PER_PAGE ? prevPage + 1 : null
+        );
+      } else {
+        // console.warn("No more data available");
+        setPage(null);
+      }
+    } catch (error) {
+      console.error("Error fetching sports data:", error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  
 
   const fetchStoredProfile = async () => {
     try {
       const loginRespone = await AsyncStorage.getItem("user");
       const response = JSON.parse(loginRespone);
-        const tasks = await getTaks(response.userId, response.token,response.emp_id);
-        
-        if(tasks===0)
-        {
-          console.log("Daata", tasks);
-          handleLogout()
-        }
+      const tasks = await getTaks(
+        response.userId,
+        response.token,
+        response.emp_id
+      );
+
+      if (tasks === 0) {
+        console.log("Daata", tasks);
+        handleLogout();
+      }
       setStoreProfile(await AsyncStorage.getItem("profile"));
-      console.log(await AsyncStorage.getItem('token'))
+      console.log(await AsyncStorage.getItem("token"));
 
       if (storedProfile !== null) {
         // If the value exists in AsyncStorage
@@ -120,9 +172,6 @@ export default function DashBoard({ navigation }) {
       useNativeDriver: false, // Set to true if possible for better performance
     }).start();
   };
-  
-
- 
 
   useEffect(() => {
     animateList();
@@ -253,26 +302,25 @@ export default function DashBoard({ navigation }) {
           marginVertical: 10,
         }}
       >
-           <TouchableOpacity  onPress={() => {
+        <TouchableOpacity
+          onPress={() => {
             navigation.openDrawer();
-          }}>
-        <View
-          style={{
-            backgroundColor: "#E9EEFF",
-            borderRadius: w(8),
-            padding: w(2),
           }}
         >
-       
-<SvgXml
-            xml={lineRightSvg}
-            width="20"
-            height="20"
-            style={{ margin: 4 }}
-          />
-         
-          
-        </View>
+          <View
+            style={{
+              backgroundColor: "#E9EEFF",
+              borderRadius: w(8),
+              padding: w(2),
+            }}
+          >
+            <SvgXml
+              xml={lineRightSvg}
+              width="20"
+              height="20"
+              style={{ margin: 4 }}
+            />
+          </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleLogout}>
           <SvgXml xml={bellIcon} width="20" height="20" style={{ margin: 4 }} />
@@ -330,7 +378,7 @@ export default function DashBoard({ navigation }) {
             Recent Ongoing Projects
           </Text>
           <FlatList
-            data={TasksData.slice(0, 5)}
+            data={sportsData.slice(8, 14)}
             scrollEnabled={false}
             renderItem={({ item }) => (
               <RecentProjectFlatList
