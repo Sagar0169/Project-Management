@@ -2,12 +2,17 @@ import { StyleSheet, View, TouchableOpacity } from "react-native";
 import BackArrowHeaderWhite from "../components/BackArrowHeaderWhite";
 import AssignTaskForm from "../components/AssignTaskForm";
 
-import { useState } from "react";
+import { useState,useContext } from "react";
 import TasksData from "../components/TasksData";
 import BackArrowHeader from "../components/BackArrowHeader";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "../components/config/theme";
+
 
 
 function AssignNewTask({navigation,route}) {
+  const { theme } = useContext(ThemeContext)
+  let activeColors = colors[theme.mode]
   // const navigation = useNavigation()
   const { userId } = route.params;
   
@@ -15,7 +20,7 @@ function AssignNewTask({navigation,route}) {
 
 
   return (
-    <View style={styles.rootContainer}>
+    <View style={[styles.rootContainer,{backgroundColor:activeColors.background}]}>
       {/* <BackArrowHeaderWhite
         showSearch="false"
         filter={true}

@@ -1,8 +1,14 @@
 import { View, Text, Pressable, Image } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "./config/theme";
+import { useContext } from "react";
 
 export default function BackArrowHeader({ title, backButton, showArrow ,color,textColor}) {
+    
+const {theme}=useContext(ThemeContext)
+let activeColors=colors[theme.mode]
   return (
     <LinearGradient
       style={{
@@ -12,7 +18,7 @@ export default function BackArrowHeader({ title, backButton, showArrow ,color,te
         justifyContent: "center", // Center the content horizontally
         paddingHorizontal: 16,
       }}
-      colors={[color, color]}
+      colors={[activeColors.background, activeColors.background]}
     
     >
       {showArrow ? null : ( // If showArrow is true, don't render the Pressable
@@ -32,6 +38,7 @@ export default function BackArrowHeader({ title, backButton, showArrow ,color,te
               width: 40,
               height: 40,
               resizeMode: "cover",
+              
                 
             }}
             source={require("../assets/Images/leftArrow.png")}
@@ -42,7 +49,7 @@ export default function BackArrowHeader({ title, backButton, showArrow ,color,te
       <Text
         style={{
           fontSize: 24,
-          color: "black",
+          color: activeColors.color,
           fontWeight: "600",
           textAlign: "center",
           

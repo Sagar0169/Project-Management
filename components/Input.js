@@ -1,6 +1,8 @@
 import { View, Text, TextInput, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
-import { useState } from 'react';
+import { useState,useContext } from 'react';
 import { Ionicons } from '@expo/vector-icons'
+import { ThemeContext } from '../context/ThemeContext';
+import { colors } from './config/theme';
 
 
 function Input({
@@ -16,21 +18,24 @@ function Input({
   value,
   isInvalid,
 }) {
+  const {theme}=useContext(ThemeContext)
+let activeColors=colors[theme.mode]
   const [isPasswordVisible, setPasswordVisible] = useState(true);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!isPasswordVisible);
   };
   return (
-    <View style={styles.inputContainer}>
+    <View style={[styles.inputContainer,{borderColor:activeColors.blackBg,}]}>
       <TextInput
       numberOfLines={numberOfLines}
       multiline={multiline}
         editable={editable}
-        style={[styles.input, isInvalid && styles.inputInvalid]}
+        style={[styles.input, isInvalid && styles.inputInvalid,{backgroundColor:activeColors.inputBg,color:activeColors.color}]}
         keyboardType={keyboardType}
         secureTextEntry={secure ? isPasswordVisible :!isPasswordVisible}
         placeholder={label}
+        placeholderTextColor={activeColors.color}
         onChangeText={onChangeText}
         value={value}
       />
@@ -53,10 +58,10 @@ export default Input;
 const styles = StyleSheet.create({
   inputContainer: {
     borderWidth:1,
-    borderColor:'#8A96D3',
+    
     borderRadius:1,
     marginVertical: 8,
-    backgroundColor:'#E9EEFF',
+   
     flexDirection: 'row', // Add this line to align items horizontally
     alignItems: 'center', 
   },
@@ -72,10 +77,10 @@ const styles = StyleSheet.create({
     
     paddingVertical: 10,
     paddingHorizontal: 8,
-    backgroundColor: '#E9EEFF',
+  
     borderBottomColor:'#DCDCDC',
     fontSize: 16,
-    color:'black',
+    
     width:'100%'
   },
   inputInvalid: {

@@ -9,13 +9,16 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from "react-native";
-import { useCallback } from "react";
+import { useCallback,useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getEmp } from "../store/http";
 import { getProjects } from "../store/http";
 import SubmitButton from "./ui/SubmitButton";
 import BackArrowHeader from "../components/BackArrowHeader";
 const ITEMS_PER_PAGE = 10;
+import { colors
+ } from "./config/theme";
+ import { ThemeContext } from "../context/ThemeContext";
 
 const ProjectDetails = ({ item, handleSportSelection, isSelected }) => {
   const backgroundColor = isSelected ? "#E9EEFF" : "#f5f5f5";
@@ -44,7 +47,7 @@ const ProjectDetails = ({ item, handleSportSelection, isSelected }) => {
             marginVertical: 14,
           }}
         >
-          <Text style={styles.text2}>{item.project_name}</Text>
+          <Text style={[styles.text2,{color:activeColors.color}]}>{item.project_name}</Text>
         </View>
       </View>
     </Pressable>
@@ -194,8 +197,15 @@ const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
 
   // Generate project data with random project names
 
+
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
+   
+  
+ 
   return (
-    <View style={{ flex: 1 }}>
+
+    <View  style={{ flex: 1 , backgroundColor:activeColors.background}}>
       <View
         style={{
           alignItems: "center",
@@ -203,8 +213,7 @@ const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
           marginTop: 10,
           flexDirection: "row",
           marginEnd: 20,
-        }}
-      >
+        }}>
         <Pressable onPress={onBack}>
           <View
             style={{
@@ -226,7 +235,10 @@ const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
         <View style={{ flex: 9, alignItems: "center" }}>
           <Text style={styles.modalTitle}>Select Project</Text>
         </View>
-      </View>
+        </View>
+      
+    
+    
 
       <View style={{ flex: 1 }}>
         <FlatList
@@ -267,6 +279,7 @@ const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
         </SubmitButton>
       </View>
     </View>
+    
   );
 };
 

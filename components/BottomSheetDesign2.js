@@ -5,54 +5,60 @@ import {
   FlatList,
   StyleSheet,
   Pressable,
+  Image
 } from "react-native";
 import { useCallback } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getEmp } from "../store/http";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "./config/theme";
+import { useContext } from "react";
 import SubmitButton from "./ui/SubmitButton";
 
 
 
-const ProjectDetails = ({ item,handleSportSelection,isSelected }) => {
-  const backgroundColor = isSelected ? "#E9EEFF" : "#f5f5f5";
- 
-    return (
-      <Pressable
-      onPress={() => handleSportSelection(item.name,item.emp_id)}
-      style={[styles.itemContainer2, ]}
+const ProjectDetails = ({ item, handleSportSelection, isSelected }) => {
+  const { theme } = useContext(ThemeContext)
+  let activeColors = colors[theme.mode]
+  const backgroundColor = isSelected ? "#E9EEFF" : activeColors.blackBg;
+
+  return (
+    <Pressable
+      onPress={() => handleSportSelection(item.name, item.emp_id)}
+      style={[styles.itemContainer2,]}
     >
       <View
         style={[{
           flexDirection: "row",
           flex: 1,
           alignItems: "center",
-          
+
           borderColor: isSelected ? "#E9EEFF" : "#E9EEFF",
-          backgroundColor 
+          backgroundColor
         }]}
       >
-        <View 
+        <View
           style={{
             flex: 1,
             marginStart: 8,
             marginVertical: 14,
           }}
         >
-          <Text style={styles.text2}>{item.name}</Text>
+          <Text style={[styles.text2, { color: activeColors.color }]}>{item.name}</Text>
         </View>
       </View>
     </Pressable>
-  
-    );
+
+  );
 
 };
 
 
-const BottomSheetDesign2 = ({handleSportSelection}) => {
+const BottomSheetDesign2 = ({ handleSportSelection,onBack }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItemIDs, setSelectedItemIDs] = useState([]);
 
-  
+
 
   const [task, setTask] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
@@ -83,17 +89,17 @@ const BottomSheetDesign2 = ({handleSportSelection}) => {
       setIsFetching(true);
 
       try {
-        
+
         let expenses;
         const loginRespone = await AsyncStorage.getItem("user");
         const response = JSON.parse(loginRespone);
         if (storedProfile === "super admin") {
           const tasks = await getEmp(response.userId, response.token);
-          
+
           expenses = tasks;
         } else {
           const tasks = await getEmp(response.userId, response.token);
-          
+
           expenses = tasks;
         }
 
@@ -103,7 +109,8 @@ const BottomSheetDesign2 = ({handleSportSelection}) => {
       } catch (error) {
         console.error("Error fetching tasks:", error);
       } finally {
-        if (isMounted) {[]
+        if (isMounted) {
+          []
           setIsFetching(false);
         }
       }
@@ -140,31 +147,48 @@ const BottomSheetDesign2 = ({handleSportSelection}) => {
   // Generate project data with random project names
 
 
-  
- 
-  return (
-    <View style={{flex:1}}>
-       <View style={{ alignItems: 'center',marginTop:10 }}>
-          <Text style={styles.modalTitle}>Select Members</Text>
-        </View>
-   <View style={{flex:1}}>
-   <FlatList
-      data={task}
-      renderItem={({ item }) =>    
-      <ProjectDetails
-      item={item}
-      handleSportSelection={toggleSelection}
-      isSelected={selectedItems.includes(item.name)}
-    />}
-    keyExtractor={(item, index) => `${item}-${index}`}
+  const { theme } = useContext(ThemeContext)
+  let activeColors = colors[theme.mode]
 
-    />
-   </View>
-   <View style={{ alignItems: 'center',marginTop:10, marginBottom:20 }}>
-          <SubmitButton onPress={() => handleSportSelection(selectedItems,selectedItemIDs)} color='black'>Add</SubmitButton>
+  return (
+    <View style={{ flex: 1, backgroundColor: activeColors.background }}>
+      <Pressable onPress={onBack}>
+
+
+        <View style={{ backgroundColor: activeColors.background, alignItems: 'flex-start', marginLeft: 10 }}>
+          <Image
+            style={{
+              width: 40,
+              height: 40,
+              resizeMode: "cover",
+
+            }}
+            source={require("../assets/Images/leftArrow.png")}
+          />
+
         </View>
-   
-     </View>
+      </Pressable>
+      <View style={{ alignItems: 'center', marginTop: 10 }}>
+        <Text style={[styles.modalTitle, { color: activeColors.color }]}>Select Members</Text>
+      </View>
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={task}
+          renderItem={({ item }) =>
+            <ProjectDetails
+              item={item}
+              handleSportSelection={toggleSelection}
+              isSelected={selectedItems.includes(item.name)}
+            />}
+          keyExtractor={(item, index) => `${item}-${index}`}
+
+        />
+      </View>
+      <View style={{ alignItems: 'center', marginTop: 10, marginBottom: 20 }}>
+        <SubmitButton onPress={() => handleSportSelection(selectedItems, selectedItemIDs)} color='black'>Add</SubmitButton>
+      </View>
+
+    </View>
   );
 };
 
@@ -176,11 +200,11 @@ const styles = StyleSheet.create({
     elevation: 6,
     marginHorizontal: 20,
     marginVertical: 12,
-    
-   
-    borderColor:'#E9EEFF'
+
+
+    borderColor: '#E9EEFF'
   },
-  
+
   image: {
     width: 55,
     height: 55,
@@ -212,7 +236,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontWeight: 'bold',
     marginBottom: 16,
-},
+  },
 });
 
 export default BottomSheetDesign2;

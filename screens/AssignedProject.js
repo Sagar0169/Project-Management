@@ -11,8 +11,13 @@ import BackArrowHeader from "../components/BackArrowHeader";
 import MilestonePage from "../components/MilestonePage";
 import TimeSheet from "./TimeSheet";
 import IssuesProject from "./IssuesProject";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "../components/config/theme";
+import { useContext } from "react";
 
 export default function AssignedProject({ navigation }) {
+  const { theme } = useContext(ThemeContext)
+  let activeColors = colors[theme.mode]
   const { width } = Dimensions.get("window");
   const [selectedTab, setSelectedTab] = useState("TIMESHEET");
 
@@ -34,7 +39,7 @@ export default function AssignedProject({ navigation }) {
   };
 
   return (
-    <View style={{ paddingTop: 20, flex: 1, backgroundColor: "#ffffff" }}>
+    <View style={{ paddingTop: 20, flex: 1, backgroundColor: activeColors.background }}>
       <BackArrowHeader
         backButton={handlerBack}
         title="Assigned Projects"
