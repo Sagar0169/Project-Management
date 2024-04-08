@@ -8,7 +8,8 @@ import {
   View,
   Modal,
   TextInput,
-  Dimensions
+  Dimensions,
+  ToastAndroid
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Input from "./Input";
@@ -508,11 +509,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
                   // Add other properties based on your form fields 
                 };
                 addNewTask(newTask); 
-                // Toast.showWithGravity(
-                //   "Project Added Sucessfully.",
-                //   Toast.SHORT,
-                //   Toast.BOTTOM
-                // );
+                
               } else {
                 // Toast.showWithGravity(
                 //   "Please fill all details.",

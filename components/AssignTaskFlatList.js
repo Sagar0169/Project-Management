@@ -69,6 +69,7 @@ const AssignTaskFlatList = ({ navigation }) => {
   const [page, setPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
 
+
   const fetchStoredProfile = useCallback(async () => {
     try {
       setStoreProfile(await AsyncStorage.getItem("profile"));
@@ -86,6 +87,7 @@ const AssignTaskFlatList = ({ navigation }) => {
   useEffect(() => {
     fetchStoredProfile();
   }, [fetchStoredProfile]);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -95,7 +97,7 @@ const AssignTaskFlatList = ({ navigation }) => {
       setLoading(true);
       const loginRespone = await AsyncStorage.getItem("user");
       const response = JSON.parse(loginRespone);
-      console.log("Pagesss", page);
+      console.log("Pagesss", response.userId);
 
       const data = await getTaks(
         response.userId,
