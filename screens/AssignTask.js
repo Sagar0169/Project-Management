@@ -1,17 +1,20 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { StyleSheet, View, TouchableOpacity, Pressable } from "react-native";
 import AssignTaskFlatList from "../components/AssignTaskFlatList";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import BackArrowHeaderWhite from "../components/BackArrowHeaderWhite";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { colors } from "../components/config/theme";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function AssignTask({ navigation }) {
   // const navigation = useNavigation();
   const [storedProfile, setStoreProfile] = useState("");
   const [storedUserId, setstoredUserId] = useState("");
   const [storedToken, setstoredToken] = useState("");
-
+  const {theme}=useContext(ThemeContext)
+let activeColors=colors[theme.mode]
 
   const handleAddTaskPress = () => {
     navigation.navigate("AssignNewTask",{ userId: storedUserId});
@@ -49,7 +52,7 @@ export default function AssignTask({ navigation }) {
   }, [fetchStoredProfile]);
 
   return (
-    <View style={styles.rootContainer}>
+    <View style={[styles.rootContainer,{backgroundColor: activeColors.background}]}>
       <BackArrowHeaderWhite
         searchTitle="Assigned Tasks"
         filter={true}
@@ -57,7 +60,7 @@ export default function AssignTask({ navigation }) {
         color="#ffffff"
         backButton={() => navigation.goBack()}
       />
-      <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
+      <View style={{ flex: 1,backgroundColor: activeColors.background }}>
         <AssignTaskFlatList navigation={navigation} storedProfile={storedProfile}/>
       </View>
       {storedProfile !== "Developer" && (
@@ -84,7 +87,6 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     paddingTop: 40,
-    backgroundColor: "#ffffff",
   },
   addButton: {
     position: "absolute",
