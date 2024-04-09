@@ -51,9 +51,9 @@ export default function AssignedProject({ navigation }) {
         style={{
           flexDirection: "row",
           justifyContent: "space-around",
-          backgroundColor: "#F7F5F5",
+          backgroundColor: activeColors.background,
           height: 50,
-          margin:4        
+          margin:4    
         }}
       >
         {["TIMESHEET", "MILESTONE", "ISSUES"].map((tab) => (
@@ -82,7 +82,7 @@ export default function AssignedProject({ navigation }) {
         ))}
       </View>
 
-      <View style={{ backgroundColor: "white", flex: 1 }}>
+      <View style={{ backgroundColor: activeColors.background, flex: 1 }}>
         {renderComponent()}
       </View>
     </View>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,18 +14,23 @@ import { useSearch } from "../store/search-redux";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getProjects } from "../store/http";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "./config/theme";
 
 // Declare ITEMS_PER_PAGE as a global constant
 const ITEMS_PER_PAGE = 10;
 
 const ProjectDetails = ({ item }) => {
   const navigation = useNavigation();
+  const {theme}=useContext(ThemeContext)
+let activeColors=colors[theme.mode]
   function navigationPdf() {
     // navigation.navigate('Pdf')
   }
   if (item.id !== "placeholder") {
     return (
-      <Pressable onPress={navigationPdf} style={styles.itemContainer2}>
+            
+            <Pressable onPress={navigationPdf} style={[styles.itemContainer2,{backgroundColor:activeColors.blackBgg}]}>
         <View
           style={{
             flexDirection: "row",
@@ -40,7 +45,7 @@ const ProjectDetails = ({ item }) => {
               marginVertical: 14,
             }}
           >
-            <Text style={styles.text2}>{item.project_name}</Text>
+            <Text style={[styles.text2,{color:activeColors.color}]}>{item.project_name}</Text>
           </View>
           <Pressable style={styles.viewBox}>
             <Text style={styles.viewText}>View</Text>
@@ -62,6 +67,8 @@ const ProjectListFlatList = ({}) => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
+  const {theme}=useContext(ThemeContext)
+let activeColors=colors[theme.mode]
 
   const fetchStoredProfile = useCallback(async () => {
     try {

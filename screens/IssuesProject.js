@@ -6,14 +6,18 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import BackArrowHeader from "../components/BackArrowHeader";
 import { Colors } from "../Utilities/Colors";
 import NoticesFlatList from "../components/NoticesFlatList";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { colors } from "../components/config/theme";
+import { ThemeContext } from "../context/ThemeContext";
 
 const IssuesProject = ({ navigation }) => {
   const { width, height } = Dimensions.get("window");
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
 
   // Calculate a scaling factor based on the screen width
   const scaleFactor = width / 375; // Adjust 375 based on your design reference width
@@ -37,7 +41,7 @@ const IssuesProject = ({ navigation }) => {
     navigation.navigate("CreateNewIssues");
   };
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.white }}>
+    <View style={{ flex: 1, backgroundColor: activeColors.background }}>
       <NoticesFlatList navigation={navigation} />
       <Pressable
         style={[styles.addButton, { backgroundColor: "#5063BF" }]}

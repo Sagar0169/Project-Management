@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, Pressable, Image, TextInput } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { useSearch } from "../store/search-redux";
+import { colors } from "./config/theme";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function BackArrowHeaderWhite({
   title,
@@ -12,10 +14,11 @@ export default function BackArrowHeaderWhite({
   searchTitle,
   showSearch,
   color,
-  deleteCall
+  deleteCall,
 }) {
   const { searchQuery, setSearchQuery } = useSearch();
-
+  const { theme } = useContext(ThemeContext);
+  let activeColors = colors[theme.mode];
   return (
     <LinearGradient
       style={{
@@ -23,7 +26,7 @@ export default function BackArrowHeaderWhite({
         paddingHorizontal: 16,
         zIndex: 1,
       }}
-      colors={[color, color]}
+      colors={[activeColors.background, activeColors.background]}
     >
       <View
         style={{
@@ -43,7 +46,7 @@ export default function BackArrowHeaderWhite({
                   width: 40,
                   height: 40,
                   resizeMode: "cover",
-                  tintColor: "#5063BF",
+                  tintColor:activeColors.color,
                 }}
                 source={require("../assets/Images/left.png")}
               />
@@ -54,10 +57,11 @@ export default function BackArrowHeaderWhite({
         <Text
           style={{
             fontSize: 24,
-            color: "#2D2C2E",
+            color: activeColors.color,
             fontWeight: "bold",
             textAlign: "center",
             marginHorizontal: 8,
+            
           }}
         >
           {title}
@@ -83,7 +87,7 @@ export default function BackArrowHeaderWhite({
           style={{
             flexDirection: "row",
             marginHorizontal: "3%",
-            backgroundColor: "#B6C0F1",
+            backgroundColor: activeColors.blackBgg,
             marginBottom: 2,
             borderRadius: 30,
             padding: 8,
@@ -95,7 +99,7 @@ export default function BackArrowHeaderWhite({
         >
           <TextInput
             placeholder={`Search The ${searchTitle} Name`}
-            placeholderTextColor="white"
+            placeholderTextColor={activeColors.inputbg}
             style={{ flex: 1, marginHorizontal: 6 }}
             value={searchQuery}
             onChangeText={(text) => setSearchQuery(text)}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   FlatList,
   Pressable,
@@ -7,19 +7,23 @@ import {
   View
 } from "react-native";
 import moviesData from "./moviesData";
+import { colors } from "./config/theme";
+import { ThemeContext } from "../context/ThemeContext";
 
 const NoticesItem = ({ navigation, item }) => {
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
   function detailsHandler() {
     navigation.navigate("IssuesDetails", { ID: item });
   }
   if (item.id !== "placeholder") {
     return (
-      <Pressable onPress={detailsHandler} style={styles.itemContainer2}>
-        <Text numberOfLines={3} ellipsizeMode="tail" style={styles.text}>
+      <Pressable onPress={detailsHandler} style={[styles.itemContainer2,{backgroundColor:activeColors.blackBgg}]}>
+        <Text numberOfLines={3} ellipsizeMode="tail" style={[styles.text,{color:activeColors.color}]}>
           {item.title} 
         </Text>
         <Pressable onPress={detailsHandler} style={styles.viewBox}>
-          <Text style={styles.viewText}>View</Text>
+          <Text style={[styles.viewText,{color:activeColors.color}]}>View</Text>
         </Pressable>
       </Pressable>
     );

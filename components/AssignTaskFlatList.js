@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   ActivityIndicatorBase,
@@ -18,9 +18,13 @@ import {
 } from "../store/http";
 import { useSearch } from "../store/search-redux";
 import { useFocusEffect } from "@react-navigation/native";
+import { colors } from "./config/theme";
+import { ThemeContext } from "../context/ThemeContext";
 const ITEMS_PER_PAGE = 10;
 
 const ProjectDetails = ({ item, navigation, storedProfile }) => {
+  const {theme}=useContext(ThemeContext)
+let activeColors=colors[theme.mode]
   const header = item.assign_to;
   function detailsHandler() {
     navigation.navigate("AssignedTaskDetails", {
@@ -31,7 +35,7 @@ const ProjectDetails = ({ item, navigation, storedProfile }) => {
 
   if (item.id !== "placeholder") {
     return (
-      <Pressable style={styles.itemContainer2} onPress={detailsHandler}>
+      <Pressable style={[styles.itemContainer2,{backgroundColor:activeColors.blackBgg}]} onPress={detailsHandler}>
         <View
           style={{
             flexDirection: "row",
@@ -46,7 +50,7 @@ const ProjectDetails = ({ item, navigation, storedProfile }) => {
               marginVertical: 14,
             }}
           >
-            <Text style={styles.text2}>{header}</Text>
+            <Text style={[styles.text2,{color:activeColors.color}]}>{header}</Text>
           </View>
           <Pressable onPress={detailsHandler} style={styles.viewBox}>
             <Text style={styles.viewText}>View</Text>
@@ -68,6 +72,8 @@ const AssignTaskFlatList = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
+  const {theme}=useContext(ThemeContext)
+let activeColors=colors[theme.mode]
 
   const fetchStoredProfile = useCallback(async () => {
     try {
@@ -86,6 +92,7 @@ const AssignTaskFlatList = ({ navigation }) => {
   useEffect(() => {
     fetchStoredProfile();
   }, [fetchStoredProfile]);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -95,7 +102,7 @@ const AssignTaskFlatList = ({ navigation }) => {
       setLoading(true);
       const loginRespone = await AsyncStorage.getItem("user");
       const response = JSON.parse(loginRespone);
-      console.log("Pagesss", page);
+      console.log("Pagesss", response.userId);
 
       const data = await getTaks(
         response.userId,
@@ -237,7 +244,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   itemContainer2: {
-    backgroundColor: "#E9EEFF",
     flex: 1,
     elevation: 6,
     marginHorizontal: 20,

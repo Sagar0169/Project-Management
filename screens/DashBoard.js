@@ -22,6 +22,7 @@ import TasksData from "../components/TasksData";
 import { AuthContext } from "../store/auth-context";
 import { Logout, getProjects, getTaks } from "../store/http";
 import { colors } from "../components/config/theme";
+import { ThemeContext } from "../context/ThemeContext";
 const ITEMS_PER_PAGE = 10;
 
 const { width, height } = Dimensions.get("window");
@@ -45,8 +46,8 @@ function h(value) {
 }
 
 export default function DashBoard({ navigation }) {
-  const theme={mode:"dark"}
-  let activeColors=colors[theme.mode]
+  const {theme}=useContext(ThemeContext)
+let activeColors=colors[theme.mode]
   const authCtx = useContext(AuthContext);
 
   const handleLogout = async () => {
@@ -292,7 +293,7 @@ export default function DashBoard({ navigation }) {
   };
 
   return (
-    <ScrollView style={{ paddingTop: h(4), flex: 1 }}>
+    <ScrollView style={{ paddingTop: h(4), flex: 1, backgroundColor: activeColors.background }}>
       <View
         style={{
           flexDirection: "row",
@@ -334,6 +335,7 @@ export default function DashBoard({ navigation }) {
             color: "#2D2C2E",
             marginHorizontal: 8,
             marginVertical: 8,
+            color:activeColors.color
           }}
         >
           Dashboard
@@ -345,6 +347,7 @@ export default function DashBoard({ navigation }) {
             fontWeight: "600",
             marginHorizontal: 8,
             marginVertical: 2,
+            color:activeColors.color
           }}
         >
           Project Summary
@@ -373,6 +376,7 @@ export default function DashBoard({ navigation }) {
               color: "grey",
               fontWeight: "600",
               margin: 8,
+              color:activeColors.color
             }}
           >
             Recent Ongoing Projects
