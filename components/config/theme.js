@@ -7,7 +7,8 @@ export const colors={
         text:'white',
         hint:"#878787",
         highlight:"#5063BF",
-        drawerBg:"#052160"
+        drawerBg:"#052160",
+   
         
         
     }, dark:{
