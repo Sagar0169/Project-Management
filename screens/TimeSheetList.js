@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getTimeSheetList } from '../store/http';
 import { format } from 'date-fns';
 
-export default function TimeSheetList({selectedDate}) {
+export default function TimeSheetList({selectedDate,active}) {
 
   const context=useContext(Context)
   const List=context.items
@@ -187,13 +187,13 @@ if(response_data!=null){
 
   return (
     <View style={{marginVertical:h(3),marginHorizontal:w(2)}}>
-       <View style={{flexDirection:'row',alignItems:'center',backgroundColor:'#2A45CE',padding:w(1)}}>
-        <Text style={{width:w(15.8),fontSize:dynamicFontSize*0.78,color:Colors.white,textAlign:'center'}}>Project</Text>
-        <Text style={{width:w(25.8),fontSize:dynamicFontSize*0.78,color:Colors.white,textAlign:'center'}}>Task</Text>
-        <Text style={{width:w(20.8),fontSize:dynamicFontSize*0.78,color:Colors.white,textAlign:'center'}}>Activity</Text>
-        <Text style={{width:w(12.8),fontSize:dynamicFontSize*0.78,color:Colors.white,textAlign:'center'}}>Duration</Text>
+       <View style={{flexDirection:'row',alignItems:'center',backgroundColor:active.blackBg,padding:w(1)}}>
+        <Text style={{width:w(15.8),fontSize:dynamicFontSize*0.78,color:active.text,textAlign:'center'}}>Project</Text>
+        <Text style={{width:w(25.8),fontSize:dynamicFontSize*0.78,color:active.text,textAlign:'center'}}>Task</Text>
+        <Text style={{width:w(20.8),fontSize:dynamicFontSize*0.78,color:active.text,textAlign:'center'}}>Activity</Text>
+        <Text style={{width:w(12.8),fontSize:dynamicFontSize*0.78,color:active.text,textAlign:'center'}}>Duration</Text>
         {/* <Text style={{width:w(15)}}>Description</Text> */}
-        <Text style={{width:w(18.8),fontSize:dynamicFontSize*0.78,color:Colors.white,textAlign:'center'}}>Status</Text>
+        <Text style={{width:w(18.8),fontSize:dynamicFontSize*0.78,color:active.text,textAlign:'center'}}>Status</Text>
        </View>
        {isModalVisible&& <CustomModal
         visible={isModalVisible}

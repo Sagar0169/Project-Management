@@ -30,12 +30,16 @@ import { Colors } from "../Utilities/Colors";
 import { getProjectList, getTimeSheetIssueList, getTimeSheetTaskList, postAddTimeSheet } from "../store/http";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomModal from "../components/CustomModal";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "../components/config/theme";
 
 export default function TimeSheet({ navigation }) {
   // context
   const context = useContext(Context);
   console.log(context.items[4]);
-
+  //theme
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
   async function addTimeSheetHandler() {
     if (
       project &&
@@ -338,14 +342,32 @@ const formattedWorkingHours = isNaN(workingHoursHours)
     <>
       <ScrollView
         ref={scrollViewRef}
-        style={{ backgroundColor: "white", flex: 1 }}
+        style={{ backgroundColor: activeColors.background, flex: 1 }}
       >
         <Calendar
           onDayPress={onDayPress}
           markedDates={{ [selectedDate]: { selected: true } }}
           maxDate={today.toString().split('T')[0]} // Set minDate to the current dat
+          theme={{
+            backgroundColor: activeColors.background, // Background color
+            calendarBackground: activeColors.background, // Calendar background color
+            textSectionTitleColor: activeColors.blackbg, // Text color for month title
+            selectedDayBackgroundColor: activeColors.blackBg, // Background color for selected day
+            selectedDayTextColor: activeColors.text, // Text color for selected day
+            todayTextColor: activeColors.blackBg, // Text color for today's date
+            dayTextColor: activeColors.color, // Text color for other days
+            textDisabledColor: activeColors.hint2, // Text color for disabled days
+            arrowColor: activeColors.color, // Color of arrows for switching between months
+            monthTextColor: activeColors.color,
+            'stylesheet.calendar.header': {
+              dayHeader: {
+                color: activeColors.color, // Text color for day header (Sun, Mon, etc.)
+              },}
+             // Text color for month label
+            
+          }}
         />
-        <Text style={{ alignSelf: "flex-start", fontSize: dynamicFontSize * 1.5 ,marginStart:w(3),marginTop:h(1),color:"#5063BF"}}>
+        <Text style={{ alignSelf: "flex-start", fontSize: dynamicFontSize * 1.5 ,marginStart:w(3),marginTop:h(1),color:activeColors.text}}>
           Fill All Details
         </Text>
         {/* Project */}
@@ -357,6 +379,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               fontSize: dynamicFontSize ,
               marginTop: w(5),
               marginStart: w(5),
+              color:activeColors.color
               
               // width: w(20),
               // textAlign: "right",
@@ -382,6 +405,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               fontSize: dynamicFontSize ,
               marginTop: w(5),
               marginStart: w(5),
+              color:activeColors.color
               // width: w(20),
               // textAlign: "right",
             }}
@@ -406,6 +430,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               fontSize: dynamicFontSize ,
               marginTop: w(5),
               marginStart: w(5),
+              color:activeColors.color
               // width: w(20),
               // textAlign: "right",
             }}
@@ -433,6 +458,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               fontSize: dynamicFontSize ,
               marginTop: w(5),
               marginStart: w(5),
+              color:activeColors.color
               
               // width: w(20),
               // textAlign: "right",
@@ -458,6 +484,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               fontSize: dynamicFontSize ,
               marginTop: w(5),
               marginStart: w(5),
+              color:activeColors.color
               // width: w(20),
               // textAlign: "right",
             }}
@@ -481,6 +508,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               fontSize: dynamicFontSize ,
               marginTop: w(5),
               marginStart: w(5),
+              color:activeColors.color
               // width: w(20),
               // textAlign: "right",
             }}
@@ -492,14 +520,14 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               marginHorizontal: w(5),
               marginVertical: h(1),
               flex: 1,
-              backgroundColor: Colors.timesheet,
+              backgroundColor: activeColors.blackBg,
               padding: w(4),
             }}
             onPress={showTimepickerr}
           >
             <TextInput
               placeholder="(hh:mm)"
-              style={{ fontSize: dynamicFontSize * 0.8, color: Colors.timesheetHint }}
+              style={{ fontSize: dynamicFontSize * 0.8, color: activeColors.text }}
               keyboardType="number-pad"
               value={formattedTime}
               editable={false}
@@ -512,7 +540,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               mode="time"
               is24Hour={true}
               display="default"
-              onChange={handleTimeChange}
+              onChange={()=>handleTimeChange}
             />
           )}
         </View>
@@ -525,6 +553,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               fontSize: dynamicFontSize ,
               marginTop: w(5),
               marginStart: w(5),
+              color:activeColors.color
               // width: w(20),
               // textAlign: "right",
             }}
@@ -536,14 +565,14 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               marginHorizontal: w(5),
               marginVertical: h(1),
               flex: 1,
-              backgroundColor: Colors.timesheet,
+              backgroundColor: activeColors.blackBg,
               padding: w(4),
             }}
             onPress={showTimepickerr2}
           >
             <TextInput
               placeholder="(hh:mm)"
-              style={{ fontSize: dynamicFontSize * 0.8, color:Colors.timesheetHint  }}
+              style={{ fontSize: dynamicFontSize * 0.8, color:Colors.timesheetHint ,color:activeColors.text }}
               keyboardType="number-pad"
               value={formattedTime2}
               editable={false}
@@ -569,6 +598,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               fontSize: dynamicFontSize ,
               marginTop: w(5),
               marginStart: w(5),
+              color:activeColors.color
               // width: w(20),
               // textAlign: "right",
             }}
@@ -580,13 +610,13 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               marginHorizontal: w(5),
               marginVertical: h(1),
               flex: 1,
-              backgroundColor: Colors.timesheet,
+              backgroundColor: activeColors.blackBg,
               padding: w(4),
             }}
           >
             <TextInput
               placeholder="(hh:mm)"
-              style={{ fontSize: dynamicFontSize * 0.8, color: Colors.timesheetHint }}
+              style={{ fontSize: dynamicFontSize * 0.8, color: Colors.timesheetHint ,color:activeColors.text}}
               keyboardType="number-pad"
               value={formattedWorkingHours}
               editable={false}
@@ -612,6 +642,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               fontSize: dynamicFontSize ,
               marginTop: w(5),
               marginStart: w(5),
+              color:activeColors.color
               // width: w(20),
               // textAlign: "right",
             }}
@@ -623,13 +654,13 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               marginHorizontal: w(5),
               marginVertical: h(1),
               flex: 1,
-              backgroundColor: Colors.timesheet,
+              backgroundColor: activeColors.blackBg,
               padding: w(4),
             }}
           >
             <TextInput
               placeholder="(hh:mm)"
-              style={{ fontSize: dynamicFontSize * 0.8, color: Colors.timesheetHint }}
+              style={{ fontSize: dynamicFontSize * 0.8, color: Colors.timesheetHint, color:activeColors.text}}
               keyboardType="number-pad"
               value={formattedWorkingHours}
               editable={false}
@@ -655,6 +686,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               fontSize: dynamicFontSize ,
               marginTop: w(5),
               marginStart: w(5),
+              color:activeColors.color
               // width: w(20),
               // textAlign: "right",
             }}
@@ -667,16 +699,16 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               marginVertical: h(1),
               padding: w(4),
               flex: 1,
-              backgroundColor: Colors.timesheet,
+              backgroundColor: activeColors.blackBg,
             }}
           >
             <TextInput
               placeholder=""
               style={{
                 fontSize: dynamicFontSize * 0.8,
-                color: Colors.timesheetHint,
                 maxHeight:h(10),
                 flex: 1,
+                color:activeColors.text
                 
               }}
               numberOfLines={3}
@@ -696,6 +728,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
               fontSize: dynamicFontSize ,
               marginTop: w(5),
               marginStart: w(5),
+              color:activeColors.color
               // width: w(20),
               // textAlign: "right",
             }}
@@ -730,17 +763,18 @@ const formattedWorkingHours = isNaN(workingHoursHours)
             marginTop: h(2),
             marginStart:w(2),
             fontWeight: "600",
-            color:"rgba(80, 99, 191, 1)"
+            color:activeColors.color
           }}
         >
           Daily Work
         </Text>
 
-        <TimeSheetList selectedDate={selectedDate}/>
+        <TimeSheetList selectedDate={selectedDate} active={activeColors}/>
         {isModalVisible&& <CustomModal
         visible={isModalVisible}
         message="Fill Completely"
         onHide={hideModal}
+        active={activeColors}
       />}
       </ScrollView>
     </>
