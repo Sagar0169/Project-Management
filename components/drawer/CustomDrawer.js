@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import { TouchableOpacity, Image, Text, View, ScrollView } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { TouchableOpacity, Image, Text, View, ScrollView, Switch } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -16,6 +16,12 @@ export const CustomDrawer = (props) => {
   const { name, type } = props;
 
   const authCtx = useContext(AuthContext);
+  const [themeEnabled, setThemeEnabled] = useState(false);
+
+  const handleChangeTheme = () => {
+    setThemeEnabled(!themeEnabled);
+    // Handle theme change logic here
+  };
 
   const handleLogout = async () => {
     const loginRespone = await AsyncStorage.getItem("user");
@@ -29,6 +35,21 @@ export const CustomDrawer = (props) => {
     //   console.log(logout.message)
     // }
   };
+
+  const handleCheckIn = async () => {
+    props.navigation.navigate("CheckIn/Out")
+  
+  };
+
+  const handleAssignedTask = async () => {
+  
+  };
+
+  const handleProjectTask = async () => {
+  
+  };
+  
+
   // const AuthCtx=useContext(AuthContext)
   // const isAuthenticated=AuthCtx.isAuthenticated
   function logoutHandler() {
@@ -136,6 +157,10 @@ export const CustomDrawer = (props) => {
           />
           <Text style={{fontWeight:'600'}}>User Profile</Text>
         </TouchableOpacity> */}
+
+
+
+        {/* Dashboard */}
          <TouchableOpacity onPress={() => props.navigation.closeDrawer()} style={{flexDirection:'row',borderBottomWidth:1,marginTop:12,alignItems:'center'}}>
          <View style={{marginEnd:7,marginBottom:9}} >
         <SvgSelector  name={"dashboard"} w={AppUtil.getWP(5)} h={AppUtil.getWP(5)}/>
@@ -143,12 +168,71 @@ export const CustomDrawer = (props) => {
           {/* <Image style={{marginEnd:7,marginBottom:9}} source={require('../../assets/Images/dashboard.png')}/> */}
           <Text style={{fontWeight:'600'}}>Dashboard</Text>
         </TouchableOpacity>
+        
+        {/* Assigned TaskList */}
+        <TouchableOpacity onPress={handleAssignedTask} style={{flexDirection:'row',borderBottomWidth:1,marginTop:12,alignItems:'center'}}>
+          <View style={{marginEnd:7,marginBottom:9}} >
+        <SvgSelector  name={"assignedTask"} w={AppUtil.getWP(5)} h={AppUtil.getWP(5)}/>
+        </View>
+          <Text style={{fontWeight:'600'}}>Assigned Task List</Text>
+        </TouchableOpacity>
+
+          {/*  ProjectList */}
+          <TouchableOpacity onPress={handleProjectTask} style={{flexDirection:'row',borderBottomWidth:1,marginTop:12,alignItems:'center'}}>
+          <View style={{marginEnd:7,marginBottom:9}} >
+        <SvgSelector  name={"projectList"} w={AppUtil.getWP(5)} h={AppUtil.getWP(5)}/>
+        </View>
+          <Text style={{fontWeight:'600'}}>Project List</Text>
+        </TouchableOpacity>
+
+{/* CheckIn/CheckOut */}
+        <TouchableOpacity onPress={handleCheckIn} style={{flexDirection:'row',borderBottomWidth:1,marginTop:12,alignItems:'center'}}>
+          <View style={{marginEnd:7,marginBottom:9}} >
+        <SvgSelector  name={"checkIn"} w={AppUtil.getWP(5)} h={AppUtil.getWP(5)}/>
+        </View>
+          <Text style={{fontWeight:'600'}}>CheckIn/CheckOut</Text>
+        </TouchableOpacity>
+
+{/* Company */}
+        <TouchableOpacity onPress={handleCheckIn} style={{flexDirection:'row',borderBottomWidth:1,marginTop:12,alignItems:'center'}}>
+          <View style={{marginEnd:7,marginBottom:9}} >
+        <SvgSelector  name={"company"} w={AppUtil.getWP(5)} h={AppUtil.getWP(5)}/>
+        </View>
+          <Text style={{fontWeight:'600'}}>Company</Text>
+        </TouchableOpacity>
+
+{/* Branch */}
+        <TouchableOpacity onPress={handleCheckIn} style={{flexDirection:'row',borderBottomWidth:1,marginTop:12,alignItems:'center'}}>
+          <View style={{marginEnd:7,marginBottom:9}} >
+        <SvgSelector  name={"branch"} w={AppUtil.getWP(5)} h={AppUtil.getWP(5)}/>
+        </View>
+          <Text style={{fontWeight:'600'}}>Branch</Text>
+        </TouchableOpacity>
+
+{/* Change Theme */}
+<TouchableOpacity onPress={handleLogout} style={{flexDirection:'row',borderBottomWidth:1,marginTop:12,alignItems:'center'}}>
+          <View style={{marginEnd:7,marginBottom:9}} >
+        <SvgSelector  name={"theme"} w={AppUtil.getWP(5)} h={AppUtil.getWP(5)}/>
+        </View>
+        <View style={{flex:1}}>
+          <Text style={{fontWeight:'600'}}>Change Theme</Text>
+
+        </View>
+        <View style={{}}>
+        <Switch value={themeEnabled} onValueChange={handleChangeTheme} />
+        </View>
+        </TouchableOpacity>
+
+        {/* Logout */}
         <TouchableOpacity onPress={handleLogout} style={{flexDirection:'row',borderBottomWidth:1,marginTop:12,alignItems:'center'}}>
           <View style={{marginEnd:7,marginBottom:9}} >
         <SvgSelector  name={"logout"} w={AppUtil.getWP(5)} h={AppUtil.getWP(5)}/>
         </View>
           <Text style={{fontWeight:'600'}}>Logout</Text>
         </TouchableOpacity>
+
+        
+       
       
       </ScrollView>
     </View>

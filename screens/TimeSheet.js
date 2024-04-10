@@ -27,13 +27,16 @@ import SubmitButton from "../components/ui/SubmitButton";
 import { Context } from "../store/context";
 import TimeSheetList from "./TimeSheetList";
 import { Colors } from "../Utilities/Colors";
+import { getProjectList, getTimeSheetIssueList, getTimeSheetTaskList, postAddTimeSheet } from "../store/http";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomModal from "../components/CustomModal";
 
 export default function TimeSheet({ navigation }) {
   // context
   const context = useContext(Context);
   console.log(context.items[4]);
 
-  function addTimeSheetHandler() {
+  async function addTimeSheetHandler() {
     if (
       project &&
       taskGroup &&
@@ -44,25 +47,45 @@ export default function TimeSheet({ navigation }) {
       status &&
       selectedDate
     ) {
-      const id = `id_${Math.random().toString(36).substr(2, 9)}_${Date.now()}`;
-      context.addItem({
-        id,
-        selectedDate,
-        project,
-        taskGroup,
-        task,
-        issue,
-        activity,
-        formattedTime,
-        formattedTime2,
-        formattedWorkingHours,
-        formattedWorkingHours,
-        description,
-        status,
-      });
-      console.log(context.items[0]);
+      const loginRespone = await AsyncStorage.getItem("user");
+    const response = JSON.parse(loginRespone);
+    // authCtx.authenticate(response.token);
+    console.log(response.userId);
+      // const response_data=await postAddTimeSheet(
+      //   response.userId,response.emp_id,project,task,issue,activity,formattedTime,formattedTime2,formattedWorkingHours,formattedWorkingHours,description,status,response.token)
+      
+      const response_data=await postAddTimeSheet(
+        response.userId,response.emp_id,projectId,taskId,issueId,activity,formattedTime,formattedTime2,formattedWorkingHours,formattedWorkingHours,description,status,selectedDate,response.token)
+      
+        console.log(response_data)
+
+
+
+
+
+
+
+
+      // const id = `id_${Math.random().toString(36).substr(2, 9)}_${Date.now()}`;
+      // context.addItem({
+      //   id,
+      //   selectedDate,
+      //   project,
+      //   taskGroup,
+      //   task,
+      //   issue,
+      //   activity,
+      //   formattedTime,
+      //   formattedTime2,
+      //   formattedWorkingHours,
+      //   formattedWorkingHours,
+      //   description,
+      //   status,
+      // });
+      // console.log(context.items[0]);
     } else {
       console.log("fill completely");
+      showModal()
     }
   }
 
@@ -112,8 +135,80 @@ const workingHoursHours = workingHoursMinutes / 60;
 const formattedWorkingHours = isNaN(workingHoursHours)
   ? 'Invalid Time'
   : format(new Date().setHours(0, workingHoursMinutes), 'HH:mm');
+  // const projectList = [];
+  const [projectList, setProjectL] = useState([]);
+  const [issueList, setIssueL] = useState([]);
+
+  const [taskList, setTaskL] = useState([]);
+
+  const [isModalVisible, setModalVisible] = useState(false);
+  const showModal = () => {
+    setModalVisible(true);
+  };
+
+  const hideModal = () => {
+    setModalVisible(false);
+  };
 
   useEffect(() => {
+
+    async function list(){
+      const loginRespone = await AsyncStorage.getItem("user");
+      const response = JSON.parse(loginRespone);
+      // authCtx.authenticate(response.token);
+      console.log(response.userId);
+        // const response_data=await postAddTimeSheet(
+        //   response.userId,response.emp_id,project,task,issue,activity,formattedTime,formattedTime2,formattedWorkingHours,formattedWorkingHours,description,status,response.token)
+        
+        const response_data=await getProjectList(
+          response.userId,response.emp_id,response.token)
+
+          const response_data_issue=await getTimeSheetIssueList(
+            response.userId,1,response.emp_id,response.token)
+           
+            const response_data_task=await getTimeSheetTaskList(
+              response.userId,1,response.emp_id,response.token)
+
+          if(response_data._result!=null){
+            const list=response_data._result.map(item => {
+              return { id: item.id, title: item.project_name };
+          });
+          setProjectL(list)
+          console.log("projectList-->>")
+  
+            console.log(projectList)
+          }
+
+          if(response_data_issue._result!=null){
+            const list2=response_data_issue._result.map(item => {
+              return { id: item.id, title: item.issue_test_phase };
+          });
+          setIssueL(list2)
+          // console.log(projectList)
+          console.log("IssueList-->>")
+  
+            console.log(issueList)
+          }
+          if(response_data_task._result!=null){
+            const list3=response_data_task._result.map(item => {
+              return { id: item.id, title: item.task_name };
+          });
+          setTaskL(list3)
+          // console.log(projectList)
+          console.log("TaskList-->>")
+  
+            console.log(taskList)
+          }
+
+          
+          
+           
+        
+          // console.log("------>Api Data"+response_data)
+    }
+
+    list()
+
     // This block of code will be executed when selectedDate changes
     console.log(selectedDate);
     // const today = new Date();
@@ -160,43 +255,67 @@ const formattedWorkingHours = isNaN(workingHoursHours)
     // Handle the selected date
     setSelectedDate(day.dateString);
   };
+
   const today=format(new Date(), 'yyyy-MM-dd')
 
   const [project, setSelectedproject] = useState(null);
+  const [projectId, setSelectedprojectId] = useState(null);
+
   const [taskGroup, setSelectedtaskGroup] = useState(null);
   const [task, setSelectedTask] = useState(null);
+  const [taskId, setSelectedTaskId] = useState(null);
+
   const [issue, setSelectedIssue] = useState(null);
+  const [issueId, setSelectedIssueId] = useState(null);
+
   const [activity, setSelectedActivity] = useState(null);
   const [status, setSelectedstatus] = useState(null);
   const [description, setSelecteddescription] = useState(null);
   const scrollViewRef = useRef(null);
-  const handleSelectCategory = (category) => {
-    setSelectedproject(category);
+
+  const handleSelectCategory = (val) => {
+    setSelectedproject(val);
+    setSelectedprojectId(val.id)
+    console.log(project)
+    console.log(projectId)
     // Add any additional logic you want when a category is selected
     scrollViewRef.current.scrollTo({ y: 200, animated: true });
   };
+
   const handleSelectTaskGroup = (category) => {
     setSelectedtaskGroup(category);
     // Add any additional logic you want when a category is selected
     scrollViewRef.current.scrollTo({ y: 400, animated: true });
   };
-  const handleSelectTask = (category) => {
-    setSelectedTask(category);
+  const handleSelectTask = (val) => {
+    setSelectedTask(val);
+    setSelectedTaskId(val.id);
+    console.log(task)
+    console.log(taskId)
+
     // Add any additional logic you want when a category is selected
     scrollViewRef.current.scrollTo({ y: 600, animated: true });
   };
-  const handleSelectIssue = (category) => {
-    setSelectedIssue(category);
+  const handleSelectIssue = (val) => {
+    setSelectedIssue(val);
+    setSelectedIssueId(val.id)
+    console.log(issue)
+    console.log(issueId)
+
+
     // Add any additional logic you want when a category is selected
     scrollViewRef.current.scrollTo({ y: 700, animated: true });
   };
-  const handleSelectActivity = (category) => {
-    setSelectedActivity(category);
+  const handleSelectActivity = (val) => {
+    setSelectedActivity(val);
+    console.log(activity)
+
     // Add any additional logic you want when a category is selected
     scrollViewRef.current.scrollTo({ y: 800, animated: true });
   };
-  const handleSelectStatus = (category) => {
-    setSelectedstatus(category);
+  const handleSelectStatus = (val) => {
+    setSelectedstatus(val);
+    console.log(status)
     // Add any additional logic you want when a category is selected
     scrollViewRef.current.scrollTo({ y: 1200, animated: true });
   };
@@ -246,11 +365,12 @@ const formattedWorkingHours = isNaN(workingHoursHours)
             Project:
           </Text>
           <DropDown
-            data={Project}
+            data={projectList}
             selectValue={project}
             oneSelect={handleSelectCategory}
             hi={h(2)}
             wi={w(2)}
+            from={"project"}
           />
         </View>
         {/* Task Group */}
@@ -294,7 +414,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
           </Text>
           {/* <TouchableWithoutFeedback onPress={()=>{scrollToItem(600)}}> */}
           <DropDown
-            data={Tasks}
+            data={taskList}
             selectValue={task}
             oneSelect={handleSelectTask}
             // onPresss={scrollToItem(600)}
@@ -322,7 +442,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
             Issue:
           </Text>
           <DropDown
-            data={Issue}
+            data={issueList}
             selectValue={issue}
             oneSelect={handleSelectIssue}
             hi={h(2)}
@@ -603,7 +723,7 @@ const formattedWorkingHours = isNaN(workingHoursHours)
           </SubmitButton>
           <SubmitButton color={"#5063BF"}>Cancel</SubmitButton>
         </View>
-        {/* <Text
+        <Text
           style={{
             // alignSelf: "center",
             fontSize: dynamicFontSize * 1.2,
@@ -614,9 +734,14 @@ const formattedWorkingHours = isNaN(workingHoursHours)
           }}
         >
           Daily Work
-        </Text> */}
+        </Text>
 
-        {/* <TimeSheetList selectedDate={selectedDate}/> */}
+        <TimeSheetList selectedDate={selectedDate}/>
+        {isModalVisible&& <CustomModal
+        visible={isModalVisible}
+        message="Fill Completely"
+        onHide={hideModal}
+      />}
       </ScrollView>
     </>
   );

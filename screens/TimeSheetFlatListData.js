@@ -1,6 +1,7 @@
-import { View, Text, Dimensions, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, Dimensions, TouchableWithoutFeedback, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { DataSet } from '../components/Data'
+import { Colors } from '../Utilities/Colors';
 
 export default function TimeSheetFlatListData({project,id,task,activity,workingHours,taskStatus,onPress}) {
     const { width, height } = Dimensions.get("window");
@@ -24,15 +25,15 @@ export default function TimeSheetFlatListData({project,id,task,activity,workingH
   }
 
   return (
-    <TouchableWithoutFeedback onPress={()=>onPress(id)}>   
+    <TouchableOpacity style={{backgroundColor:"#5063BFC0"}} onPress={()=>onPress(id)}>   
        <View style={{flexDirection:'row',alignItems:"center",marginVertical:h(0.8)}}>
-      <Text style={{width:w(15.8),fontSize:dynamicFontSize*0.78}}>{project}</Text>
-      <Text style={{width:w(25.8),fontSize:dynamicFontSize*0.78}}>{task}</Text>
-      <Text style={{width:w(20.8),fontSize:dynamicFontSize*0.78}}>{activity}</Text>
-      <Text style={{width:w(12.8),fontSize:dynamicFontSize*0.78,textAlign:'center'}}>{workingHours}</Text>
-      <Text style={{width:w(18.8),fontSize:dynamicFontSize*0.78}}>{taskStatus}</Text>
+      <Text style={{width:w(15.8),fontSize:dynamicFontSize*0.78 ,color:Colors.white,textAlign:'center'}}>{project}</Text>
+      <Text style={{width:w(25.8),fontSize:dynamicFontSize*0.78,color:Colors.white,textAlign:'center'}}>{task}</Text>
+      <Text style={{width:w(20.8),fontSize:dynamicFontSize*0.78,color:Colors.white,textAlign:'center'}}>{activity}</Text>
+      <Text style={{width:w(12.8),fontSize:dynamicFontSize*0.78,textAlign:'center',color:Colors.white}}>{workingHours}</Text>
+      <Text style={{width:w(18.8),fontSize:dynamicFontSize*0.78,textAlign:'center',color:Colors.white}}>{taskStatus}</Text>
     </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
 
   )
 }

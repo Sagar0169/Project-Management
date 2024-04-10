@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "../../Utilities/Colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getProjectList } from "../../store/http";
 
 const { width, height } = Dimensions.get("window");
 
@@ -21,7 +23,7 @@ function h(value) {
   const height = Dimensions.get("window").height / 100; // now height is 1% of screen height
   return height * value;
 }
-const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
+const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss,from }) => {
   function handlerBack() {
     navigation.goBack();
   }
@@ -36,6 +38,7 @@ const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
     setOption(false);
     oneSelect(val);
   };
+ 
 
   return (
     <View style={{  marginVertical: h(1),flex:1 }}>
@@ -52,29 +55,18 @@ const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
       </TouchableOpacity>
 
       {option && (
-        <View style={styles.openDropDown}>
-          {data.map((val, i) => {
-            return (
-              <TouchableOpacity
-                key={i}
-                onPress={() => oneSelectItem(val)}
-                style={{
-                  ...styles.optionContainer,
-                  //   backgroundColor:
-                  //     val &&val.id === selectValue.id ? "pink" : "white",
-                }}
-              >
-                {/* <Image
-                  source={val.image}
-                  style={styles.optionImage}
-                /> */}
-                <Text style={styles.optionText}>{val.title}</Text>
-                {/* <Text style={{ marginLeft: 'auto' }}>{val.count}</Text> */}
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-      )}
+  <View style={styles.openDropDown}>
+    {data.map((val) => (
+      <TouchableOpacity
+        key={val.id}
+        onPress={() => oneSelectItem(val)}
+        style={styles.optionContainer}
+      >
+        <Text style={styles.optionText}>{val.title}</Text>
+      </TouchableOpacity>
+    ))}
+  </View>
+)}
     </View>
   );
 };
