@@ -2,6 +2,9 @@ import { View, Dimensions } from "react-native";
 import BackArrowHeader from "../components/BackArrowHeader";
 import { useNavigation } from "@react-navigation/native";
 import CreateNewIssuesForm from "../components/CreateNewIssuesForm";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "../components/config/theme";
+import { useContext } from "react";
 
 const { width, height } = Dimensions.get("window");
 
@@ -24,8 +27,10 @@ function h(value) {
 }
 
 function CreateNewIssues({ navigation }) {
+  const { theme } = useContext(ThemeContext)
+  let activeColors = colors[theme.mode]
   return (
-    <View style={{ paddingTop: h(4), flex: 1, backgroundColor: "white" }}>
+    <View style={{ paddingTop: h(4), flex: 1, backgroundColor: activeColors.background }}>
       <BackArrowHeader
         backButton={() => {
           navigation.goBack();

@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   Image,
   Pressable,
@@ -12,6 +12,8 @@ import {
   Dimensions,
 } from "react-native";
 import SubmitButton from "./ui/SubmitButton";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 // import Toast from "react-native-simple-toast";
 
 import BottomSheetDesign2 from "./BottomSheetDesign2";
@@ -21,6 +23,11 @@ import CustomModal from "./CustomModal";
 import Input from "./Input";
 import { Svg, SvgXml } from "react-native-svg";
 import { Svg6 } from "./svgs/svgs";
+import BottomSheetProjectList from "./BottomSheetProjectList";
+import BottomSheetTaskList from "./BottomSheetTaskList";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "./config/theme";
+import { useContext } from "react";
 
 //CHANGE MULTIPLE SELECTION FROM BOTTOMSHEET2
 
@@ -45,8 +52,13 @@ function h(value) {
 }
 
 function CreateNewIssuesForm() {
+
+  
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
   const [isModalVisible2, setModalVisible2] = useState(false);
   const [isModalVisible3, setModalVisible3] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
 
   function validateForm() {
     // Check if enteredProjectName, enteredDueDate, and AssginedForItem have values
@@ -60,10 +72,12 @@ function CreateNewIssuesForm() {
       selectedPriority !== null &&
       AssginedForItem.length > 0
     ) {
+      
       return true;
     } else {
       return false;
     }
+   
   }
 
   function ModalHandler() {
@@ -77,7 +91,6 @@ function CreateNewIssuesForm() {
         }}
       >
         <View style={[styles.modalContainer]}>
-          {/* <BottomSheet sports={['Shreyash Jain (Android)', 'Nimish Sharma(Android)', 'Akshat Bansal (Android)', 'Sagar (Android)', 'Rohit (Java)', 'Aman pandey(Java)', 'Atul (Java)', 'Shubhra srivastava (php)', 'Yashika gupta (php)', 'Abhay sahani (Designer)', 'Jitendar singh (Designer)']} handleSportSelection={handleSportSelection} /> */}
           <BottomSheetDesign2 handleSportSelection={handleSportSelection} />
         </View>
       </Modal>
@@ -88,12 +101,15 @@ function CreateNewIssuesForm() {
   const [enteredTaskType, setEnteredTaskType] = useState("");
   const [enteredDueDate, setEnteredDueDate] = useState("");
   const [enteredEstimatedTime, setEnteredEstimatedTime] = useState("");
-  const [selectedProject, setSelectedproject] = useState(null);
+
+  const [selectedProject, setSelectedproject] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(null);
 
   const handleSelectProject = (category) => {
+
     setSelectedproject(category);
+    console.log(selectedProject)
     // Add any additional logic you want when a category is selected
   };
   const handleSelectTask = (category) => {
@@ -123,10 +139,15 @@ function CreateNewIssuesForm() {
         break;
     }
   }
+
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisibletask, setModalVisibletask] = useState(false);
   const [AssginedForItem, setAssginedForItem] = useState("");
+  const [AssginedForTask, setAssginedForTask] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedPriority, setSelectedPriority] = useState(null);
+  const [task, setTask] = useState([]);
+  const [storedProfile, setStoreProfile] = useState("");
   const handleOptionPress = (option) => {
     setSelectedOption(option);
   };
@@ -143,18 +164,48 @@ function CreateNewIssuesForm() {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+  const toggleModal2 = () => {
+    setModalVisibletask(!isModalVisibletask);
+  };
+
 
   const handleSportSelection = (sport) => {
     setAssginedForItem(sport);
+    
     toggleModal();
+  };
+  const handleSportSelection2 = (sport) => {
+    setAssginedForTask(sport);
+    
+    toggleModal2();
   };
   const hideModal = () => {
     setModalVisible2(false);
     setModalVisible3(false);
   };
 
+  const fetchStoredProfile = useCallback(async () => {
+    try {
+      setStoreProfile(await AsyncStorage.getItem("profile"));
+
+      if (storedProfile !== null) {
+        console.log("Stored Profile:", storedProfile);
+      } else {
+        console.log("Profile not found in AsyncStorage");
+      }
+    } catch (error) {
+      console.error("Error fetching profile from AsyncStorage:", error);
+    }
+  }, [storedProfile]);
+
+  useEffect(() => {
+    fetchStoredProfile();
+  }, [fetchStoredProfile]);
+
+
+
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: activeColors.background }}>
       <ScrollView style={{ flex: 1, margin: 10 }}>
         <View
           style={{
@@ -162,16 +213,28 @@ function CreateNewIssuesForm() {
           }}
         >
           <View>
-            <Text style={{ color: "black", fontSize: 26 }}>Project </Text>
+            <Text style={{ color:activeColors.color, fontSize: 26 }}>Project </Text>
+            <Pressable
+                  onPress={toggleModal}
+                  style={[styles.dropDownStyle,{backgroundColor:activeColors.inputBg}]}
+                >
             <View>
-              <DropDown
-                data={ProjectGroup}
-                selectValue={selectedProject}
-                oneSelect={handleSelectProject}
-                hi={h(2)}
-                wi={w(2)}
-              />
+             
+            <Text style={[styles.optionText,{color:activeColors.hint}]}> {AssginedForItem ? AssginedForItem : "Select Project"}</Text>
             </View>
+            </Pressable>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={isModalVisible}
+                onRequestClose={() => {
+                  toggleModal();
+                }}
+              >
+                <View style={[styles.modalContainer]}>
+                  <BottomSheetProjectList handleSportSelection={handleSportSelection} onBack={toggleModal} />
+                </View>
+              </Modal>
           </View>
         </View>
         <View
@@ -180,9 +243,30 @@ function CreateNewIssuesForm() {
           }}
         >
           <View>
-            <Text style={{ color: "black", fontSize: 26 }}>Project Task</Text>
+            <Text style={{ color:activeColors.color, fontSize: 26 }}>Project Task</Text>
+            <Pressable
+                  onPress={toggleModal2}
+                  style={[styles.dropDownStyle,{backgroundColor:activeColors.inputBg}]}
+                >
+            <View>
+             
+            <Text style={[styles.optionText,{color:activeColors.hint}]}> {AssginedForTask ? AssginedForTask : "Select Task"}</Text>
+            </View>
+            </Pressable>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={isModalVisibletask}
+                onRequestClose={() => {
+                  toggleModal2();
+                }}
+              >
+                <View style={[styles.modalContainer]}>
+                  <BottomSheetTaskList handleSportSelection={handleSportSelection2} onBack={toggleModal2} />
+                </View>
+              </Modal>
           </View>
-          <View>
+          {/* <View>
             <DropDown
               data={Tasks}
               selectValue={selectedTask}
@@ -190,7 +274,7 @@ function CreateNewIssuesForm() {
               hi={h(2)}
               wi={w(2)}
             />
-          </View>
+          </View> */}
         </View>
         <View
           style={{
@@ -198,7 +282,7 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "black", fontSize: 26 }}>Title</Text>
+            <Text style={{ color: activeColors.color, fontSize: 26 }}>Title</Text>
           </View>
           <View style={{ marginHorizontal: w(1) }}>
             <Input
@@ -216,7 +300,7 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "black", fontSize: 26 }}>Description</Text>
+            <Text style={{ color: activeColors.color, fontSize: 26 }}>Description</Text>
             <View style={{ marginHorizontal: w(1) }}>
               <TextInput
                 multiline={true}
@@ -224,10 +308,10 @@ function CreateNewIssuesForm() {
                 numberOfLines={4}
                 style={{
                   borderWidth: 1,
-                  borderColor: "#8A96D3",
+                  borderColor:activeColors.blackBg,
                   borderRadius: 1,
                   marginVertical: 8,
-                  backgroundColor: "#E9EEFF",
+                  backgroundColor: activeColors.inputBg,
                   flexDirection: "row", // Add this line to align items horizontally
                   alignItems: "center",
                   fontSize: dynamicFontSize * 0.8,
@@ -248,7 +332,7 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Task Type</Text>
+            <Text style={{ color: activeColors.color, fontSize: 26 }}>Task Type</Text>
             <View style={{ marginHorizontal: w(1) }}>
               <Input
                 label="Enter Type"
@@ -265,7 +349,7 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 26 }}>Status</Text>
+            <Text style={{ color: activeColors.color, fontSize: 26 }}>Status</Text>
           </View>
           <View style={{ flex: 1 }}>
             <DropDown
@@ -278,7 +362,7 @@ function CreateNewIssuesForm() {
           </View>
         </View>
         <View style={{ margin: 8 }}>
-          <Text style={{ color: "#5063BF", fontSize: dynamicFontSize * 1 }}>
+          <Text style={{ color: activeColors.highlight, fontSize: dynamicFontSize * 1 }}>
             Created by
           </Text>
 
@@ -288,17 +372,17 @@ function CreateNewIssuesForm() {
               justifyContent: "flex-start",
               alignItems: "center",
               borderWidth: 1,
-              borderColor: "#8A96D3",
+              borderColor:activeColors.blackBg,
               borderRadius: 1,
               paddingVertical: 10,
               paddingHorizontal: 8,
               marginVertical: 8,
-              backgroundColor: "#E9EEFF",
+              backgroundColor: activeColors.inputBg,
               flexDirection: "row", // Add this line to align items horizontally
               alignItems: "center",
             }}
           >
-            <Text style={{ color: "#666666", fontSize: dynamicFontSize * 0.8 }}>
+            <Text style={{ color: activeColors.hint, fontSize: dynamicFontSize * 0.8 }}>
               Super Admin
             </Text>
           </View>
@@ -322,7 +406,7 @@ function CreateNewIssuesForm() {
                 marginTop: w(2),
               }}
             >
-              <Text style={[{ maxWidth: w(30), marginEnd: w(5) }]}>
+              <Text style={[{ maxWidth: w(30), marginEnd: w(5),color:activeColors.color }]}>
                 Date Created
               </Text>
             </View>
@@ -359,7 +443,7 @@ function CreateNewIssuesForm() {
                 marginTop: w(2),
               }}
             >
-              <Text style={[{ maxWidth: w(30), marginEnd: w(5) }]}>
+              <Text style={[{ maxWidth: w(30), marginEnd: w(5),color:activeColors.color  }]}>
                 Time Created
               </Text>
             </View>
@@ -392,7 +476,7 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 22 }}>
+            <Text style={{ color:activeColors.hint , fontSize: 22 }}>
               Issue Test Phase
             </Text>
           </View>
@@ -425,7 +509,7 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 22 }}>Priority</Text>
+            <Text style={{ color:activeColors.hint, fontSize: 22 }}>Priority</Text>
           </View>
           <View
             style={{
@@ -469,7 +553,7 @@ function CreateNewIssuesForm() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "#666666", fontSize: 22 }}>Severity</Text>
+            <Text style={{ color:activeColors.hint, fontSize: 22 }}>Severity</Text>
           </View>
           <View
             style={{
@@ -571,5 +655,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     justifyContent: "flex-end",
+  },
+  dropDownStyle: {
+    backgroundColor: "rgba(80, 99, 191, 0.21)",
+    minHeight: 40,
+    borderTopEndRadius: w(1),
+    borderTopStartRadius: w(1),
+    borderBottomStartRadius: w(1),
+    borderBottomEndRadius: w(1),
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: w(4),
+    
+    width: "100%",
+  },
+  optionText: {
+    flex: 1,
+    marginLeft: 0,
   },
 });

@@ -1,18 +1,30 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  ActivityIndicatorBase,
   FlatList,
   Pressable,
+  RefreshControl,
   StyleSheet,
   Text,
   View,
 } from "react-native";
-import { assignedTasksFetch, fetchTasks, getTaks } from "../store/http";
+import {
+  assignedTasksFetch,
+  fetchTasks,
+  getProjects,
+  getTaks,
+} from "../store/http";
 import { useSearch } from "../store/search-redux";
 import { useFocusEffect } from "@react-navigation/native";
+import { colors } from "./config/theme";
+import { ThemeContext } from "../context/ThemeContext";
+const ITEMS_PER_PAGE = 10;
 
 const ProjectDetails = ({ item, navigation, storedProfile }) => {
+  const {theme}=useContext(ThemeContext)
+let activeColors=colors[theme.mode]
   const header = item.assign_to;
   function detailsHandler() {
     navigation.navigate("AssignedTaskDetails", {
@@ -23,7 +35,7 @@ const ProjectDetails = ({ item, navigation, storedProfile }) => {
 
   if (item.id !== "placeholder") {
     return (
-      <Pressable style={styles.itemContainer2} onPress={detailsHandler}>
+      <Pressable style={[styles.itemContainer2,{backgroundColor:activeColors.blackBgg}]} onPress={detailsHandler}>
         <View
           style={{
             flexDirection: "row",
@@ -38,7 +50,7 @@ const ProjectDetails = ({ item, navigation, storedProfile }) => {
               marginVertical: 14,
             }}
           >
-            <Text style={styles.text2}>{header}</Text>
+            <Text style={[styles.text2,{color:activeColors.color}]}>{header}</Text>
           </View>
           <Pressable onPress={detailsHandler} style={styles.viewBox}>
             <Text style={styles.viewText}>View</Text>
@@ -56,6 +68,12 @@ const AssignTaskFlatList = ({ navigation }) => {
   const [task, setTask] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
   const [storedProfile, setStoreProfile] = useState("");
+  const [sportsData, setSportsData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [refreshing, setRefreshing] = useState(false);
+  const {theme}=useContext(ThemeContext)
+let activeColors=colors[theme.mode]
 
   const fetchStoredProfile = useCallback(async () => {
     try {
@@ -75,67 +93,107 @@ const AssignTaskFlatList = ({ navigation }) => {
     fetchStoredProfile();
   }, [fetchStoredProfile]);
 
-  const fetchData = useCallback(async () => {
-    setIsFetching(true);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
+  const fetchData = async () => {
     try {
-      let expenses;
+      setLoading(true);
       const loginRespone = await AsyncStorage.getItem("user");
       const response = JSON.parse(loginRespone);
-      if (storedProfile === "super admin") {
-        const tasks = await getTaks(
-          response.userId,
-          response.token,
-          response.emp_id
+      console.log("Pagesss", response.userId);
+
+      const data = await getTaks(
+        response.userId,
+        response.token,
+        response.emp_id,
+        ITEMS_PER_PAGE,
+        page
+      );
+      console.log("DAAAAAAAAAAta", data.length);
+
+      if (data && data.length > 0 && !refreshing) {
+        console.log("Helloooooooooo");
+        setSportsData((prevData) => [...prevData, ...data]);
+
+        // Update the page only if the data length is equal to the limit
+        setPage((prevPage) =>
+          data.length === ITEMS_PER_PAGE ? prevPage + 1 : null
         );
-        if (searchQuery) {
-          expenses = tasks.filter((item) =>
-            item.assign_to.toLowerCase().includes(searchQuery.toLowerCase())
-          );
-        } else {
-          expenses = tasks;
-        }
-        expenses = tasks;
       } else {
-        const tasks = await getTaks(
-          response.userId,
-          response.token,
-          response.emp_id
-        );
-        console.log("Daata", tasks);
-        expenses = tasks;
+        // console.warn("No more data available");
+        setPage(null);
       }
-
-      setTask(expenses);
     } catch (error) {
-      console.error("Error fetching tasks:", error);
+      console.error("Error fetching sports data:", error);
     } finally {
-      setIsFetching(false);
+      setLoading(false);
+      setRefreshing(false);
     }
-  }, [storedProfile,searchQuery]);
+  };
+  const fetchDataRefresh = async () => {
+    try {
+      setLoading(true);
+      const loginRespone = await AsyncStorage.getItem("user");
+      const response = JSON.parse(loginRespone);
+      const data = await getTaks(
+        response.userId,
+        response.token,
+        response.emp_id,
+        ITEMS_PER_PAGE,
+        1
+      );
+      console.log(data);
+      if (data && data.length > 0) {
+        console.log("Refreshiiiiiiing");
+        setSportsData([...data]); // Replace existing data with the refreshed data
 
-  useEffect(() => {
-    let isMounted = true;
+        // Update the page only if the data length is equal to the limit
+        setPage((prevPage) =>
+          data.length === ITEMS_PER_PAGE ? prevPage + 1 : null
+        );
+      } else {
+        console.warn("No more data available");
+        setPage(null);
+      }
+    } catch (error) {
+      console.error("Error fetching sports data:", error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
 
-    fetchData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [fetchData]);
-
-  useFocusEffect(
-    React.useCallback(() => {
+  const handleEndReached = () => {
+    if (!loading && page !== null) {
       fetchData();
-    }, [fetchData])
-  );
-  const handleRefresh = () => {
-    // Manually trigger refresh when needed
-    fetchData();
+    }
+  };
+
+  const onRefresh = () => {
+    // Set refreshing to true and fetch new data when the user pulls to refresh
+    // console.log(refreshing);
+    setRefreshing(true);
+    // console.log(refreshing);
+    console.log(page);
+    setPage(1);
+    console.log(page);
+    setSportsData([]); // Clear existing data
+    fetchDataRefresh();
+  };
+  const duplicateLastItemIfNeeded = () => {
+    const itemCount = sportsData.length;
+    if (itemCount % 2 === 1) {
+      // Use a placeholder for the duplicated item
+      const placeholderItem = { id: "placeholder", name: "", image: "" };
+      return [...sportsData, placeholderItem];
+    }
+    return sportsData;
   };
   return (
     <FlatList
-      data={task}
+      data={duplicateLastItemIfNeeded()}
       renderItem={({ item }) => (
         <ProjectDetails
           item={item}
@@ -144,11 +202,20 @@ const AssignTaskFlatList = ({ navigation }) => {
         />
       )}
       keyExtractor={(item, index) => `${item.id}-${index}`}
-      refreshing={isFetching}
-      onRefresh={handleRefresh}
+      onEndReached={handleEndReached}
+      onEndReachedThreshold={0.1}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      ListFooterComponent={() =>
+        // Render a loader component when loading more data
+
+        !refreshing &&
+        loading && <ActivityIndicator size="large" color="#0000ff" />
+      }
       ListEmptyComponent={() => (
-        <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color="#5063BF" />
+        <View style={styles.noDataContainer}>
+          <Text style={styles.noDataText}>No data found</Text>
         </View>
       )}
     />
@@ -177,7 +244,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   itemContainer2: {
-    backgroundColor: "#E9EEFF",
     flex: 1,
     elevation: 6,
     marginHorizontal: 20,

@@ -12,8 +12,15 @@ import SubmitButton from "./ui/SubmitButton";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../Utilities/Colors";
 import { TextInput } from "react-native-paper";
+import { colors } from "./config/theme";
+import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
+
+
 
 function LoginForm({ onSubmit }) {
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
   const [isPasswordVisible, setPasswordVisible] = useState(true);
@@ -40,33 +47,34 @@ function LoginForm({ onSubmit }) {
   return (
     <View>
       <View>
-        <Text style={{ color: "#878787", fontSize: 15 }}>Email Address</Text>
+        <Text style={{ color: activeColors.hint, fontSize: 15 }}>Email Address</Text>
         <TextInput
           onChangeText={onChangeText.bind(this, "email")}
           value={enteredEmail}
           style={{
             underlineColorAndroid: "white",
-            backgroundColor: "white",
+            backgroundColor: activeColors.background,
             borderBottomColor: "#C4C4C4",
-            color: "#C4C4C4",
           }}
+          textColor={activeColors.color}
           placeholder="abcd@gmail.com"
           placeholderTextColor="#C4C4C4"
         />
       </View>
-      <View style={{ marginTop: 25 }}>
-        <Text style={{ color: "#878787", fontSize: 15 }}>Password</Text>
-        <View style={styles.inputContainer}>
+      <View style={{ marginTop: 25}}>
+        <Text style={{ color: activeColors.hint, fontSize: 15 }}>Password</Text>
+        <View style={[styles.inputContainer,{backgroundColor:activeColors.background }]}>
           <TextInput
             secureTextEntry={isPasswordVisible}
             onChangeText={onChangeText.bind(this, "password")}
             value={enteredPassword}
             style={{
-              flex: 1,
-              backgroundColor: "white",
+             flex:1,
+              backgroundColor: activeColors.background,
               maxWidth: "100%",
-              borderBottomColor: "#C4C4C4",
+              borderBottomColor: "#C4C4C4",             
             }}
+            textColor={activeColors.color}
             placeholder="Password"
             placeholderTextColor="#C4C4C4"
           />
@@ -92,7 +100,7 @@ function LoginForm({ onSubmit }) {
               padding: 10,
             }}
           >
-            <Text style={{ fontSize: 16, color: "#878787" }}>
+            <Text style={{ fontSize: 16, color: activeColors.hint }}>
               Forget Password?
             </Text>
           </View>

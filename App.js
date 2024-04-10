@@ -13,7 +13,7 @@ import DashBoard from "./screens/DashBoard";
 import Login from "./screens/Login";
 import Projectlist from "./screens/Projectlist";
 import TaskList from "./screens/TaskList";
-
+import { ThemeContext } from "./context/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useContext, useEffect, useState } from "react";
 import CheckInLayout from "./screens/CheckInLayout";
@@ -29,7 +29,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { CustomDrawer } from "./components/drawer/CustomDrawer";
 
 let name;
-  let type;
+let type;
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -39,22 +39,16 @@ function Root() {
   const authCtx = useContext(AuthContext);
 
   useEffect(() => {
-
-    const getUserDetails = async() => {
-
-      try{
-        const loginRespone=await AsyncStorage.getItem("user")
+    const getUserDetails = async () => {
+      try {
+        const loginRespone = await AsyncStorage.getItem("user");
         const response = JSON.parse(loginRespone);
-        console.log("name&type",response)
-        name=response.name
-        type=response.usertype
-        
-      }catch{
-      }
-      }
-      getUserDetails()
-
-
+        console.log("name&type", response);
+        name = response.name;
+        type = response.usertype;
+      } catch {}
+    };
+    getUserDetails();
 
     async function fetchToken() {
       try {
@@ -99,7 +93,9 @@ function DrawerHandler() {
   return (
     <Drawer.Navigator
       screenOptions={{ headerShown: false }}
-      drawerContent={(props) => <CustomDrawer {...props} name={name} type={type} />}
+      drawerContent={(props) => (
+        <CustomDrawer {...props} name={name} type={type} />
+      )}
     >
       <Drawer.Screen name="DashBoardScreen" component={DashBoard} />
     </Drawer.Navigator>
@@ -227,7 +223,7 @@ function AuthenticatedStack() {
 
 function Navigation() {
   const authCtx = useContext(AuthContext);
-  console.log(authCtx.isAuthenticated)
+  console.log(authCtx.isAuthenticated);
 
   return (
     <NavigationContainer>
@@ -238,13 +234,25 @@ function Navigation() {
 }
 
 export default function App() {
+  const [theme,setTheme]=useState({mode:"dark"})
+
+  const updateTheme=(newTheme)=>{
+    if(!newTheme)
+    {
+      mode = theme.mode ==="light"?"dark":"light"
+      newTheme={mode}
+    }
+    setTheme(newTheme);
+  };
   return (
     <>
-      <StatusBar backgroundColor="transparent" />
+        <StatusBar style={theme}/>
       <AuthContextProvider>
         <ContextProvider>
           <SearchProvider>
-            <Root />
+            <ThemeContext.Provider value={{ theme, updateTheme }}>
+              <Root />
+            </ThemeContext.Provider>
           </SearchProvider>
         </ContextProvider>
       </AuthContextProvider>

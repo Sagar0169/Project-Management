@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import Input from "./Input";
 import { SvgXml } from "react-native-svg";
+import { colors } from "./config/theme";
+import { ThemeContext } from "../context/ThemeContext";
 
 // Function to generate random project names
 const generateRandomProjectName = () => {
@@ -31,7 +33,8 @@ const projectData = Array.from({ length: 20 }, (_, index) => ({
 const HorizontalBarChart = () => {
   const screenWidth = Dimensions.get("window").width;
   const animatedValues = projectData.map(() => new Animated.Value(0));
-
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
   useEffect(() => {
     // Start filling animation when the component mounts
     const animations = animatedValues.map((animatedValue, index) => {
@@ -86,11 +89,11 @@ const HorizontalBarChart = () => {
 
 `;
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView style={[styles.container,{backgroundColor:activeColors.background}]} showsVerticalScrollIndicator={false}>
       {projectData.map((item, index) => (
-        <View key={index} style={styles.barContainer}>
+        <View key={index} style={[styles.barContainer,{backgroundColor:activeColors.background}]}>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Text style={styles.projectName}>{item.projectName}</Text>
+            <Text style={[styles.projectName,{color:activeColors.color}]}>{item.projectName}</Text>
           </View>
           <View style={styles.projectInfoContainer}>
             <View
@@ -105,7 +108,7 @@ const HorizontalBarChart = () => {
               <SvgXml xml={person} width="30" height="30" />
               <Text
                 style={{
-                  color: "#5063BF",
+                  color:activeColors.color,
                   fontSize: 16,
                   marginHorizontal: 8,
                 }}
@@ -157,18 +160,18 @@ const HorizontalBarChart = () => {
             <View style={{ marginHorizontal: 8 }}>
               <View style={{ flexDirection: "row" }}>
                 <View style={{ flexDirection: "row", width: 100 }}>
-                  <Text style={{ color: "#5063BF" }}>Kick off Date</Text>
+                  <Text style={{ color:activeColors.color }}>Kick off Date</Text>
                 </View>
                 <View style={{ flexDirection: "row" }}>
-                  <Text>: 11/07/2023</Text>
+                  <Text style={{color:activeColors.color}}>: 11/07/2023</Text>
                 </View>
               </View>
               <View style={{ flexDirection: "row" }}>
                 <View style={{ flexDirection: "row", width: 100 }}>
-                  <Text style={{ color: "#5063BF" }}>Wrap-Up Date</Text>
+                  <Text style={{color:activeColors.color }}>Wrap-Up Date</Text>
                 </View>
                 <View style={{ flexDirection: "row" }}>
-                  <Text>: 11/07/2023</Text>
+                  <Text style={{color:activeColors.color}}>: 11/07/2023</Text>
                 </View>
               </View>
             </View>

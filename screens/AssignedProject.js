@@ -11,8 +11,13 @@ import BackArrowHeader from "../components/BackArrowHeader";
 import MilestonePage from "../components/MilestonePage";
 import TimeSheet from "./TimeSheet";
 import IssuesProject from "./IssuesProject";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "../components/config/theme";
+import { useContext } from "react";
 
 export default function AssignedProject({ navigation }) {
+  const { theme } = useContext(ThemeContext)
+  let activeColors = colors[theme.mode]
   const { width } = Dimensions.get("window");
   const [selectedTab, setSelectedTab] = useState("TIMESHEET");
 
@@ -34,7 +39,7 @@ export default function AssignedProject({ navigation }) {
   };
 
   return (
-    <View style={{ paddingTop: 20, flex: 1, backgroundColor: "#ffffff" }}>
+    <View style={{ paddingTop: 20, flex: 1, backgroundColor: activeColors.background }}>
       <BackArrowHeader
         backButton={handlerBack}
         title="Assigned Projects"
@@ -46,9 +51,9 @@ export default function AssignedProject({ navigation }) {
         style={{
           flexDirection: "row",
           justifyContent: "space-around",
-          backgroundColor: "#F7F5F5",
+          backgroundColor: activeColors.background,
           height: 50,
-          margin:4        
+          margin:4    
         }}
       >
         {["TIMESHEET", "MILESTONE", "ISSUES"].map((tab) => (
@@ -77,7 +82,7 @@ export default function AssignedProject({ navigation }) {
         ))}
       </View>
 
-      <View style={{ backgroundColor: "white", flex: 1 }}>
+      <View style={{ backgroundColor: activeColors.background, flex: 1 }}>
         {renderComponent()}
       </View>
     </View>

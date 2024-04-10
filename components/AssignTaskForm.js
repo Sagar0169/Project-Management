@@ -8,7 +8,8 @@ import {
   View,
   Modal,
   TextInput,
-  Dimensions
+  Dimensions,
+  ToastAndroid
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Input from "./Input";
@@ -21,6 +22,9 @@ import useFonts from "../hooks/useFonts";
 import { Svg, SvgXml } from "react-native-svg";
 import { AuthContext } from "../store/auth-context";
 import { Svg6 } from "./svgs/svgs";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "./config/theme";
+
 
 
 const { width, height } = Dimensions.get("window");
@@ -48,6 +52,8 @@ function h(value) {
 
 function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
 
+  const { theme } = useContext(ThemeContext)
+  let activeColors = colors[theme.mode]
   
   useEffect(() => {
     const currentDate = new Date();
@@ -198,15 +204,15 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
 
   
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
-      <ScrollView style={{ flex: 1, margin: 10 }}>
+    <View style={{ paddingTop: h(4),flex: 1, backgroundColor:activeColors.background }}>
+      <ScrollView style={{ flex: 1, margin: 10,backgroundColor:activeColors.background }}>
         <View
           style={{
             margin: 8,
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Task Name</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>Task Name</Text>
           </View>
           <View style={{ flex: 1 }}>
             <Input
@@ -224,8 +230,8 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
             margin: 8,
           }}
         >
-          <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Task Phase</Text>
+          <View style={{ flex: 1}}>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>Task Phase</Text>
           </View>
           <View style={{ flex: 1 }}>
             <Input
@@ -244,7 +250,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Task Type</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>Task Type</Text>
           </View>
           <View style={{ flex: 1 }}>
             <Input
@@ -274,7 +280,8 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
                 style={[
                   styles.headingText,
                   { maxWidth: w(30), marginEnd: w(5) },
-                  { fontFamily: 'poppinsemi' }
+                  { fontFamily: 'poppinsemi' },
+                  {color:activeColors.color}
                 ]}
               >
                 Date Created
@@ -311,7 +318,8 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
                 style={[
                   styles.headingText,
                   { maxWidth: w(30), marginEnd: w(5) },
-                  { fontFamily: 'poppinsemi' }
+                  { fontFamily: 'poppinsemi' },
+                  {color:activeColors.color}
                 ]}
               >
                 Time Created
@@ -346,7 +354,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
           >
             <View style={{ flex: 1 }}>
 
-              <Text style={styles.headingText}>Assign Task To</Text>
+              <Text style={[styles.headingText, {color:activeColors.color}]}>Assign Task To</Text>
             </View>
             <View style={{ flex: 1 }}>
               <Input
@@ -370,7 +378,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>QC Documents Mandatory</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>QC Documents Mandatory</Text>
           </View>
           <View style={{ flex: 1 }}>
             <View
@@ -401,7 +409,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Priority</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>Priority</Text>
           </View>
           <View style={{ flex: 1 }}>
             <View
@@ -444,7 +452,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Task Complexity</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>Task Complexity</Text>
           </View>
           <View style={{ flex: 1 }}>
             <View
@@ -508,11 +516,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
                   // Add other properties based on your form fields 
                 };
                 addNewTask(newTask); 
-                // Toast.showWithGravity(
-                //   "Project Added Sucessfully.",
-                //   Toast.SHORT,
-                //   Toast.BOTTOM
-                // );
+                
               } else {
                 // Toast.showWithGravity(
                 //   "Please fill all details.",

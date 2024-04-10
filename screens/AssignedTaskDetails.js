@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import {
   Image,
   Pressable,
@@ -26,6 +26,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSearch } from "../store/search-redux";
 import Toast from "react-native-toast-message";
+import { colors } from "../components/config/theme";
+import { ThemeContext } from "../context/ThemeContext";
 
 const { width, height } = Dimensions.get("window");
 
@@ -53,7 +55,8 @@ function h(value) {
 function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
   const item = route.params.ID;
   console.log("Task ID", item);
-
+  const {theme}=useContext(ThemeContext)
+let activeColors=colors[theme.mode]
   useEffect(() => {
     const currentDate = new Date();
     setSelectedDate(currentDate);
@@ -315,7 +318,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white", paddingTop: w(5) }}>
+    <View style={{ flex: 1, backgroundColor: activeColors.background, paddingTop: w(5) }}>
       <BackArrowHeaderWhite
         deleteCall={handleDeleteItem}
         showDelete={true}
@@ -335,7 +338,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Assigned To</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>Assigned To</Text>
           </View>
           <View
             style={{
@@ -354,10 +357,10 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
-                backgroundColor: "#E9EEFF",
+                backgroundColor: activeColors.blackBgg,
                 borderBottomColor: "#DCDCDC",
                 fontSize: 16,
-                color: "#404040",
+                color: activeColors.color,
                 width: "100%",
               }}
             >
@@ -372,7 +375,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Created By</Text>
+            <Text style={[styles.headingText,{color: activeColors.color}]}>Created By</Text>
           </View>
           <View
             style={{
@@ -390,10 +393,10 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
-                backgroundColor: "#E9EEFF",
+                backgroundColor: activeColors.blackBgg,
                 borderBottomColor: "#DCDCDC",
                 fontSize: 16,
-                color: "#404040",
+                color:  activeColors.color,
                 width: "100%",
               }}
             >
@@ -407,7 +410,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Form Title</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>Form Title</Text>
           </View>
           <View
             style={{
@@ -426,10 +429,10 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
-                backgroundColor: "#E9EEFF",
+                backgroundColor: activeColors.blackBgg,
                 borderBottomColor: "#DCDCDC",
                 fontSize: 16,
-                color: "#404040",
+                color: activeColors.color,
                 width: "100%",
               }}
             >
@@ -444,7 +447,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Task Phase</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>Task Phase</Text>
           </View>
           <View
             style={{
@@ -463,10 +466,10 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
-                backgroundColor: "#E9EEFF",
+                backgroundColor: activeColors.blackBgg,
                 borderBottomColor: "#DCDCDC",
                 fontSize: 16,
-                color: "#404040",
+                color: activeColors.color,
                 width: "100%",
               }}
             >
@@ -481,7 +484,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Task Type</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>Task Type</Text>
           </View>
           <View
             style={{
@@ -500,10 +503,10 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
-                backgroundColor: "#E9EEFF",
+                backgroundColor: activeColors.blackBgg,
                 borderBottomColor: "#DCDCDC",
                 fontSize: 16,
-                color: "#404040",
+                color:activeColors.color,
                 width: "100%",
               }}
             >
@@ -520,7 +523,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Status</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>Status</Text>
           </View>
           <View style={{ flex: 1 }}>
             <View
@@ -607,6 +610,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
                   styles.headingText,
                   { maxWidth: w(30), marginEnd: w(5) },
                   { fontFamily: "poppinsemi" },
+                  {color:activeColors.color}
                 ]}
               >
                 Date Created
@@ -636,10 +640,10 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
                     style={{
                       paddingVertical: 10,
                       paddingHorizontal: 8,
-                      backgroundColor: "#E9EEFF",
+                      backgroundColor: activeColors.blackBgg,
                       borderBottomColor: "#DCDCDC",
                       fontSize: 16,
-                      color: "#404040",
+                      color: activeColors.color,
                       width: "100%",
                     }}
                   >
@@ -667,7 +671,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
                 style={[
                   styles.headingText,
                   { maxWidth: w(30), marginEnd: w(5) },
-                  { fontFamily: "poppinsemi" },
+                  { fontFamily: "poppinsemi" },{color:activeColors.color}
                 ]}
               >
                 Time Alloted
@@ -698,10 +702,10 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
                     style={{
                       paddingVertical: 10,
                       paddingHorizontal: 8,
-                      backgroundColor: "#E9EEFF",
+                      backgroundColor: activeColors.blackBgg,
                       borderBottomColor: "#DCDCDC",
                       fontSize: 16,
-                      color: "#404040",
+                      color: activeColors.color,
                       width: "100%",
                     }}
                   >
@@ -716,7 +720,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
         {/* Yes BUtton */}
         <View style={{ margin: 8 }}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>QC Documents Mandatory</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>QC Documents Mandatory</Text>
           </View>
           <View
             style={{
@@ -743,7 +747,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
 
         <View style={{ margin: 8 }}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Priority</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>Priority</Text>
           </View>
           <View
             style={{
@@ -801,7 +805,7 @@ function AssignedTaskDetails({ route, taskData, setTaskData, navigation }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Task Complexity</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>Task Complexity</Text>
           </View>
           <View
             style={{

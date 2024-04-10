@@ -8,13 +8,16 @@ import {
   View,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { Colors } from "../Utilities/Colors";
 import { SvgXml } from "react-native-svg";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "./config/theme";
 
 function RecentProjectFlatList({ item }) {
   const animatedValue = useRef(new Animated.Value(0)).current;
-
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
   const animateList = () => {
     Animated.timing(animatedValue, {
       toValue: 1,
@@ -32,15 +35,15 @@ function RecentProjectFlatList({ item }) {
     outputRange: [100, 0], // Adjust the values based on your desired animation
   });
   const priorityColor =
-    item.Priority === "Low"
+    item.priority === "Low"
       ? Colors.lowPriority
-      : item.Priority === "High"
+      : item.priority === "High"
       ? Colors.highPriority
       : Colors.mediumPriority;
   const complexityColor =
-    item.TaskComplexity === "Low"
+    item.priority === "Low"
       ? Colors.lowComplexity
-      : item.TaskComplexity === "High"
+      : item.priority === "High"
       ? Colors.highComplexity
       : Colors.mediumComplexity;
 
@@ -67,20 +70,23 @@ function RecentProjectFlatList({ item }) {
 </defs>
 </svg>
 `;
+
+
+
   return (
     <Animated.View style={[styles.item, { transform: [{ translateY }] }]}>
       <Pressable style={styles.borderContainer}>
         <View
-          style={{ flex: 1, paddingVertical: w(4), paddingHorizontal: w(2) }}
+          style={{ flex: 1, paddingVertical: w(4), paddingHorizontal: w(2),backgroundColor: activeColors.background  }}
         >
           <View
             style={{ justifyContent: "space-between", flexDirection: "row" }}
           >
             <View style={{ width: w(80), marginBottom: 8 }}>
               <Text
-                style={{ color: Colors.black, fontWeight: "500", fontSize: 16 }}
+                style={{ color: Colors.black, fontWeight: "500", fontSize: 16,color:activeColors.color }}
               >
-                {item.title}
+                {item.project_name}
               </Text>
             </View>
             <Ionicons size={20} name="ellipsis-vertical" color="#5063BF" />
@@ -105,7 +111,7 @@ function RecentProjectFlatList({ item }) {
                   backgroundColor: priorityColor,
                 }}
               >
-                {item.Priority}
+                {item.priority}
               </Text>
               <Text
                 style={{
@@ -118,7 +124,7 @@ function RecentProjectFlatList({ item }) {
                   backgroundColor: complexityColor,
                 }}
               >
-                {item.TaskComplexity}
+                {item.priority}
               </Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -128,8 +134,8 @@ function RecentProjectFlatList({ item }) {
                 height="20"
                 style={{ margin: 4 }}
               />
-              <Text style={{ marginHorizontal: 6, color: "#181818" }}>
-                {item.StartDate}
+              <Text style={{ marginHorizontal: 6, color: "#181818",color:activeColors.color  }}>
+                {item.due_date}
               </Text>
             </View>
           </View>

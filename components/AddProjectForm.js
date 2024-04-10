@@ -36,6 +36,8 @@ import { Svg, SvgXml } from "react-native-svg";
 import { Svg1, Svg2, Svg3, Svg4, Svg5, Svg6 } from "./svgs/svgs";
 import axios from "axios";
 import { addProject, uploadFile } from "../store/http";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "./config/theme";
 import { AuthContext } from "../store/auth-context";
 const { width, height } = Dimensions.get("window");
 
@@ -60,6 +62,8 @@ function h(value) {
 //WORK ON MULTIPLE SELECTION
 
 function AddNewProjectFrom() {
+const {theme}=useContext(ThemeContext)
+let activeColors=colors[theme.mode]
   const { token } = useContext(AuthContext);
   async function readFileContent(uri) {
     try {
@@ -80,7 +84,6 @@ function AddNewProjectFrom() {
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
-
   const [isModalVisible2, setModalVisible2] = useState(false);
   const [isModalVisible3, setModalVisible3] = useState(false);
   const [isModalVisible4, setModalVisible4] = useState(false);
@@ -326,20 +329,21 @@ function AddNewProjectFrom() {
   return (
     //MAIN
 
-    <View style={{ paddingTop: h(4), flex: 1, backgroundColor: "white" }}>
+    <View style={{ paddingTop: h(4), flex: 1, backgroundColor: activeColors.background }}>
       <BackArrowHeader
         title={"Add New Project"}
         backButton={() => navigation.goBack()}
         color={"white"}
       />
       <ScrollView
+      
         showsVerticalScrollIndicator={false}
-        style={{ backgroundColor: "white" }}
+        style={{  backgroundColor:activeColors.background }}
       >
-        <View style={styles.container}>
+        <View style={[styles.container,{backgroundColor:activeColors.background}]}>
           <View>
             <View style={{ flexDirection: "row", paddingTop: 10 }}>
-              <Text style={[styles.textStyle, { fontFamily: "poppinsemi" }]}>
+              <Text style={[styles.textStyle, { fontFamily: "poppinsemi",color:activeColors.color }]}>
                 New Project
               </Text>
             </View>
@@ -365,7 +369,7 @@ function AddNewProjectFrom() {
                 style={[
                   styles.textStyle,
                   { maxWidth: w(30), marginEnd: w(5) },
-                  { fontFamily: "poppinsemi" },
+                  { fontFamily: "poppinsemi",color:activeColors.color },
                 ]}
               >
                 Due Date
@@ -405,7 +409,7 @@ function AddNewProjectFrom() {
                 style={[
                   styles.textStyle,
                   { marginTop: w(1) },
-                  { fontFamily: "poppinsemi" },
+                  { fontFamily: "poppinsemi",color:activeColors.color },
                 ]}
               >
                 Assigned for
@@ -458,7 +462,7 @@ function AddNewProjectFrom() {
                     xml={Svg2}
                     width="40"
                     height="40"
-                    style={{ margin: 4 }}
+                    style={{ margin: 4  }}
                   />
                 </Pressable>
               </View>
@@ -476,6 +480,7 @@ function AddNewProjectFrom() {
                 {/* <BottomSheet sports={['Shreyash Jain (Android)', 'Nimish Sharma(Android)', 'Akshat Bansal (Android)', 'Sagar (Android)', 'Rohit (Java)', 'Aman pandey(Java)', 'Atul (Java)', 'Shubhra srivastava (php)', 'Yashika gupta (php)', 'Abhay sahani (Designer)', 'Jitendar singh (Designer)']} handleSportSelection={handleSportSelection} /> */}
                 <BottomSheetDesign2
                   handleSportSelection={handleSportSelection}
+                  onBack={toggleModal}
                 />
               </View>
             </Modal>
@@ -485,7 +490,7 @@ function AddNewProjectFrom() {
             style={{ marginTop: w(5) }} //PRIORITY
           >
             <View style={{ flexDirection: "row", paddingTop: 10 }}>
-              <Text style={[styles.textStyle, { fontFamily: "poppinsemi" }]}>
+              <Text style={[styles.textStyle, { fontFamily: "poppinsemi" ,color:activeColors.color}]}>
                 Priority
               </Text>
             </View>
@@ -526,7 +531,7 @@ function AddNewProjectFrom() {
           </View>
           <View style={{ marginTop: w(5) }}>
             <View style={{ flexDirection: "row", paddingTop: 10 }}>
-              <Text style={[styles.textStyle, { fontFamily: "poppinsemi" }]}>
+              <Text style={[styles.textStyle, { fontFamily: "poppinsemi" ,color:activeColors.color}]}>
                 Attachments
               </Text>
             </View>
@@ -544,6 +549,7 @@ function AddNewProjectFrom() {
                 style={{
                   fontFamily: "poppinsemi",
                   fontSize: dynamicFontSize * 1,
+                  color:activeColors.color
                 }}
               >
                 Browse files to upload
@@ -551,7 +557,7 @@ function AddNewProjectFrom() {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles.borderContainerDocument2, { marginTop: w(5) }]}
+              style={[styles.borderContainerDocument2, { marginTop: w(5),backgroundColor:activeColors.inputBg }]}
               onPress={() => handleDocumentPress("srs")}
             >
               <View
@@ -563,14 +569,14 @@ function AddNewProjectFrom() {
               >
                 <SvgXml xml={Svg4} width="30" height="30" />
                 {selectedSrs && (
-                  <Text style={{ fontSize: dynamicFontSize * 1 }}>
+                  <Text style={{ fontSize: dynamicFontSize * 1 ,color:activeColors.color}}>
                     {selectedSrs}
                   </Text>
                 )}
 
                 {!selectedSrs && (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text>No Selected File - </Text>
+                    <Text style={{color:activeColors.color}}>No Selected File - </Text>
                     <SvgXml xml={Svg5} width="30" height="30" />
                   </View>
                 )}
@@ -638,19 +644,20 @@ function AddNewProjectFrom() {
                             </View>
                         </TouchableOpacity> */}
           </View>
-        </View>
-        <View
+          <View
           style={{
             justifyContent: "center",
             alignItems: "center",
+            
             marginVertical: w(5),
           }}
         >
           <SubmitButton
             onPress={() => {
               if (validateForm()) {
-
+                
                 setModalVisible2(true);
+                navigation.goBack()
               } else {
                 setModalVisible3(true);
               }
@@ -661,6 +668,8 @@ function AddNewProjectFrom() {
             Add Project
           </SubmitButton>
         </View>
+        </View>
+    
         {isModalVisible2 && (
           <CustomModal
             visible={isModalVisible2}
@@ -701,6 +710,7 @@ export default AddNewProjectFrom;
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+    flex:1
   },
   textStyle: {
     marginLeft: 5,

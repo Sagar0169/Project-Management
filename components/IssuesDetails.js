@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState, useRef, useEffect } from "react";
 import {
   Image,
@@ -22,6 +22,8 @@ import Input from "./Input";
 import { Svg, SvgXml } from "react-native-svg";
 import { Svg6 } from "./svgs/svgs";
 import BackArrowHeader from "./BackArrowHeader";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "./config/theme";
 
 //CHANGE MULTIPLE SELECTION FROM BOTTOMSHEET2
 
@@ -48,7 +50,8 @@ function h(value) {
 function IssuesDetails({ navigation }) {
   const [isModalVisible2, setModalVisible2] = useState(false);
   const [isModalVisible3, setModalVisible3] = useState(false);
-
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
   function validateForm() {
     // Check if enteredProjectName, enteredDueDate, and AssginedForItem have values
     if (
@@ -160,7 +163,7 @@ function IssuesDetails({ navigation }) {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white", paddingTop: w(6) }}>
+    <View style={{ flex: 1, backgroundColor:activeColors.background, paddingTop: w(6) }}>
       <BackArrowHeader
         backButton={handlerBack}
         title="Issue Details"
@@ -175,7 +178,7 @@ function IssuesDetails({ navigation }) {
           }}
         >
           <View>
-            <Text style={{ color: "black", fontSize: dynamicFontSize * 1 }}>
+            <Text style={{ color: activeColors.color, fontSize: dynamicFontSize * 1 }}>
               Project{" "}
             </Text>
             <View
@@ -195,10 +198,10 @@ function IssuesDetails({ navigation }) {
                 style={{
                   paddingVertical: 10,
                   paddingHorizontal: 8,
-                  backgroundColor: "#E9EEFF",
+                  backgroundColor:activeColors.blackBgg,
                   borderBottomColor: "#DCDCDC",
                   fontSize: 16,
-                  color: "#404040",
+                  color: activeColors.color,
                   width: "100%",
                 }}
               >
@@ -213,7 +216,7 @@ function IssuesDetails({ navigation }) {
           }}
         >
           <View>
-            <Text style={{ color: "black", fontSize: dynamicFontSize * 1 }}>
+            <Text style={{ color: activeColors.color, fontSize: dynamicFontSize * 1 }}>
               Project Task
             </Text>
           </View>
@@ -234,10 +237,10 @@ function IssuesDetails({ navigation }) {
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
-                backgroundColor: "#E9EEFF",
+                backgroundColor: activeColors.blackBgg,
                 borderBottomColor: "#DCDCDC",
                 fontSize: 16,
-                color: "#404040",
+                color: activeColors.color,
                 width: "100%",
               }}
             >
@@ -251,7 +254,7 @@ function IssuesDetails({ navigation }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "black", fontSize: dynamicFontSize * 1 }}>
+            <Text style={{ color: activeColors.color, fontSize: dynamicFontSize * 1 }}>
               Title
             </Text>
           </View>
@@ -272,10 +275,10 @@ function IssuesDetails({ navigation }) {
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
-                backgroundColor: "#E9EEFF",
+                backgroundColor: activeColors.blackBgg,
                 borderBottomColor: "#DCDCDC",
                 fontSize: 16,
-                color: "#404040",
+                color: activeColors.color,
                 width: "100%",
               }}
             >
@@ -290,7 +293,7 @@ function IssuesDetails({ navigation }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "black", fontSize: dynamicFontSize * 1 }}>
+            <Text style={{ color:activeColors.color, fontSize: dynamicFontSize * 1 }}>
               Description
             </Text>
             <ScrollView
@@ -299,7 +302,7 @@ function IssuesDetails({ navigation }) {
                 borderColor: "#8A96D3",
                 borderRadius: 1,
                 marginVertical: 8,
-                backgroundColor: "#E9EEFF",
+                backgroundColor: activeColors.blackBgg,
                 paddingVertical: w(1),
                 paddingHorizontal: w(1),
               }}
@@ -308,7 +311,7 @@ function IssuesDetails({ navigation }) {
                 style={{
                   fontSize: dynamicFontSize * 0.8,
                   textAlign: "left",
-                  color: "#404040",
+                  color: activeColors.color,
                   height: 100,
                 }}
               >
@@ -335,7 +338,7 @@ function IssuesDetails({ navigation }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "black", fontSize: dynamicFontSize * 1 }}>
+            <Text style={{ color:activeColors.color, fontSize: dynamicFontSize * 1 }}>
               Task Type
             </Text>
             <View
@@ -355,10 +358,10 @@ function IssuesDetails({ navigation }) {
                 style={{
                   paddingVertical: 10,
                   paddingHorizontal: 8,
-                  backgroundColor: "#E9EEFF",
+                  backgroundColor: activeColors.blackBgg,
                   borderBottomColor: "#DCDCDC",
                   fontSize: 16,
-                  color: "#404040",
+                  color: activeColors.color,
                   width: "100%",
                 }}
               >
@@ -373,7 +376,7 @@ function IssuesDetails({ navigation }) {
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={{ color: "black", fontSize: dynamicFontSize * 1 }}>
+            <Text style={{ color: activeColors.color, fontSize: dynamicFontSize * 1 }}>
               Status
             </Text>
           </View>
@@ -394,10 +397,10 @@ function IssuesDetails({ navigation }) {
               style={{
                 paddingVertical: 10,
                 paddingHorizontal: 8,
-                backgroundColor: "#E9EEFF",
+                backgroundColor: activeColors.blackBgg,
                 borderBottomColor: "#DCDCDC",
                 fontSize: 16,
-                color: "#404040",
+                color: activeColors.color,
                 width: "100%",
               }}
             >
@@ -406,7 +409,7 @@ function IssuesDetails({ navigation }) {
           </View>
         </View>
         <View style={{ marginHorizontal: 8 }}>
-          <Text style={{ color: "#5063BF", fontSize: dynamicFontSize * 1 }}>
+          <Text style={{ color: activeColors.color, fontSize: dynamicFontSize * 1 }}>
             Created by
           </Text>
 
@@ -421,12 +424,12 @@ function IssuesDetails({ navigation }) {
               paddingVertical: 10,
               paddingHorizontal: 8,
               marginVertical: 8,
-              backgroundColor: "#E9EEFF",
+              backgroundColor: activeColors.blackBgg,
               flexDirection: "row", // Add this line to align items horizontally
               alignItems: "center",
             }}
           >
-            <Text style={{ color: "#666666", fontSize: dynamicFontSize * 0.8 }}>
+            <Text style={{ color:activeColors.color, fontSize: dynamicFontSize * 0.8 }}>
               Super Admin
             </Text>
           </View>
@@ -455,7 +458,7 @@ function IssuesDetails({ navigation }) {
                   {
                     maxWidth: w(30),
                     marginEnd: w(5),
-                    color: "black",
+                    color: activeColors.color,
                     fontSize: dynamicFontSize * 1,
                   },
                 ]}
@@ -481,10 +484,10 @@ function IssuesDetails({ navigation }) {
                   style={{
                     paddingVertical: 10,
                     paddingHorizontal: 8,
-                    backgroundColor: "#E9EEFF",
+                    backgroundColor: activeColors.blackBgg,
                     borderBottomColor: "#DCDCDC",
                     fontSize: 16,
-                    color: "#404040",
+                    color: activeColors.color,
                     width: "100%",
                   }}
                 >
@@ -513,7 +516,7 @@ function IssuesDetails({ navigation }) {
                   {
                     maxWidth: w(30),
                     marginEnd: w(5),
-                    color: "black",
+                    color: activeColors.color,
                     fontSize: dynamicFontSize * 1,
                   },
                 ]}
@@ -539,10 +542,10 @@ function IssuesDetails({ navigation }) {
                   style={{
                     paddingVertical: 10,
                     paddingHorizontal: 8,
-                    backgroundColor: "#E9EEFF",
+                    backgroundColor: activeColors.blackBgg,
                     borderBottomColor: "#DCDCDC",
                     fontSize: 16,
-                    color: "#404040",
+                    color: activeColors.color,
                     width: "100%",
                   }}
                 >
@@ -557,7 +560,7 @@ function IssuesDetails({ navigation }) {
 
         <View style={{ marginHorizontal: 8, marginVertical: 6 }}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Issue Test Phase</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>Issue Test Phase</Text>
           </View>
           <View
             style={{
@@ -583,7 +586,7 @@ function IssuesDetails({ navigation }) {
 
         <View style={{ margin: 8 }}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Priority</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>Priority</Text>
           </View>
           <View
             style={{
@@ -614,7 +617,7 @@ function IssuesDetails({ navigation }) {
 
         <View style={{ margin: 8 }}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.headingText}>Severity</Text>
+            <Text style={[styles.headingText,{color:activeColors.color}]}>Severity</Text>
           </View>
           <View
             style={{
@@ -633,13 +636,13 @@ function IssuesDetails({ navigation }) {
           </View>
         </View>
 
-        {/* <View
+        <View
           style={{
             justifyContent: "center",
             alignItems: "center",
-            marginVertical: 40,
+            marginVertical: 20,
           }}
-        > */}
+        >
           <SubmitButton
             onPress={() => {
               if (validateForm()) {
@@ -663,7 +666,7 @@ function IssuesDetails({ navigation }) {
             {" "}
             Add Issue
           </SubmitButton>
-        
+        </View>
 
         {/* Toast */}
         {isModalVisible2 && (

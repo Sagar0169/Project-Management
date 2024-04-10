@@ -1,74 +1,71 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   FlatList,
-  Image,
   StyleSheet,
   Pressable,
-  RefreshControl,
+  Image,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
-import TasksData from "./TasksData";
-import { useSearch } from "../store/search-redux";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useCallback,useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getEmp } from "../store/http";
 import { getProjects } from "../store/http";
-import { ThemeContext } from "../context/ThemeContext";
-import { colors } from "./config/theme";
-
-// Declare ITEMS_PER_PAGE as a global constant
+import SubmitButton from "./ui/SubmitButton";
+import BackArrowHeader from "../components/BackArrowHeader";
 const ITEMS_PER_PAGE = 10;
+import { colors
+ } from "./config/theme";
+ import { ThemeContext } from "../context/ThemeContext";
 
-const ProjectDetails = ({ item }) => {
-  const navigation = useNavigation();
-  const {theme}=useContext(ThemeContext)
-let activeColors=colors[theme.mode]
-  function navigationPdf() {
-    // navigation.navigate('Pdf')
-  }
-  if (item.id !== "placeholder") {
-    return (
-            
-            <Pressable onPress={navigationPdf} style={[styles.itemContainer2,{backgroundColor:activeColors.blackBgg}]}>
-        <View
-          style={{
+const ProjectDetails = ({ item, handleSportSelection, isSelected }) => {
+  const backgroundColor = isSelected ? "#E9EEFF" : "#f5f5f5";
+
+  return (
+    <Pressable
+      onPress={() => handleSportSelection(item.project_name, item.emp_id)}
+      style={[styles.itemContainer2]}
+    >
+      <View
+        style={[
+          {
             flexDirection: "row",
             flex: 1,
             alignItems: "center",
+
+            borderColor: isSelected ? "#E9EEFF" : "#E9EEFF",
+            backgroundColor,
+          },
+        ]}
+      >
+        <View
+          style={{
+            flex: 1,
+            marginStart: 8,
+            marginVertical: 14,
           }}
         >
-          <View
-            style={{
-              flex: 1,
-              marginStart: 8,
-              marginVertical: 14,
-            }}
-          >
-            <Text style={[styles.text2,{color:activeColors.color}]}>{item.project_name}</Text>
-          </View>
-          <Pressable style={styles.viewBox}>
-            <Text style={styles.viewText}>View</Text>
-          </Pressable>
+          <Text style={[styles.text2,{color:activeColors.color}]}>{item.project_name}</Text>
         </View>
-      </Pressable>
-    );
-  } else {
-    return <View style={styles.itemContainer}></View>;
-  }
+      </View>
+    </Pressable>
+  );
 };
 
-const ProjectListFlatList = ({}) => {
-  const { searchQuery, setSearchQuery } = useSearch();
+const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItemIDs, setSelectedItemIDs] = useState([]);
+
   const [task, setTask] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
   const [storedProfile, setStoreProfile] = useState("");
+
   const [sportsData, setSportsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
-  const {theme}=useContext(ThemeContext)
-let activeColors=colors[theme.mode]
 
   const fetchStoredProfile = useCallback(async () => {
     try {
@@ -184,69 +181,119 @@ let activeColors=colors[theme.mode]
     }
     return sportsData;
   };
-  return (
-    <FlatList
-      data={duplicateLastItemIfNeeded()}
-      renderItem={({ item }) => <ProjectDetails item={item} />}
-      keyExtractor={(item, index) => `${item.id}-${index}`}
-      onEndReached={handleEndReached}
-      onEndReachedThreshold={0.1}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-      ListFooterComponent={() =>
-        // Render a loader component when loading more data
 
-        !refreshing &&
-        loading && <ActivityIndicator size="large" color="#0000ff" />
-      }
-      ListEmptyComponent={() => (
-        <View style={styles.noDataContainer}>
-          <Text style={styles.noDataText}>No data found</Text>
+  const toggleSelection = (projectName, projectid) => {
+    // Check if the item is already selected
+    if (selectedItems === projectid) {
+      // If the clicked project is already selected, deselect it
+      setSelectedItems([]);
+      setSelectedItemIDs([]);
+    } else {
+      // Deselect all other items and select the clicked project
+      setSelectedItems([projectName]);
+      setSelectedItemIDs([projectid]);
+    }
+  };
+
+  // Generate project data with random project names
+
+
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
+   
+  
+ 
+  return (
+
+    <View  style={{ flex: 1 , backgroundColor:activeColors.background}}>
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginTop: 10,
+          flexDirection: "row",
+          marginEnd: 20,
+        }}>
+        <Pressable onPress={onBack}>
+          <View
+            style={{
+              backgroundColor: "white",
+              alignItems: "flex-start",
+              marginLeft: 10,
+            }}
+          >
+            <Image
+              style={{
+                width: 40,
+                height: 40,
+                resizeMode: "cover",
+              }}
+              source={require("../assets/Images/leftArrow.png")}
+            />
+          </View>
+        </Pressable>
+        <View style={{ flex: 9, alignItems: "center" }}>
+          <Text style={styles.modalTitle}>Select Project</Text>
         </View>
-      )}
-    />
+        </View>
+      
+    
+    
+
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={duplicateLastItemIfNeeded()}
+          renderItem={({ item }) => (
+            <ProjectDetails
+              item={item}
+              handleSportSelection={toggleSelection}
+              isSelected={selectedItems.includes(item.project_name)}
+            />
+          )}
+          keyExtractor={(item, index) => `${item}-${index}`}
+          onEndReached={handleEndReached}
+          onEndReachedThreshold={0.1}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          ListFooterComponent={() =>
+            // Render a loader component when loading more data
+
+            !refreshing &&
+            loading &&
+            page !== null && <ActivityIndicator size="large" color="#0000ff" />
+          }
+          ListEmptyComponent={() => (
+            <View style={styles.noDataContainer}>
+              <Text style={styles.noDataText}>No data found</Text>
+            </View>
+          )}
+        />
+      </View>
+      <View style={{ alignItems: "center", marginTop: 10, marginBottom: 20 }}>
+        <SubmitButton
+          onPress={() => handleSportSelection(selectedItems, selectedItemIDs)}
+          color="black"
+        >
+          Add
+        </SubmitButton>
+      </View>
+    </View>
+    
   );
 };
 
 const styles = StyleSheet.create({
-  noDataContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  noDataText: {
-    fontSize: 18,
-    color: "#666666",
-  },
-  itemContainer: {
-    flex: 1,
-    margin: 8,
-    borderRadius: 15,
-    overflow: "hidden",
-  },
   itemContainer2: {
     backgroundColor: "#E9EEFF",
     flex: 1,
     elevation: 6,
     marginHorizontal: 20,
     marginVertical: 12,
-    paddingVertical: 4,
+
+    borderColor: "#E9EEFF",
   },
-  viewBox: {
-    backgroundColor: "#5063BF",
-    elevation: 2,
-    paddingVertical: 8,
-    paddingHorizontal: 8,
-    marginHorizontal: 8,
-  },
-  gradient: {
-    flex: 1,
-    borderRadius: 15,
-    alignItems: "center",
-    paddingVertical: 20,
-    justifyContent: "center",
-  },
+
   image: {
     width: 55,
     height: 55,
@@ -272,12 +319,22 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     fontWeight: "600",
   },
-  viewText: {
-    color: "#FAFAFA",
-    fontSize: 16,
-    marginHorizontal: 4,
-    fontWeight: "600",
+  modalTitle: {
+    fontSize: 18,
+    justifyContent: "center",
+    alignItems: "center",
+    fontWeight: "bold",
+    marginBottom: 16,
+  },
+  noDataContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noDataText: {
+    fontSize: 18,
+    color: "#666666",
   },
 });
 
-export default ProjectListFlatList;
+export default BottomSheetProjectList;
