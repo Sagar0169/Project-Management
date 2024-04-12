@@ -13,6 +13,8 @@ import {
 } from "react-native";
 import SubmitButton from "./ui/SubmitButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { useNavigation } from "@react-navigation/native";
 
 // import Toast from "react-native-simple-toast";
 
@@ -28,7 +30,8 @@ import BottomSheetTaskList from "./BottomSheetTaskList";
 import { ThemeContext } from "../context/ThemeContext";
 import { colors } from "./config/theme";
 import { useContext } from "react";
-
+import { addIssue } from "../store/http";
+import { AuthContext } from "../store/auth-context";
 //CHANGE MULTIPLE SELECTION FROM BOTTOMSHEET2
 
 const { width, height } = Dimensions.get("window");
@@ -51,16 +54,20 @@ function h(value) {
   return height * value;
 }
 
-function CreateNewIssuesForm() {
-
-  
+ function CreateNewIssuesForm() {
+  const navigation = useNavigation();
+   
   const {theme}=useContext(ThemeContext)
   let activeColors=colors[theme.mode]
+  const { token } = useContext(AuthContext);
+
   const [isModalVisible2, setModalVisible2] = useState(false);
   const [isModalVisible3, setModalVisible3] = useState(false);
-  const [isFetching, setIsFetching] = useState(true);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
-  function validateForm() {
+   function validateForm() {
+  
     // Check if enteredProjectName, enteredDueDate, and AssginedForItem have values
     if (
       enteredTaskName.trim() !== "" &&
@@ -71,13 +78,32 @@ function CreateNewIssuesForm() {
       selectedOption !== null &&
       selectedPriority !== null &&
       AssginedForItem.length > 0
-    ) {
-      
+    ) {    
       return true;
     } else {
       return false;
     }
    
+  }
+  async function AddIssue(){
+    const loginRespone = await AsyncStorage.getItem("user")
+    const response = JSON.parse(loginRespone);
+    const Issues = {
+      userid: response.userId, // You may want to generate a unique ID
+      emp_id:"",
+      task_id:TaskId,
+      project_id:sportValue,
+      title: enteredTaskName,
+      description:enteredTaskPhase,
+      status: selectedStatus,
+      issue_test_phase:"",
+      priority: selectedPriority,
+      severity:"High",
+      
+
+    }
+   addIssue(token,Issues)
+   console.log("work done")
   }
 
   function ModalHandler() {
@@ -96,12 +122,7 @@ function CreateNewIssuesForm() {
       </Modal>
     );
   }
-  const [enteredTaskName, setEnteredTaskName] = useState("");
-  const [enteredTaskPhase, setEnteredTaskPhase] = useState("");
-  const [enteredTaskType, setEnteredTaskType] = useState("");
-  const [enteredDueDate, setEnteredDueDate] = useState("");
-  const [enteredEstimatedTime, setEnteredEstimatedTime] = useState("");
-
+ 
   const [selectedProject, setSelectedproject] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(null);
@@ -120,6 +141,27 @@ function CreateNewIssuesForm() {
     setSelectedStatus(category);
     // Add any additional logic you want when a category is selected
   };
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleDateChange = (event, selectedDate) => {
+    hideDatePicker();
+    if (selectedDate) {
+      setSelectedDate(selectedDate);
+      setEnteredDueDate(selectedDate.toISOString().split("T")[0]); // Update the input text with the selected date
+    }
+  };
+  const [enteredTaskName, setEnteredTaskName] = useState("");
+  const [enteredTaskPhase, setEnteredTaskPhase] = useState("");
+  const [enteredTaskType, setEnteredTaskType] = useState("");
+  const [enteredDueDate, setEnteredDueDate] = useState("");
+  const [enteredEstimatedTime, setEnteredEstimatedTime] = useState("");
+
   function onChangeText(inputType, enteredValue) {
     switch (inputType) {
       case "taskName":
@@ -144,8 +186,11 @@ function CreateNewIssuesForm() {
   const [isModalVisibletask, setModalVisibletask] = useState(false);
   const [AssginedForItem, setAssginedForItem] = useState("");
   const [AssginedForTask, setAssginedForTask] = useState("");
+  const [TaskId, setTaskId] = useState("");
+  
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedPriority, setSelectedPriority] = useState(null);
+  const [sportValue, setSportValue] = useState('');
   const [task, setTask] = useState([]);
   const [storedProfile, setStoreProfile] = useState("");
   const handleOptionPress = (option) => {
@@ -170,13 +215,21 @@ function CreateNewIssuesForm() {
 
 
   const handleSportSelection = (sport) => {
-    setAssginedForItem(sport);
-    
+    // setAssginedForItem(sport);
+    const [name, value] = sport; // Destructure the array
+    setAssginedForItem(name); // Set the name to one state
+    setSportValue(value);
+    console.log(sportValue)
     toggleModal();
   };
   const handleSportSelection2 = (sport) => {
-    setAssginedForTask(sport);
-    
+    // setAssginedForTask(sport);
+   
+    const [name, value] = sport; // Destructure the array
+    setAssginedForTask(name); // Set the name to one state
+    setTaskId(value)
+
+    console.log(TaskId)
     toggleModal2();
   };
   const hideModal = () => {
@@ -288,8 +341,9 @@ function CreateNewIssuesForm() {
             <Input
               label="Enter Title"
               secure={false}
-              onUpdateValue={onChangeText.bind(this, "taskName")}
+              onChangeText={onChangeText.bind(this, "taskName")}
               value={enteredTaskName}
+              
             />
           </View>
         </View>
@@ -306,7 +360,9 @@ function CreateNewIssuesForm() {
                 multiline={true}
                 onChangeText={onChangeText.bind(this, "taskPhase")}
                 numberOfLines={4}
+                
                 style={{
+                  color:activeColors.color,
                   borderWidth: 1,
                   borderColor:activeColors.blackBg,
                   borderRadius: 1,
@@ -337,7 +393,7 @@ function CreateNewIssuesForm() {
               <Input
                 label="Enter Type"
                 secure={false}
-                onUpdateValue={onChangeText.bind(this, "taskType")}
+                onChangeText={onChangeText.bind(this, "taskType")}
                 value={enteredTaskType}
               />
             </View>
@@ -410,7 +466,7 @@ function CreateNewIssuesForm() {
                 Date Created
               </Text>
             </View>
-            <Pressable>
+            <Pressable onPress={showDatePicker}>
               <View
                 style={{
                   flex: 0.7,
@@ -459,7 +515,7 @@ function CreateNewIssuesForm() {
                   label="00:00"
                   editable={true}
                   secure={false}
-                  onUpdateValue={onChangeText.bind(this, "estimatedTime")}
+                  onChangeText={onChangeText.bind(this, "estimatedTime")}
                   value={enteredEstimatedTime}
                 />
               </View>
@@ -522,7 +578,7 @@ function CreateNewIssuesForm() {
           >
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <Pressable onPress={() => handleOptionPressPriority("Low")}>
-                <View style={getOptionStyle("Low")}>
+                <View style={[getOptionStyle("Low")]}>
                   <Text style={styles.viewText}>Low</Text>
                 </View>
               </Pressable>
@@ -583,7 +639,9 @@ function CreateNewIssuesForm() {
                 //     Toast.SHORT,
                 //     Toast.BOTTOM
                 // );
-                setModalVisible(true);
+                // setModalVisible(true);
+                AddIssue()
+               navigation.goBack()
               } else {
                 // Toast.showWithGravity(
                 //     "Please fill all details.",
@@ -616,6 +674,15 @@ function CreateNewIssuesForm() {
           />
         )}
       </ScrollView>
+      {isDatePickerVisible && (
+        <DateTimePicker
+          value={selectedDate}
+          mode="date"
+          is24Hour={true}
+          display="default"
+          onChange={handleDateChange}
+        />
+      )}
     </View>
   );
 }

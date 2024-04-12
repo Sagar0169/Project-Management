@@ -205,6 +205,31 @@ export async function addProject(token, projectData) {
   }
 }
 
+export async function addIssue(token, issues) {
+  console.log(issues);
+  try {
+    const response = await axios.post(
+      "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/issueadd",
+      issues,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+
+    const _resultflag = response.data._resultflag;
+
+   
+    console.log("Status update ", _resultflag);
+    return _resultflag;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
+
 export async function uploadFile(requestBody, token) {
   try {
     const response = await axios.post(

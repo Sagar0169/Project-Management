@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -13,19 +14,24 @@ import { useCallback,useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getEmp } from "../store/http";
 import { getProjects } from "../store/http";
+import { useSearch } from "../store/search-redux";
 import SubmitButton from "./ui/SubmitButton";
-import BackArrowHeader from "../components/BackArrowHeader";
-const ITEMS_PER_PAGE = 10;
+import { assignedTasksFetch, fetchTasks, getTaks } from "../store/http";
 import { colors
- } from "./config/theme";
- import { ThemeContext } from "../context/ThemeContext";
+} from "./config/theme";
+import { ThemeContext } from "../context/ThemeContext";
+import CustomModal from "./CustomModal";
+const ITEMS_PER_PAGE = 10;
 
 const ProjectDetails = ({ item, handleSportSelection, isSelected }) => {
-  const backgroundColor = isSelected ? "#E9EEFF" : "#f5f5f5";
+ 
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
+  const backgroundColor = isSelected ? activeColors.selected : activeColors.itemBg;
 
   return (
     <Pressable
-      onPress={() => handleSportSelection(item.project_name, item.emp_id)}
+      onPress={() => handleSportSelection([item.project_name, item.id])}
       style={[styles.itemContainer2]}
     >
       <View
@@ -34,8 +40,7 @@ const ProjectDetails = ({ item, handleSportSelection, isSelected }) => {
             flexDirection: "row",
             flex: 1,
             alignItems: "center",
-
-            borderColor: isSelected ? "#E9EEFF" : "#E9EEFF",
+            borderColor: isSelected ? "#E9EEFF" : activeColors.itemBg,
             backgroundColor,
           },
         ]}
@@ -55,18 +60,20 @@ const ProjectDetails = ({ item, handleSportSelection, isSelected }) => {
 };
 
 const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
+  const { searchQuery, setSearchQuery } = useSearch();
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItemIDs, setSelectedItemIDs] = useState([]);
-
-  const [task, setTask] = useState([]);
-  const [isFetching, setIsFetching] = useState(true);
-  const [storedProfile, setStoreProfile] = useState("");
 
   const [sportsData, setSportsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
 
+  const [task, setTask] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
+  const [storedProfile, setStoreProfile] = useState("");
   const fetchStoredProfile = useCallback(async () => {
     try {
       setStoreProfile(await AsyncStorage.getItem("profile"));
@@ -85,15 +92,26 @@ const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
     fetchStoredProfile();
   }, [fetchStoredProfile]);
   useEffect(() => {
-    console.log("COunter",page)
     fetchData();
   }, []);
+
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const showModal = () => {
+    setModalVisible(true);
+  };
+
+  const hideModal = () => {
+    setModalVisible(false);
+  };
+
   const fetchData = async () => {
     try {
       setLoading(true);
       const loginRespone = await AsyncStorage.getItem("user");
       const response = JSON.parse(loginRespone);
-      console.log("Page", page);
+      console.log("Pagesss", page);
+
       const data = await getProjects(
         response.userId,
         response.token,
@@ -101,10 +119,10 @@ const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
         ITEMS_PER_PAGE,
         page
       );
-      console.log("DAAAAAAAAAAta", data.length);
+      // console.log("DAAAAAAAAAAta", data.length);
 
       if (data && data.length > 0 && !refreshing) {
-        console.log("Helloooooooooo");
+        // console.log("Helloooooooooo");
         setSportsData((prevData) => [...prevData, ...data]);
 
         // Update the page only if the data length is equal to the limit
@@ -127,7 +145,7 @@ const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
       setLoading(true);
       const loginRespone = await AsyncStorage.getItem("user");
       const response = JSON.parse(loginRespone);
-      const data = await getProjects(
+      const data = await getTaks(
         response.userId,
         response.token,
         response.emp_id,
@@ -136,7 +154,7 @@ const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
       );
       console.log(data);
       if (data && data.length > 0) {
-        console.log("Refreshiiiiiiing");
+        // console.log("Refreshiiiiiiing");
         setSportsData([...data]); // Replace existing data with the refreshed data
 
         // Update the page only if the data length is equal to the limit
@@ -172,40 +190,25 @@ const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
     setSportsData([]); // Clear existing data
     fetchDataRefresh();
   };
-  const duplicateLastItemIfNeeded = () => {
-    const itemCount = sportsData.length;
-    if (itemCount % 2 === 1) {
-      // Use a placeholder for the duplicated item
-      const placeholderItem = { id: "placeholder", name: "", image: "" };
-      return [...sportsData, placeholderItem];
-    }
-    return sportsData;
-  };
+
 
   const toggleSelection = (projectName, projectid) => {
     // Check if the item is already selected
-    if (selectedItems === projectid) {
+    if (selectedItems === projectName) {
       // If the clicked project is already selected, deselect it
-      setSelectedItems([]);
-      setSelectedItemIDs([]);
+      setSelectedItems(null);
+      setSelectedItemIDs(null);
     } else {
-      // Deselect all other items and select the clicked project
-      setSelectedItems([projectName]);
-      setSelectedItemIDs([projectid]);
+      // Select the clicked project
+      setSelectedItems(projectName);
+      setSelectedItemIDs(projectid);
     }
   };
 
   // Generate project data with random project names
 
-
-  const {theme}=useContext(ThemeContext)
-  let activeColors=colors[theme.mode]
-   
-  
- 
   return (
-
-    <View  style={{ flex: 1 , backgroundColor:activeColors.background}}>
+    <View style={{ flex: 1 ,backgroundColor:activeColors.background}}>
       <View
         style={{
           alignItems: "center",
@@ -213,11 +216,13 @@ const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
           marginTop: 10,
           flexDirection: "row",
           marginEnd: 20,
-        }}>
+          backgroundColor:activeColors.background
+        }}
+      >
         <Pressable onPress={onBack}>
           <View
             style={{
-              backgroundColor: "white",
+              backgroundColor: activeColors.background,
               alignItems: "flex-start",
               marginLeft: 10,
             }}
@@ -233,21 +238,17 @@ const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
           </View>
         </Pressable>
         <View style={{ flex: 9, alignItems: "center" }}>
-          <Text style={styles.modalTitle}>Select Project</Text>
+          <Text style={[styles.modalTitle,{color:activeColors.color}]}>Select Project</Text>
         </View>
-        </View>
-      
-    
-    
-
+      </View>
       <View style={{ flex: 1 }}>
         <FlatList
-          data={duplicateLastItemIfNeeded()}
+          data={sportsData}
           renderItem={({ item }) => (
             <ProjectDetails
               item={item}
               handleSportSelection={toggleSelection}
-              isSelected={selectedItems.includes(item.project_name)}
+              isSelected={selectedItems.includes(item.id)}
             />
           )}
           keyExtractor={(item, index) => `${item}-${index}`}
@@ -272,14 +273,26 @@ const BottomSheetProjectList = ({ handleSportSelection, onBack }) => {
       </View>
       <View style={{ alignItems: "center", marginTop: 10, marginBottom: 20 }}>
         <SubmitButton
-          onPress={() => handleSportSelection(selectedItems, selectedItemIDs)}
+          onPress={() => {
+            if(selectedItems.length>0)
+            {
+              handleSportSelection(selectedItems)
+            }
+            else{
+              setModalVisible(true)
+            }
+          }}
           color="black"
         >
           Add
         </SubmitButton>
       </View>
+      {isModalVisible&& <CustomModal
+        visible={isModalVisible}
+        message="Please Select a Project"
+        onHide={hideModal}
+      />}
     </View>
-    
   );
 };
 

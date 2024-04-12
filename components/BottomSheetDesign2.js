@@ -20,7 +20,7 @@ import SubmitButton from "./ui/SubmitButton";
 const ProjectDetails = ({ item, handleSportSelection, isSelected }) => {
   const { theme } = useContext(ThemeContext)
   let activeColors = colors[theme.mode]
-  const backgroundColor = isSelected ? "#E9EEFF" : activeColors.blackBg;
+  const backgroundColor = isSelected ? activeColors.selected : activeColors.itemBg;
 
   return (
     <Pressable
@@ -178,9 +178,9 @@ const BottomSheetDesign2 = ({ handleSportSelection,onBack }) => {
             <ProjectDetails
               item={item}
               handleSportSelection={toggleSelection}
-              isSelected={selectedItems.includes(item.name)}
+              isSelected={selectedItemIDs.includes(item.emp_id)}
             />}
-          keyExtractor={(item, index) => `${item}-${index}`}
+          keyExtractor={(item, index) => `${item}-${item.emp_id}`}
 
         />
       </View>

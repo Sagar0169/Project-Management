@@ -18,7 +18,10 @@ let activeColors=colors[theme.mode]
         <Pressable onPress={handlePress}>
         <View style={[styles.borderContainer,{backgroundColor:activeColors.inputBg}]}>
             <Text style={{color:activeColors.color}}>
-                Name: {item.title} , Employee id:{item.id}
+                Name:- {item.title}  
+            </Text>
+            <Text style={{color:activeColors.color}}>
+                  Id:-{item.id}
             </Text>
 
         </View>

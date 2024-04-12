@@ -4,6 +4,7 @@ export const colors={
         blackBg:"#5063BF",
         blackBgg:"#E9EEFF",
         inputBg:"#E9EEFF",
+        itemBg:'#FFFFFF',
         color:"black",
         text:'white',
         hint:"#878787",
@@ -11,10 +12,12 @@ export const colors={
         drawerBg:"#052160",
         active:'"#5063BF"',
         unactive:'#8EDFEB',
+        selected:"#E9EEFF"
    
         
         
     }, dark:{
+        itemBg:'#000000',
         background:"#373737",
         blackBg:"#000000",
         blackBgg:"#000000",
@@ -25,7 +28,8 @@ export const colors={
         highlight:"white",
         drawerBg:"#000000",
         active:'"#373737"',
-        unactive:'#8EDFEB'
+        unactive:'#8EDFEB',
+        selected:"#6A6A6A"
         
     },
 }

@@ -1,7 +1,9 @@
 import React from "react";
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "../../Utilities/Colors";
-
+import { colors } from "../config/theme";
+import { ThemeContext } from "../../context/ThemeContext";
+import { useContext } from "react";
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width
@@ -22,6 +24,8 @@ function h(value) {
   return height * value;
 }
 const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
   function handlerBack() {
     navigation.goBack();
   }
@@ -41,7 +45,7 @@ const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
   return (
     <View style={{  marginVertical: h(1),flex:1 }}>
       <TouchableOpacity style={styles.dropDownStyle} onPress={selectOption}>
-        <Text style={{color:Colors.timesheetHint}}>{!!selectValue ? selectValue.project_name : "Select Category"}</Text>
+        <Text style={{color:activeColors.color}}>{!!selectValue ? selectValue : "Select Category"}</Text>
         <Image
           source={require("../../assets/Images/left.png")}
           style={{
@@ -58,7 +62,7 @@ const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
             return (
               <TouchableOpacity
                 key={i}
-                onPress={() => oneSelectItem(val)}
+                onPress={() => oneSelectItem(val.title)}
                 style={{
                   ...styles.optionContainer,
                   //   backgroundColor:
@@ -69,7 +73,7 @@ const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
                   source={val.image}
                   style={styles.optionImage}
                 /> */}
-                <Text style={styles.optionText}>{val.project_name}</Text>
+                <Text style={styles.optionText}>{val.title}</Text>
                 {/* <Text style={{ marginLeft: 'auto' }}>{val.count}</Text> */}
               </TouchableOpacity>
             );

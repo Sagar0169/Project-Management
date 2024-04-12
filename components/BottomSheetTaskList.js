@@ -10,21 +10,28 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from "react-native";
-import { useCallback } from "react";
+import { useCallback,useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getEmp } from "../store/http";
 import { getProjects } from "../store/http";
 import { useSearch } from "../store/search-redux";
 import SubmitButton from "./ui/SubmitButton";
 import { assignedTasksFetch, fetchTasks, getTaks } from "../store/http";
+import { colors
+} from "./config/theme";
+import { ThemeContext } from "../context/ThemeContext";
+import CustomModal from "./CustomModal";
 const ITEMS_PER_PAGE = 10;
 
 const ProjectDetails = ({ item, handleSportSelection, isSelected }) => {
-  const backgroundColor = isSelected ? "#E9EEFF" : "#f5f5f5";
+ 
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
+  const backgroundColor =  isSelected ? activeColors.selected : activeColors.itemBg;
 
   return (
     <Pressable
-      onPress={() => handleSportSelection(item.task_name, item.id)}
+      onPress={() => handleSportSelection([item.task_name, item.id])}
       style={[styles.itemContainer2]}
     >
       <View
@@ -46,7 +53,7 @@ const ProjectDetails = ({ item, handleSportSelection, isSelected }) => {
             marginVertical: 14,
           }}
         >
-          <Text style={styles.text2}>{item.assign_to}</Text>
+          <Text style={[styles.text2,{color:activeColors.color}]}>{item.task_name}</Text>
         </View>
       </View>
     </Pressable>
@@ -54,6 +61,8 @@ const ProjectDetails = ({ item, handleSportSelection, isSelected }) => {
 };
 
 const BottomSheetTaskList = ({ handleSportSelection, onBack }) => {
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
   const { searchQuery, setSearchQuery } = useSearch();
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItemIDs, setSelectedItemIDs] = useState([]);
@@ -87,6 +96,16 @@ const BottomSheetTaskList = ({ handleSportSelection, onBack }) => {
     fetchData();
   }, []);
 
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const showModal = () => {
+    setModalVisible(true);
+  };
+
+  const hideModal = () => {
+    setModalVisible(false);
+  };
+
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -101,10 +120,10 @@ const BottomSheetTaskList = ({ handleSportSelection, onBack }) => {
         ITEMS_PER_PAGE,
         page
       );
-      console.log("DAAAAAAAAAAta", data.length);
+      // console.log("DAAAAAAAAAAta", data.length);
 
       if (data && data.length > 0 && !refreshing) {
-        console.log("Helloooooooooo");
+        // console.log("Helloooooooooo");
         setSportsData((prevData) => [...prevData, ...data]);
 
         // Update the page only if the data length is equal to the limit
@@ -136,7 +155,7 @@ const BottomSheetTaskList = ({ handleSportSelection, onBack }) => {
       );
       console.log(data);
       if (data && data.length > 0) {
-        console.log("Refreshiiiiiiing");
+        // console.log("Refreshiiiiiiing");
         setSportsData([...data]); // Replace existing data with the refreshed data
 
         // Update the page only if the data length is equal to the limit
@@ -172,15 +191,7 @@ const BottomSheetTaskList = ({ handleSportSelection, onBack }) => {
     setSportsData([]); // Clear existing data
     fetchDataRefresh();
   };
-  const duplicateLastItemIfNeeded = () => {
-    const itemCount = sportsData.length;
-    if (itemCount % 2 === 1) {
-      // Use a placeholder for the duplicated item
-      const placeholderItem = { id: "placeholder", name: "", image: "" };
-      return [...sportsData, placeholderItem];
-    }
-    return sportsData;
-  };
+
 
   const toggleSelection = (projectName, projectid) => {
     // Check if the item is already selected
@@ -198,7 +209,7 @@ const BottomSheetTaskList = ({ handleSportSelection, onBack }) => {
   // Generate project data with random project names
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 ,backgroundColor:activeColors.background}}>
       <View
         style={{
           alignItems: "center",
@@ -206,12 +217,13 @@ const BottomSheetTaskList = ({ handleSportSelection, onBack }) => {
           marginTop: 10,
           flexDirection: "row",
           marginEnd: 20,
+          backgroundColor:activeColors.background
         }}
       >
         <Pressable onPress={onBack}>
           <View
             style={{
-              backgroundColor: "white",
+              backgroundColor:activeColors.background,
               alignItems: "flex-start",
               marginLeft: 10,
             }}
@@ -227,7 +239,7 @@ const BottomSheetTaskList = ({ handleSportSelection, onBack }) => {
           </View>
         </Pressable>
         <View style={{ flex: 9, alignItems: "center" }}>
-          <Text style={styles.modalTitle}>Select Task</Text>
+          <Text style={[styles.modalTitle,{color:activeColors.color}]}>Select Task</Text>
         </View>
       </View>
       <View style={{ flex: 1 }}>
@@ -237,7 +249,7 @@ const BottomSheetTaskList = ({ handleSportSelection, onBack }) => {
             <ProjectDetails
               item={item}
               handleSportSelection={toggleSelection}
-              isSelected={selectedItems.includes(item.task_name)}
+              isSelected={selectedItems.includes(item.id)}
             />
           )}
           keyExtractor={(item, index) => `${item}-${index}`}
@@ -262,12 +274,25 @@ const BottomSheetTaskList = ({ handleSportSelection, onBack }) => {
       </View>
       <View style={{ alignItems: "center", marginTop: 10, marginBottom: 20 }}>
         <SubmitButton
-          onPress={() => handleSportSelection(selectedItems, selectedItemIDs)}
+          onPress={() => {
+            if(selectedItems.length>0)
+            {
+              handleSportSelection(selectedItems)
+            }
+            else{
+              setModalVisible(true)
+            }
+          }}
           color="black"
         >
           Add
         </SubmitButton>
       </View>
+      {isModalVisible&& <CustomModal
+        visible={isModalVisible}
+        message="Please Select a Project"
+        onHide={hideModal}
+      />}
     </View>
   );
 };
