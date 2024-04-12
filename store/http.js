@@ -115,7 +115,115 @@ async function getCheckInDetails(userid, token) {
     throw error;
   }
 }
-postCheckInData;
+
+async function getProjectListData(userid,emp_id, token) {
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/projectlist", {
+      userid: userid,
+      emp_id:emp_id
+      
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data;
+    const _resultflag = response.data._result;
+  
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
+
+
+
+
+async function getTimeSheetListData(userid,page,date,emp_id, token) {
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/timesheetlist", {
+      userid: userid,
+      page:1,
+      date:date,
+      limit:30,
+      emp_id:emp_id
+      
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data;
+    const _resultflag = response.data._result;
+    console.log("project->");
+  
+    console.log(data);
+    return _resultflag;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
+
+//getTaskList
+async function getTimeSheetTaskData(userid,page,emp_id, token) {
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/taskdetails", {
+      userid: userid,
+      page:1,
+      limit:30,
+      emp_id:emp_id
+      
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data;
+    const _resultflag = response.data._result;
+    console.log("Task->");
+  
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
+
+//getTimeSheetIssueData
+
+async function getTimeSheetIssueData(userid,page,emp_id, token) {
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/issuelist", {
+      userid: userid,
+      page:1,
+      limit:30,
+      emp_id:emp_id
+      
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data;
+    const _resultflag = response.data._result;
+    console.log("Issue->");
+  
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
+// postCheckInData
 
 async function postCheckInData(
   userid,
@@ -153,6 +261,72 @@ async function postCheckInData(
     throw error;
   }
 }
+
+async function postAddTimeSheetData(userid,emp_id,project_id, task_id,issue,activity,from_time,to_time,working_hours,billing_hours,description,task_status,date,   token) {
+  try {
+    const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/addTimesheet", {
+    userid: userid,
+   emp_id:emp_id,
+   project_id:project_id,
+   task_id:task_id,
+   issue:issue,
+   activity:activity,
+   from_time:from_time,
+   to_time:to_time,
+   working_hours:working_hours,
+   billing_hours:billing_hours,
+   description:description,
+   task_status:task_status,
+   date:date
+      
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = response.data;
+    const _resultflag = response.data._resultflag;
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
+
+// async function postAddTimeSheetData(userid,emp_id,project_id, task_id,issue,activity,from_time,to_time,working_hours,billing_hours,description,task_status,date,   token) {
+//   try {
+//     const response = await axios.post("http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/addTimesheet", {
+//     userid: userid,
+//    emp_id:emp_id,
+//    project_id:project_id,
+//    task_id:task_id,
+//    issue:issue,
+//    activity:activity,
+//    from_time:from_time,
+//    to_time:to_time,
+//    working_hours:working_hours,
+//    billing_hours:billing_hours,
+//    description:description,
+//    task_status:task_status,
+//    date:date
+      
+//     }, {
+//       headers: {
+//         'Authorization': `Bearer ${token}`
+//       }
+//     });
+    
+//     const data = response.data;
+//     const _resultflag = response.data._resultflag;
+//     console.log(data);
+//     return data;
+//   } catch (error) {
+//     console.error("Error in authenticate:", error);
+//     throw error;
+//   }
+// }
 
 async function updateStatus(userid, token, id, status) {
   try {
@@ -348,25 +522,33 @@ export function setStatus(userId, token, id, status) {
 export function getCheckInList(userId, token) {
   return getCheckInDetails(userId, token);
 }
-export function postCheckIn(
-  userid,
-  checkedInStatus,
-  time,
-  place_name,
-  date,
-  location,
-  token
-) {
-  return postCheckInData(
-    userid,
-    checkedInStatus,
-    time,
-    place_name,
-    date,
-    location,
-    token
-  );
+
+export function getProjectList(userId,emp_id, token) {
+  return getProjectListData(userId,emp_id, token);
 }
+
+export function getTimeSheetList(userid,page,date,emp_id, token) {
+  return getTimeSheetListData(userid,page,date,emp_id, token);
+}
+
+export function getTimeSheetTaskList(userid,page,emp_id, token) {
+  return getTimeSheetTaskData(userid,page,emp_id, token);
+}
+
+export function getTimeSheetIssueList(userid,page,emp_id, token) {
+  return getTimeSheetIssueData(userid,page,emp_id, token);
+}
+
+
+
+export function postCheckIn(userid,checkedInStatus,time, place_name,date,location,token) {
+  return postCheckInData(userid,checkedInStatus,time, place_name,date,location, token);
+}
+export function postAddTimeSheet(userid,emp_id,project_id, task_id,issue,activity,from_time,to_time,working_hours,billing_hours,description,task_status,date,token) {
+  return postAddTimeSheetData(userid,emp_id,project_id, task_id,issue,activity,from_time,to_time,working_hours,billing_hours,description,task_status,date,token);
+}
+
+
 
 getCheckInDetails;
 

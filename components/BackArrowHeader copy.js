@@ -1,8 +1,12 @@
 import { View, Text, Pressable, Image } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { LinearGradient } from "expo-linear-gradient";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "./config/theme";
 
 export default function BackArrowHeaderCopy({ title, backButton, showArrow ,color}) {
+  const {theme}=useContext(ThemeContext)
+  let active=colors[theme.mode]
   return (
     <LinearGradient
       style={{
@@ -32,7 +36,7 @@ export default function BackArrowHeaderCopy({ title, backButton, showArrow ,colo
               width: 40,
               height: 40,
               resizeMode: "cover",
-                tintColor: "black",
+                tintColor: active.color,
             }}
             source={require("../assets/Images/left.png")}
           />
@@ -42,7 +46,7 @@ export default function BackArrowHeaderCopy({ title, backButton, showArrow ,colo
       <Text
         style={{
           fontSize: 24,
-          color: "black",
+          color: active.color,
           fontWeight: "bold",
           textAlign: "center",
           marginHorizontal: 8,

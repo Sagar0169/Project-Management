@@ -7,7 +7,7 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import BackArrowHeaderCopy from "../components/BackArrowHeader copy";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { CheckIn } from "../components/Data";
@@ -23,6 +23,8 @@ import {
 import { getAddress } from "../store/search-redux";
 import { fetchCheckIn, storeCheckIn } from "../store/http";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "../components/config/theme";
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width
@@ -66,7 +68,8 @@ export default function CheckInLayout({ navigation }) {
   const [checkedInNumeric, setCheckedInNumeric] = useState(1);
   const [fetch, setFetch] = useState(false);
 
-
+  const {theme}=useContext(ThemeContext)
+  let active=colors[theme.mode]
 
   function checkIn() {
     if(checkedInNumeric==1){
@@ -343,13 +346,15 @@ console.log("Error in Fetching CheckIn List"+err)
   };
 
   return (
-    <View style={styles.rootContainer}>
+    <View style={{flex: 1,
+      paddingTop: 40,
+      backgroundColor: active.background,}}>
       <BackArrowHeaderCopy
-        color={"white"}
+        color={active.background}
         title={"Check In/Out"}
         backButton={() => navigation.goBack()}
       />
-      <View style={{ flex: 1, backgroundColor: "#FDFDFD" }}>
+      <View style={{ flex: 1, backgroundColor: active.background }}>
         <View
           style={{
             // borderWidth:1,
@@ -363,7 +368,7 @@ console.log("Error in Fetching CheckIn List"+err)
           {loading ? (
             <ActivityIndicator
               size="large"
-              color="#000"
+              color={active.color}
               style={styles.loader}
             />
           ) : (
@@ -381,12 +386,12 @@ console.log("Error in Fetching CheckIn List"+err)
           <>
             {checkedIn && (
               <TouchableOpacity
-                style={[styles.addButton, { backgroundColor: "#5063BF" }]}
+                style={[styles.addButton, { backgroundColor: active.blackBg }]}
                 onPress={handleAddTaskPress}
               >
                 <Text
                   style={{
-                    color: "white",
+                    color: active.text,
                     fontSize: dynamicFontSize * 0.9,
                     fontWeight: "800",
                   }}
@@ -398,12 +403,12 @@ console.log("Error in Fetching CheckIn List"+err)
             )}
             {!checkedIn && (
               <TouchableOpacity
-                style={[styles.addButton, { backgroundColor: "#5063BF" }]}
+                style={[styles.addButton, { backgroundColor: active.blackBg }]}
                 onPress={handleAddTaskPress}
               >
                 <Text
                   style={{
-                    color: "white",
+                    color: active.text,
                     fontSize: dynamicFontSize * 0.9,
                     fontWeight: "800",
                   }}
