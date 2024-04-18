@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "../../Utilities/Colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getProjectList } from "../../store/http";
+import { ThemeContext } from "../../context/ThemeContext";
+import { colors } from "../config/theme";
 
 const { width, height } = Dimensions.get("window");
 
@@ -21,7 +25,9 @@ function h(value) {
   const height = Dimensions.get("window").height / 100; // now height is 1% of screen height
   return height * value;
 }
-const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
+const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss,from }) => {
+  const {theme}=useContext(ThemeContext)
+    let active=colors[theme.mode]
   function handlerBack() {
     navigation.goBack();
   }
@@ -37,11 +43,25 @@ const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
     // console.log(val)
     oneSelect(val);
   };
+ 
 
   return (
     <View style={{  marginVertical: h(1),flex:1 }}>
-      <TouchableOpacity style={styles.dropDownStyle} onPress={selectOption}>
-        <Text style={{color:Colors.timesheetHint}}>{!!selectValue ? selectValue.project_name : "Select Category"}</Text>
+      <TouchableOpacity style={{
+         backgroundColor: active.blackBg,
+         minHeight: 40,
+         borderTopEndRadius: w(1),
+         borderTopStartRadius: w(1),
+         borderBottomStartRadius: w(1),
+         borderBottomEndRadius: w(1),
+         flexDirection: "row",
+         alignItems: "center",
+         justifyContent: "space-between",
+         padding: w(4),
+         
+         width: "100%",
+      }} onPress={selectOption}>
+        <Text style={{color:active.text}}>{!!selectValue ? selectValue.project_name : "Select Category"}</Text>
         <Image
           source={require("../../assets/Images/left.png")}
           style={{
@@ -53,36 +73,40 @@ const DropDown = ({ data, selectValue, oneSelect, hi, wi, onPresss }) => {
       </TouchableOpacity>
 
       {option && (
-        <View style={styles.openDropDown}>
-          {data && data.map((val, i) => {
-            return (
-              <TouchableOpacity
-                key={i}
-                onPress={() => oneSelectItem(val)}
-                style={{
-                  ...styles.optionContainer,
-                  //   backgroundColor:
-                  //     val &&val.id === selectValue.id ? "pink" : "white",
-                }}
-              >
-                {/* <Image
-                  source={val.image}
-                  style={styles.optionImage}
-                /> */}
-                <Text style={styles.optionText}>{val.project_name}</Text>
-                {/* <Text style={{ marginLeft: 'auto' }}>{val.count}</Text> */}
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-      )}
+  <View style={{
+    backgroundColor: active.background,
+    padding: w(2),
+    borderBottomEndRadius: w(2),
+    borderBottomStartRadius: w(2),
+  }}>
+    {data.map((val) => (
+      <TouchableOpacity
+        key={val.id}
+        onPress={() => oneSelectItem(val)}
+        style={{padding: w(2),
+          borderRadius: w(2),
+          flexDirection: "row",
+          alignItems: "center",
+          borderBottomWidth: w(0.1),
+          borderBottomColor:active.color
+        }}
+      >
+        <Text style={{
+          flex: 1,
+          marginLeft: 0,
+          color:active.color
+        }}>{val.title}</Text>
+      </TouchableOpacity>
+    ))}
+  </View>
+)}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   dropDownStyle: {
-    backgroundColor: "rgba(80, 99, 191, 0.21)",
+    backgroundColor: "ccc",
     minHeight: 40,
     borderTopEndRadius: w(1),
     borderTopStartRadius: w(1),

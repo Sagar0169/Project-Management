@@ -11,6 +11,9 @@ export const colors={
         drawerBg:"#052160",
         active:'"#5063BF"',
         unactive:'#8EDFEB',
+        hint2:"#E6E6E6",
+
+   ,
         onboard:"#493d8a"
         
         
@@ -26,6 +29,8 @@ export const colors={
         drawerBg:"#000000",
         active:'"#373737"',
         unactive:'#8EDFEB',
+        hint2:"#505050",
+,
         onboard:"#FFFFFF",
     },
 }

@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet, Dimensions } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import SvgSelector from "../SvgSelector";
+import { ThemeContext } from "../../context/ThemeContext";
+import { colors } from "../config/theme";
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width
@@ -30,34 +32,37 @@ export default function CheckInDetails({
   isCheckedIn,
   place,
 }) {
+  const {theme}=useContext(ThemeContext)
+  let active=colors[theme.mode]
   console.log("cc" + isCheckedIn);
   
   return (
-    <View style={{borderWidth:w(0.2),backgroundColor:"rgba(80, 99, 191, 0.21)",marginHorizontal:w(3.4),marginTop:h(0.1),borderRadius:w(2),padding:w(3)}}>
+    <View style={{borderWidth:w(0.2),backgroundColor:active.blackBg,marginHorizontal:w(3.4),marginTop:h(0.1),borderRadius:w(2),padding:w(3)}}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={{ flexDirection: "row" }}>
           {isCheckedIn===1 && (
             <>
               <Text style={{fontWeight: "700",color:"#45BE27"}}>Check In:</Text>
-              <Text style={{ marginStart: 5 }}>{checkInTime}</Text>
+              <Text style={{ marginStart: 5,color:active.text }}>{checkInTime}</Text>
             </>
           )}
           {isCheckedIn===0 && (
             <>
               <Text style={{fontWeight: "700",color:"#DC1010"}}>Check Out:</Text>
-              <Text style={{ marginStart: 5 }}>{checkOut}</Text>
+              <Text style={{ marginStart: 5,color:active.text }}>{checkOut}</Text>
             </>
           )}
         </View>
         <View style={{ flexDirection: "row" }}>
           {/* <Text style={styles.heading}>Location:</Text> */}
           <SvgSelector h={15} w={15}name={"location2"}/>
-          <Text style={{ marginStart: 5 }}>{location}</Text>
+          <Text style={{ marginStart: 5,color:active.text }}>{location}</Text>
         </View>
       </View>
       <View style={{ marginTop: 5 }}>
-        <Text style={styles.heading}>Place Name:</Text>
-        <Text>{place}</Text>
+        <Text style={{color:active.text,    fontWeight: "700",
+}}>Place Name:</Text>
+        <Text style={{color:active.text}}>{place}</Text>
       </View>
       {/* <Text>{id}</Text> */}
       <View style={{}}></View>

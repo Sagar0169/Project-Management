@@ -45,7 +45,7 @@ export const CustomDrawer = (props) => {
 
   const handleCheckIn = async () => {
     props.navigation.navigate("CheckIn/Out")
-
+  
   };
   const handleCompanyView = async () => {
     props.navigation.navigate("CompanySite")
@@ -57,13 +57,13 @@ export const CustomDrawer = (props) => {
   };
 
   const handleAssignedTask = async () => {
-
+  
   };
 
   const handleProjectTask = async () => {
-
+  
   };
-
+  
 
   // const AuthCtx=useContext(AuthContext)
   // const isAuthenticated=AuthCtx.isAuthenticated
@@ -176,10 +176,10 @@ export const CustomDrawer = (props) => {
 
 
         {/* Dashboard */}
-        <TouchableOpacity onPress={() => props.navigation.closeDrawer()} style={{ flexDirection: 'row', borderBottomWidth: 1, marginTop: 12, alignItems: 'center' }}>
-          <View style={{ marginEnd: 7, marginBottom: 9 }} >
-            <SvgSelector name={"dashboard"} w={AppUtil.getWP(5)} h={AppUtil.getWP(5)} />
-          </View>
+         <TouchableOpacity onPress={() => props.navigation.closeDrawer()} style={{flexDirection:'row',borderBottomWidth:1,marginTop:12,alignItems:'center'}}>
+         <View style={{marginEnd:7,marginBottom:9}} >
+        <SvgSelector  name={"dashboard"} w={AppUtil.getWP(5)} h={AppUtil.getWP(5)}/>
+        </View>
           {/* <Image style={{marginEnd:7,marginBottom:9}} source={require('../../assets/Images/dashboard.png')}/> */}
           <Text style={{ fontWeight: '600', color: activeColors.color }}>Dashboard</Text>
         </TouchableOpacity>
@@ -237,18 +237,13 @@ export const CustomDrawer = (props) => {
             <Switch value={themeEnabled} onValueChange={handleChangeTheme} />
           </View>
         </TouchableOpacity>
-
-        {/* Logout */}
-        <TouchableOpacity onPress={handleLogout} style={{ flexDirection: 'row', borderBottomWidth: 1, marginTop: 12, alignItems: 'center' }}>
-          <View style={{ marginEnd: 7, marginBottom: 9 }} >
-            <SvgSelector name={"logout"} w={AppUtil.getWP(5)} h={AppUtil.getWP(5)} />
-          </View>
-          <Text style={{ fontWeight: '600', color: activeColors.color }}>Logout</Text>
+        <TouchableOpacity onPress={handleLogout} style={{flexDirection:'row',borderBottomWidth:1,marginTop:12,alignItems:'center'}}>
+          <View style={{marginEnd:7,marginBottom:9}} >
+        <SvgSelector  name={"logout"} w={AppUtil.getWP(5)} h={AppUtil.getWP(5)}/>
+        </View>
+          <Text style={{fontWeight:'600'}}>Logout</Text>
         </TouchableOpacity>
-
-
-
-
+      
       </ScrollView>
     </View>
   );

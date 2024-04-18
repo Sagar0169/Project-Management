@@ -1,10 +1,14 @@
-import { View, Text, Dimensions, TouchableWithoutFeedback } from 'react-native'
-import React from 'react'
+import { View, Text, Dimensions, TouchableWithoutFeedback, TouchableOpacity } from 'react-native'
+import React, { useContext } from 'react'
 import { DataSet } from '../components/Data'
+import { Colors } from '../Utilities/Colors';
+import { colors } from '../components/config/theme';
+import { ThemeContext } from '../context/ThemeContext';
 
 export default function TimeSheetFlatListData({project,id,task,activity,workingHours,taskStatus,onPress}) {
     const { width, height } = Dimensions.get("window");
-
+    const {theme}=useContext(ThemeContext)
+    let active=colors[theme.mode]
   // Calculate a scaling factor based on the screen width
   const scaleFactor = width / 375; // Adjust 375 based on your design reference width
 
@@ -24,15 +28,15 @@ export default function TimeSheetFlatListData({project,id,task,activity,workingH
   }
 
   return (
-    <TouchableWithoutFeedback onPress={()=>onPress(id)}>   
+    <TouchableOpacity style={{backgroundColor:active.blackBg}} onPress={()=>onPress(id)}>   
        <View style={{flexDirection:'row',alignItems:"center",marginVertical:h(0.8)}}>
-      <Text style={{width:w(15.8),fontSize:dynamicFontSize*0.78}}>{project}</Text>
-      <Text style={{width:w(25.8),fontSize:dynamicFontSize*0.78}}>{task}</Text>
-      <Text style={{width:w(20.8),fontSize:dynamicFontSize*0.78}}>{activity}</Text>
-      <Text style={{width:w(12.8),fontSize:dynamicFontSize*0.78,textAlign:'center'}}>{workingHours}</Text>
-      <Text style={{width:w(18.8),fontSize:dynamicFontSize*0.78}}>{taskStatus}</Text>
+      <Text style={{width:w(15.8),fontSize:dynamicFontSize*0.78 ,color:active.text,textAlign:'center'}}>{project}</Text>
+      <Text style={{width:w(25.8),fontSize:dynamicFontSize*0.78,color:active.text,textAlign:'center'}}>{task}</Text>
+      <Text style={{width:w(20.8),fontSize:dynamicFontSize*0.78,color:active.text,textAlign:'center'}}>{activity}</Text>
+      <Text style={{width:w(12.8),fontSize:dynamicFontSize*0.78,textAlign:'center',color:active.text}}>{workingHours}</Text>
+      <Text style={{width:w(18.8),fontSize:dynamicFontSize*0.78,textAlign:'center',color:active.text}}>{taskStatus}</Text>
     </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
 
   )
 }

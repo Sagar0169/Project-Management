@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet, Dimensions, FlatList } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import CheckInDetails from './CheckIn/CheckInDetails';
+import { ThemeContext } from '../context/ThemeContext';
+import { colors } from './config/theme';
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width
@@ -22,6 +24,8 @@ function h(value) {
 }
 
 export default function ChecklistData({id,data,date}) {
+  const {theme}=useContext(ThemeContext)
+  let active=colors[theme.mode]
   function renderMealItem(itemData){
     const item=itemData.item
     const mealsDetails={
@@ -50,7 +54,7 @@ export default function ChecklistData({id,data,date}) {
   }
   return (
     <View style={styles.rootContainer}>
-<Text style={{marginVertical:h(0.5),paddingStart:w(3),fontSize:dynamicFontSize}}>{date}</Text>
+<Text style={{marginVertical:h(0.5),paddingStart:w(3),fontSize:dynamicFontSize,color:active.color}}>{date}</Text>
       <View style={{}}>
       <FlatList data={data} keyExtractor={(item)=>item.id} renderItem={renderMealItem}/>
 
