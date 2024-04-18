@@ -233,7 +233,7 @@ export const CustomDrawer = (props) => {
           <View style={{marginEnd:7,marginBottom:9}} >
         <SvgSelector  name={"logout"} w={AppUtil.getWP(5)} h={AppUtil.getWP(5)}/>
         </View>
-          <Text style={{fontWeight:'600'}}>Logout</Text>
+          <Text style={{fontWeight:'600',color:activeColors.color}}>Logout</Text>
         </TouchableOpacity>
       
       </ScrollView>

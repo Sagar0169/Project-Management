@@ -104,7 +104,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
         }}
       >
         <View style={[styles.modalContainer]}>
-          <BottomSheetDesign3 handleSportSelection={handleSportSelection} />
+          <BottomSheetDesign3 handleSportSelection={handleSportSelection} onBack={toggleModal}/>
         </View>
       </Modal>
     );
@@ -332,7 +332,7 @@ function AssignTaskForm({ taskData, setTaskData, navigation,userId }) {
                   label="00:00"
                   editable={true}
                   secure={false}
-                  onUpdateValue={onChangeText.bind(this, "estimatedTime")}
+                  onChangeText={onChangeText.bind(this, "estimatedTime")}
                   value={enteredEstimatedTime}
                 />
 

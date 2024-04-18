@@ -3,8 +3,7 @@ import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "rea
 import { Colors } from "../../Utilities/Colors";
 import { colors } from "../config/theme";
 import { ThemeContext } from "../../context/ThemeContext";
-import { useContext } from "react";
-import { useContext } from "react";
+
 const { width, height } = Dimensions.get("window");
 
 // Calculate a scaling factor based on the screen width

@@ -1,12 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
+import React, { useCallback, useEffect, useState,useContext } from "react";
+import { View, Text, FlatList, StyleSheet, Pressable,Image } from "react-native";
 import SubmitButton from "./ui/SubmitButton";
 import { useSearch } from "../store/search-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getEmp } from "../store/http";
+import { colors
+} from "./config/theme";
+import { ThemeContext } from "../context/ThemeContext";
+
 
 const ProjectDetails = ({ item, handleSportSelection, isSelected }) => {
-  const backgroundColor = isSelected ? "#E9EEFF" : "#f5f5f5";
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
+  const backgroundColor = isSelected ? activeColors.selected : activeColors.itemBg;
 
   return (
     <Pressable
@@ -14,13 +20,16 @@ const ProjectDetails = ({ item, handleSportSelection, isSelected }) => {
       style={[styles.itemContainer2, { backgroundColor }]}
     >
       <View style={styles.itemContainer2Content}>
-        <Text style={styles.text2}>{item.name}</Text>
+        <Text style={[styles.text2,{color:activeColors.color}]}>{item.name}</Text>
       </View>
     </Pressable>
   );
 };
 
-const BottomSheetDesign3 = ({ handleSportSelection }) => {
+const BottomSheetDesign3 = ({ handleSportSelection,onBack }) => {
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
+
   const [selectedItem, setSelectedItem] = useState(null);
   const members = [
     'Shreyash Jain (Android)', 'Nimish Sharma(Android)', 'Akshat Bansal (Android)',
@@ -105,9 +114,27 @@ const BottomSheetDesign3 = ({ handleSportSelection }) => {
   }));
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1,backgroundColor:activeColors.background }}>
+       <Pressable onPress={onBack}>
+          <View
+            style={{
+              backgroundColor: activeColors.background,
+              alignItems: "flex-start",
+              marginLeft: 10,
+            }}
+          >
+            <Image
+              style={{
+                width: 40,
+                height: 40,
+                resizeMode: "cover",
+              }}
+              source={require("../assets/Images/leftArrow.png")}
+            />
+          </View>
+        </Pressable>
       <View style={{ alignItems: "center", marginTop: 10 }}>
-        <Text style={styles.modalTitle}>Select Member</Text>
+        <Text style={[styles.modalTitle,{color:activeColors.color}]}>Select Member</Text>
       </View>
       <View style={{ flex: 1 }}>
         <FlatList
@@ -140,7 +167,7 @@ const styles = StyleSheet.create({
     elevation: 6,
     marginHorizontal: 20,
     marginVertical: 12,
-    borderWidth: 1,
+  
     borderColor: "#E9EEFF",
   },
   itemContainer2Content: {

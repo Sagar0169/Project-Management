@@ -234,7 +234,7 @@ function Navigation() {
 }
 
 export default function App() {
-  const [theme,setTheme]=useState({mode:"dark"})
+  const [theme,setTheme]=useState({mode:"light"})
 
   const updateTheme=(newTheme)=>{
     if(!newTheme)

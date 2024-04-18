@@ -32,7 +32,7 @@ export const colors={
         active:'"#373737"',
         unactive:'#8EDFEB',
         hint2:"#505050",
-,
+
         selected:"#6A6A6A"
         
     },
