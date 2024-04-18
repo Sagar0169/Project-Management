@@ -5,12 +5,15 @@ import {
   useWindowDimensions,
   Animated,
 } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { Colors } from "../Utilities/Colors";
+import { colors } from "./config/theme";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function Paginator({ data, scrollX }) {
   const { width } = useWindowDimensions();
-
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
   return (
     <View
       style={{ flexDirection: "row", height: 64, justifyContent: "center" }}
@@ -31,7 +34,7 @@ export default function Paginator({ data, scrollX }) {
 
         return (
           <Animated.View
-            style={[styles.dot, { width: dotWidth, opacity }]}
+            style={[styles.dot,{backgroundColor:activeColors.onboard}, { width: dotWidth, opacity }]}
             key={i.toString()}
           />
         );

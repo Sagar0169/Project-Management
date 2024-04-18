@@ -1,14 +1,17 @@
 import { View, Text, FlatList, StyleSheet, Animated } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import moviesData from "./moviesData";
 import OnBoardingItem from "./OnBoardingItem";
 import Paginator from "./Paginator";
 import NextButton from "./NextButton";
 import { useNavigation } from "@react-navigation/native";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "./config/theme";
 
 export default function OnBoarding() {
   const navigation = useNavigation();
-
+  const {theme}=useContext(ThemeContext)
+  let activeColors=colors[theme.mode]
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;//calculate the position or index of current page
   const onViewableItemsChanged = useRef(({ viewableItems }) => {
@@ -27,7 +30,7 @@ export default function OnBoarding() {
     
   };
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,{backgroundColor:activeColors.background}]}>
       <FlatList
         data={moviesData.slice(0, 3)}
         renderItem={({ item }) => <OnBoardingItem item={item} />}

@@ -500,6 +500,31 @@ async function getDeleteTask(userid, id, token) {
     throw error;
   }
 }
+async function getIssuesList(userid, token) {
+  try {
+    const response = await axios.post(
+      "http://167.172.152.167:81/wcd_audit/pm_tool_app_old/api/rest/issuelist",
+      {
+        userid: userid,
+        // id: id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = response.data._result;
+    const _resultflag = response.data._resultflag;
+
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error in authenticate:", error);
+    throw error;
+  }
+}
 
 export function login(email, password) {
   return authenticate(email, password);
@@ -507,6 +532,10 @@ export function login(email, password) {
 
 export function deleteTask(userid, id, token) {
   return getDeleteTask(userid, id, token);
+}
+
+export function getIssues(userid, token) {
+  return getIssuesList(userid,token);
 }
 
 export function getTaks(userId, token, emp_id, ITEMS_PER_PAGE, page) {

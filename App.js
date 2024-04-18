@@ -1,32 +1,33 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
+import { useContext, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
+import IssuesDetails from "./components/IssuesDetails";
 import OnBoarding from "./components/OnBoarding";
+import { CustomDrawer } from "./components/drawer/CustomDrawer";
+import { ThemeContext } from "./context/ThemeContext";
 import AddNewProjects from "./screens/AddNewProjects";
 import AssignNewTask from "./screens/AssignNewTasks";
 import AssignTask from "./screens/AssignTask";
 import AssignedProject from "./screens/AssignedProject";
 import AssignedTaskDetails from "./screens/AssignedTaskDetails";
-import DashBoard from "./screens/DashBoard";
-import Login from "./screens/Login";
-import Projectlist from "./screens/Projectlist";
-import TaskList from "./screens/TaskList";
-import { ThemeContext } from "./context/ThemeContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useContext, useEffect, useState } from "react";
 import CheckInLayout from "./screens/CheckInLayout";
 import CreateNewIssues from "./screens/CreateNewIssues";
+import DashBoard from "./screens/DashBoard";
 import IssuesProject from "./screens/IssuesProject";
+import Login from "./screens/Login";
 import Music from "./screens/Music";
+import Projectlist from "./screens/Projectlist";
+import TaskList from "./screens/TaskList";
+import UpdateStatus from "./screens/UpdateStatus";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import ContextProvider from "./store/context";
 import { SearchProvider } from "./store/search-redux";
-import UpdateStatus from "./screens/UpdateStatus";
-import IssuesDetails from "./components/IssuesDetails";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { CustomDrawer } from "./components/drawer/CustomDrawer";
+import CompanySite from "./screens/CompanySite";
 
 let name;
 let type;
@@ -107,6 +108,7 @@ function AuthenticatedStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Dashboard" component={DrawerHandler} />
+      <Stack.Screen name="CompanySite" component={CompanySite} />
 
       <Stack.Screen
         name="AssignedProject"

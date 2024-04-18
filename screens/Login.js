@@ -6,6 +6,7 @@ import {
   Dimensions,
   Pressable,
   Alert,
+  StatusBar,
 } from "react-native";
 
 import LoginForm from "../components/LoginForm";
@@ -25,10 +26,9 @@ import { colors } from "../components/config/theme";
 
 import { ThemeContext } from "../context/ThemeContext";
 
-
 function Login() {
-  const {theme}=useContext(ThemeContext)
-  let activeColors=colors[theme.mode]
+  const { theme } = useContext(ThemeContext);
+  let activeColors = colors[theme.mode];
   const authCtx = useContext(AuthContext);
   const navigation = useNavigation();
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -160,7 +160,15 @@ function Login() {
   }
 
   return (
-    <View style={{ flex: 1, marginTop: 50, alignItems: "center", backgroundColor:activeColors.background }}>
+    <View
+    style={{
+      flex: 1,
+      marginTop: 50,
+      alignItems: "center",
+      backgroundColor: activeColors.background,
+    }}
+    >
+    <StatusBar translucent backgroundColor="transparent" />
       <View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <SvgXml
@@ -183,7 +191,6 @@ function Login() {
           {Strings.project_management_system}
         </Text>
       </View>
-
       <View
         style={{
           marginTop: 40,
@@ -206,13 +213,12 @@ function Login() {
             Log in
           </Text>
         </View>
-        
-        <View style={{  marginTop: 20, marginHorizontal: 5 }}>
+
+        <View style={{ marginTop: 20, marginHorizontal: 5 }}>
           <LoginForm onSubmit={handleLoginFormSubmit} />
           {/* change onSubmit to handlerLoginFormSubmit for validation */}
         </View>
       </View>
-      
     </View>
   );
 }
