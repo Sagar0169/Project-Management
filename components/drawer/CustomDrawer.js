@@ -47,6 +47,14 @@ export const CustomDrawer = (props) => {
     props.navigation.navigate("CheckIn/Out")
 
   };
+  const handleCompanyView = async () => {
+    props.navigation.navigate("CompanySite")
+
+  };
+  const handleBranchView = async () => {
+    props.navigation.navigate("CompanySite")
+
+  };
 
   const handleAssignedTask = async () => {
 
@@ -201,7 +209,7 @@ export const CustomDrawer = (props) => {
         </TouchableOpacity>
 
         {/* Company */}
-        <TouchableOpacity onPress={handleCheckIn} style={{ flexDirection: 'row', borderBottomWidth: 1, marginTop: 12, alignItems: 'center' }}>
+        <TouchableOpacity onPress={handleCompanyView} style={{ flexDirection: 'row', borderBottomWidth: 1, marginTop: 12, alignItems: 'center' }}>
           <View style={{ marginEnd: 7, marginBottom: 9 }} >
             <SvgSelector name={"company"} w={AppUtil.getWP(5)} h={AppUtil.getWP(5)} />
           </View>
@@ -209,7 +217,7 @@ export const CustomDrawer = (props) => {
         </TouchableOpacity>
 
         {/* Branch */}
-        <TouchableOpacity onPress={handleCheckIn} style={{ flexDirection: 'row', borderBottomWidth: 1, marginTop: 12, alignItems: 'center' }}>
+        <TouchableOpacity onPress={handleBranchView} style={{ flexDirection: 'row', borderBottomWidth: 1, marginTop: 12, alignItems: 'center' }}>
           <View style={{ marginEnd: 7, marginBottom: 9 }} >
             <SvgSelector name={"branch"} w={AppUtil.getWP(5)} h={AppUtil.getWP(5)} />
           </View>

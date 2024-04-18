@@ -10,7 +10,8 @@ export const colors={
         highlight:"#5063BF",
         drawerBg:"#052160",
         active:'"#5063BF"',
-        unactive:'#8EDFEB'
+        unactive:'#8EDFEB',
+        onboard:"#493d8a"
         
         
     }, dark:{
@@ -24,7 +25,7 @@ export const colors={
         highlight:"white",
         drawerBg:"#000000",
         active:'"#373737"',
-        unactive:'#8EDFEB'
-        
+        unactive:'#8EDFEB',
+        onboard:"#FFFFFF",
     },
 }

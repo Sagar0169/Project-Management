@@ -1,18 +1,20 @@
 import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import Svg, { G, Circle } from "react-native-svg";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "../Utilities/Colors";
 import SubmitButton from "./ui/SubmitButton";
+import { ThemeContext } from "../context/ThemeContext";
+import { colors } from "./config/theme";
 
-
-const NextButton = ({ percentage, scrollTo,buttonText }) => {
+const NextButton = ({ percentage, scrollTo, buttonText }) => {
   const size = 128;
   const strokeWidth = 2;
   const center = size / 2;
   const radius = size / 2 - strokeWidth / 2;
   const circumference = 2 * Math.PI * radius;
-
+  const { theme } = useContext(ThemeContext);
+  let activeColors = colors[theme.mode];
   const progressAnimation = useRef(new Animated.Value(0)).current;
   const progressRef = useRef(null);
   const animation = (toValue) => {
@@ -44,12 +46,12 @@ const NextButton = ({ percentage, scrollTo,buttonText }) => {
   }, [percentage]);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, { backgroundColor: activeColors.background }]}
+    >
       <SubmitButton onPress={scrollTo} color={Colors.black}>
-            {buttonText}
-          </SubmitButton>
-   
-      
+        {buttonText}
+      </SubmitButton>
     </View>
   );
 };
